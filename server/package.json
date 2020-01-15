@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/text-to-speech": "^2.1.2",
     "concurrently": "^5.0.2",
     "express": "^4.17.1"
   },
