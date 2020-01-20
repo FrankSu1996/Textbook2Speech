@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "textbook2speech",
+  "private_key_id": "22a38e07bdafe099d55c018872e99d17ac96aa1b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDldUdUUKsup2Au\noI4w0LOTe8CqwOJ6U+Ed4jBKInUOO/Uqlhb1YcuYaTs9t0pzhHjJdvvbk4dGPYqy\nm/wSnsOtudFybe4TnBgcmXQS/BZ0jbzkJakaJXeRgncc9LxAARJcuq32D/mLu23R\naUCihNuT2FhgFyhTf6lV+v0c+8D3Rh1puwnEWkDZf5CUoIpKdotcq72NouU47H8e\nUnPGC/pq3iKsDQqdt1hquwoA0XoWeUGkuoS3AIlEdplvbqTu4cXcf1SDGT+LJFx2\nH3opy2d/gcPqFZVWtuf9leYkn2U9Hugs/C3wZIR190mmq9t5sBs5IeC48MBBmGyh\nIpgdt6cDAgMBAAECggEAWUUkaBguUStLDzjluPYpNzLJRWVfd0oU5gRu1xjKw6vt\n+RCFhBf1FqmyI5OgwoqCV5cT61xdH6WnxU9MZY4hAQCvDL7aBgUPmGjXMN+keNn/\n6B8CyCpVd2Xzo29PofMIyszSC04xvvw/gF5biB76Mm3UDCZWSQ38une4a8NCUrDW\nwEigvS6WhjXsYghJIKfg75APqtVKlIpsXTbmqcvmOUgoFjHPamX39FFwMLrSokIp\nCCY6VRONEUfxRLdHnFLLZjkyPLughDpivFqfO+rU9JYloiIhTadN+3DI41mCTSZB\niYvnXAvmwxMVUf8+IW/Cn+ece/5Lsx9yKYgGu92nAQKBgQD/MFPdCpcw/UdICgYU\nzMariscFk03otxB9kvZyR1u1cTSiwTc5I0hPT+YuH7HhtEJ1sMycNk4Mm8+CiXa9\n2+fRHXm8q3B/QMNHRmjIEDM69tX7m3fryhLrcI0XmtdXIJdxwqVKrzgupTYSrREG\n/6Ns1wgTfKgbAvZu+0Sk+Rg/gQKBgQDmMALuYG3kaEyJ9xAkDcv4r368bUPLBRPK\nm2GW60o1Zpi6f+A77KjTFagfs1lfw9lT5Y8U9WNMATV6EhxJJxfhE60uzO1npTSk\n8oivSIM1/NuDJWHgnPM6n4qLpdH/pYt7W3SCAPjmcpZg4gEUgfFADXpbNe4vQXkF\n6+MHDeMogwKBgQDxGdjyS5JDP9l8D7RlLIA8DNcyxlTinStgaVyc5hyYlgeUChdB\nzbsA7E1eoKVwyN3N0ifPI2OkeAWboILmqIEiSsX84sFcCXU2vyg6dUvh1tqfaOjp\nhrdPaLx1Y982u106pxuCL4BWWdN327ntsdPW/mbr+mfddXQdsRrO/2XQgQKBgGeq\nmbdXcEZcfpPn07oZCJJwHuinYM+u8rHddn7salhQY1oiuw7hz0p5R2U3dXm+j0LM\ncLrkpJqXNMlMHLcJRyTTorwgCI8UBPiATfR6+LS4sveGP2VT6eqt7UxlGoVCveWJ\nU5g07eODGZx6TDg7KTZKm582U5Wuq91x1aXYqEQXAoGBAMWGge5CVl2BAQiigkDM\nqf3k4xvgPi+1KBTZAezk1A8yMFgK+PV3iEdoozEZ7JVvJfsK4/pA6709hH2cDD9c\nVmgyNTNqOLUyCzaaPBxCfqcUXFe+HIeHItb+WtOlcQkxT3IpG9vsX+YSqvg2iTBG\nKsMOj2q9SCS4stxTTXHAaHFi\n-----END PRIVATE KEY-----\n",
+  "client_email": "capstone-group@textbook2speech.iam.gserviceaccount.com",
+  "client_id": "110443633665593021583",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/capstone-group%40textbook2speech.iam.gserviceaccount.com"
+}
