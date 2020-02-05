@@ -1,10 +1,10 @@
-import React from "react";
-import Customers from "./components/customers/customers";
+import React from 'react';
+import Dashboard from './components/dashboard/dashboard';
 
 function App() {
   return (
     <div className="App">
-      <Customers> </Customers>
+      <Dashboard></Dashboard>
     </div>
   );
 }
