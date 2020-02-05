@@ -7,6 +7,7 @@ class Dashboard extends Component {
         subchapterSelected: null,
         paragraphToRead: null,
      }
+     
     render() { 
         return (  );
     }
