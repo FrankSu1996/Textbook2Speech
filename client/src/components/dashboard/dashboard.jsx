@@ -9,11 +9,18 @@ class Dashboard extends Component {
   };
 
   speech = (text, config) => {
-    console.log('FUCK YOUFUDLISAFU');
+    console.log('Speech currently playing...');
     config.text = text;
     speechSynthesis.speak(config);
   };
 
+  //function to set the text that is to be read. Will cancel the speech api to do so
+  setTextToRead = text => {
+    this.cancel();
+    this.setState({currentTextToRead: text});
+  };
+
+  //function to set the rate of speech. Will cancel the current speech api to do so
   setAudioSpeed = (speed, config) => {
     console.log('Setting audio speed to ' + speed);
     this.cancel();
@@ -21,14 +28,17 @@ class Dashboard extends Component {
     console.log(this.state.audioSpeed);
   };
 
+  //function to pause the speech api. DOES NOT clear text buffer/config settings
   pause = () => {
     speechSynthesis.pause();
   };
 
+  //function to step the speech api. Clears the speech buffer, allows changing of speech api config
   cancel = () => {
     speechSynthesis.cancel();
   };
 
+  //function to resume speech api
   resume = () => {
     speechSynthesis.resume();
   };
@@ -60,6 +70,10 @@ class Dashboard extends Component {
         >
           Set
         </button>
+        <div>
+          <h1>Text To Be Read:</h1>
+          <p>{this.state.currentTextToRead}</p>
+        </div>
       </React.Fragment>
     );
   }
