@@ -56,6 +56,22 @@ class Dashboard extends Component {
       //increment paragraph counter in state
       let newParagraphNumber = this.state.paragraphNumber + 1;
       this.setState({paragraphNumber: newParagraphNumber});
+      //retrieve next paragraph to read and change state
+      let newParagraph = this.getCurrentParagraph().text;
+      this.setState({currentTextToRead: newParagraph});
+      console.log(newParagraph);
+    } else {
+      alert('Reached end of subchapter!');
+    }
+  };
+
+  //handler for right arrow key events
+  leftArrowHandler = () => {
+    //check if incrementing paragraph counter will go out of bounds
+    if (this.state.paragraphNumber > 0) {
+      //increment paragraph counter in state
+      let newParagraphNumber = this.state.paragraphNumber - 1;
+      this.setState({paragraphNumber: newParagraphNumber});
       //retrieve next paragraph to read
       let newParagraph = this.getCurrentParagraph().text;
       this.setState({currentTextToRead: newParagraph});
@@ -63,11 +79,7 @@ class Dashboard extends Component {
     } else {
       alert('Reached end of subchapter!');
     }
-    console.log(this.state.paragraphNumber);
   };
-
-  //handler for right arrow key events
-  leftArrowHandler = () => {};
 
   speech = (text, config) => {
     console.log('Speech currently playing...');
