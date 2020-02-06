@@ -80,6 +80,7 @@ class Dashboard extends Component {
 
   //handler for left arrow key events
   rightArrowHandler = () => {
+    //handling navigation for paragraphs
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
       //check if incrementing paragraph counter will go out of bounds
       if (
@@ -97,6 +98,28 @@ class Dashboard extends Component {
         console.log(newParagraph);
       } else {
         alert('Reached end of subchapter!');
+      }
+    }
+    //handling navigation for subchapters
+    else if (this.state.navigation === NAVIGATION.SUBCHAP) {
+      if (
+        this.state.subChapterNumber <
+        this.getCurrentChapter().subchapters.length - 1
+      ) {
+        //cancel speech api
+        speechSynthesis.cancel();
+        //increment subchapter counter and set paragraph counter to 0
+        const newSubChapterNumber = this.state.subChapterNumber + 1;
+        const newParagraphNumber = 0;
+        this.setState({
+          paragraphNumber: newParagraphNumber,
+          subChapterNumber: newSubChapterNumber,
+        });
+        //retrieve next paragraph to read and change state
+        let newParagraph = this.getCurrentParagraph().text;
+        this.setState({currentTextToRead: newParagraph});
+      } else {
+        alert('Reached end of chapter!');
       }
     }
   };
@@ -117,6 +140,25 @@ class Dashboard extends Component {
         console.log(newParagraph);
       } else {
         alert('Reached end of subchapter!');
+      }
+    }
+    //handling navigation for subchapters
+    else if (this.state.navigation === NAVIGATION.SUBCHAP) {
+      if (this.state.subChapterNumber > 0) {
+        //cancel speech api
+        speechSynthesis.cancel();
+        //increment subchapter counter and set paragraph counter to 0
+        const newSubChapterNumber = this.state.subChapterNumber - 1;
+        const newParagraphNumber = 0;
+        this.setState({
+          paragraphNumber: newParagraphNumber,
+          subChapterNumber: newSubChapterNumber,
+        });
+        //retrieve next paragraph to read and change state
+        let newParagraph = this.getCurrentParagraph().text;
+        this.setState({currentTextToRead: newParagraph});
+      } else {
+        alert('Reached beginning of chapter!');
       }
     }
   };

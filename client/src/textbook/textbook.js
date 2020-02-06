@@ -18,6 +18,11 @@ const textbook = {
               text:
                 'Linguistics is one of those subjects that not many people have heard of, so you might well be wondering exactly what it is.',
             },
+            {
+              id: 2,
+              text:
+                'The passage experienced a surge in popularity during the 1960s when Letraset used it on their dry-transfer sheets, and again during the 90s as desktop publishers bundled the text with their software. ',
+            },
           ],
         },
         {
@@ -28,6 +33,16 @@ const textbook = {
               id: 1,
               text:
                 'Linguistics is part of the broad field of cognitive science, which studies the human mind. Linguistics focus specifically on the mental grammar: the system that all speakers of a language have in their minds, which allows them to understand each other. The mental grammar of every language includes phonetics, phonology, morphology, syntax, and semantics.',
+            },
+            {
+              id: 2,
+              text:
+                'The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesnt distract from the layout. A practice not without',
+            },
+            {
+              id: 2,
+              text:
+                'Richard McClintock, a Latin scholar from Hampden-Sydney College, is credited with discovering the source behind the ubiquitous filler text. In seeing a sample of lorem ipsum',
             },
           ],
         },
@@ -51,6 +66,11 @@ const textbook = {
               text:
                 'The field of phonetics studies the sounds of human speech.  When we study speech sounds we can consider them from two angles.  Acoustic phonetics,  in addition to being part of linguistics, is also a branch of physics.  It’s concerned with the physical, acoustic properties of the sound waves that we produce.  We’ll talk some about the acoustics of speech sounds, but we’re primarily interested in articulatory phonetics, that is, how we humans use our bodies to produce speech sounds. Producing speech needs three mechanisms.',
             },
+            {
+              id: 2,
+              text:
+                'McClintocks eye for detail certainly helped narrow the whereabouts of lorem ipsums origin, however, the “how and when” still remain something of a mystery, with competing theories and timelines.',
+            },
           ],
         },
         {
@@ -61,6 +81,16 @@ const textbook = {
               id: 1,
               text:
                 'Speaking involves controlling parts of the mouth and nose to shape the air that comes from the lungs. This unit introduces the names and locations of the articulators that are used to produce the sounds of English: the tongue, lips and teeth, the alveolar ridge, the palate, the velum, and the nasal cavity.',
+            },
+            {
+              id: 1,
+              text:
+                'Nor is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but occasionally circumstances occur in which toil and pain can procure him some great pleasure',
+            },
+            {
+              id: 1,
+              text:
+                'So how did the classical Latin become so incoherent? According to McClintock, a 15th century typesetter likely scrambled part of Ciceros De Finibus in order to provide placeholder text to mockup various fonts for a type specimen book.',
             },
           ],
         },
