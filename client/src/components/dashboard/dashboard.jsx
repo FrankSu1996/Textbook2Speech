@@ -2,16 +2,42 @@ import React, {Component} from 'react';
 import Textbook from '../../textbook/textbook';
 
 class Dashboard extends Component {
-  state = {
-    textbookSelected: Textbook,
-    textbookInitialized: false,
-    audioSpeed: 1,
-    audioConfig: new SpeechSynthesisUtterance(),
-    chapterNumber: 1,
-    subChapterNumber: 1,
-    paragraphNumber: 1,
-    currentTextToRead:
-      'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
+  constructor(props) {
+    super(props);
+    this.state = {
+      textbookSelected: Textbook,
+      textbookInitialized: false,
+      audioSpeed: 1,
+      audioConfig: new SpeechSynthesisUtterance(),
+      chapterNumber: 1,
+      subChapterNumber: 1,
+      paragraphNumber: 1,
+      currentTextToRead:
+        'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
+    };
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress);
+  }
+
+  //handler for keypress events
+  handleKeyPress = event => {
+    switch (event.keyCode) {
+      //'s' key to start speech api
+      case 83:
+        this.speech(this.state.currentTextToRead, this.state.audioConfig);
+        break;
+      //'esc' key to stop speech api
+      case 27:
+        speechSynthesis.cancel();
+        break;
+      default:
+        break;
+    }
   };
 
   speech = (text, config) => {
