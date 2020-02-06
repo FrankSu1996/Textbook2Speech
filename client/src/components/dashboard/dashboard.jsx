@@ -65,6 +65,13 @@ class Dashboard extends Component {
       let navigation = this.state.navigation;
       navigation += 1;
       this.setState({navigation: navigation});
+      if (navigation === NAVIGATION.SUBCHAP) {
+        speechSynthesis.cancel();
+        this.speech('Subchapter navigation', this.state.audioConfig);
+      } else if (navigation === NAVIGATION.CHAP) {
+        speechSynthesis.cancel();
+        this.speech('Chapter navigation', this.state.audioConfig);
+      }
     }
   };
 
@@ -75,6 +82,13 @@ class Dashboard extends Component {
       let navigation = this.state.navigation;
       navigation -= 1;
       this.setState({navigation: navigation});
+      if (navigation === NAVIGATION.SUBCHAP) {
+        speechSynthesis.cancel();
+        this.speech('Subchapter navigation', this.state.audioConfig);
+      } else if (navigation === NAVIGATION.PARAGRAPH) {
+        speechSynthesis.cancel();
+        this.speech('Paragraph navigation', this.state.audioConfig);
+      }
     }
   };
 
