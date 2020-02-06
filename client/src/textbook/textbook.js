@@ -22,7 +22,7 @@ const textbook = {
         },
         {
           id: 2,
-          name: 'Chapter 1.2 Mental Grammar',
+          name: '1.2 Mental Grammar',
           paragraphs: [
             {
               id: 1,
@@ -39,6 +39,7 @@ const textbook = {
       subchapters: [
         {
           id: 1,
+          name: '2.1 Understanding phonetics',
           paragraphs: [
             {
               id: 1,
@@ -54,7 +55,7 @@ const textbook = {
         },
         {
           id: 2,
-          name: 'Chapter 2.2 Articulators',
+          name: '2.2 Articulators',
           paragraphs: [
             {
               id: 1,
@@ -67,3 +68,5 @@ const textbook = {
     },
   ],
 };
+
+export default textbook;

@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
+import Textbook from '../../textbook/textbook';
 
 class Dashboard extends Component {
   state = {
+    textbookSelected: Textbook,
+    textbookInitialized: false,
     audioSpeed: 1,
     audioConfig: new SpeechSynthesisUtterance(),
+    chapterNumber: 1,
+    subChapterNumber: 1,
+    paragraphNumber: 1,
     currentTextToRead:
-      'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset',
+      'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
   };
 
   speech = (text, config) => {
@@ -30,6 +36,8 @@ class Dashboard extends Component {
 
   //function to pause the speech api. DOES NOT clear text buffer/config settings
   pause = () => {
+    console.log('Hello');
+    console.log(Textbook);
     speechSynthesis.pause();
   };
 
@@ -43,7 +51,30 @@ class Dashboard extends Component {
     speechSynthesis.resume();
   };
 
+  //function to retrieve the current chapter from textbook
+  getCurrentChapter = () => {
+    return this.state.textbookSelected.chapters[this.state.chapterNumber - 1];
+  };
+
+  //function to retrieve the current subchapter from textbook
+  getCurrentSubchapter = () => {
+    const currentChapter = this.getCurrentChapter();
+    return currentChapter.subchapters[this.state.subChapterNumber - 1];
+  };
+
+  //function to retrieve the current paragraph to be read
+  getCurrentParagraph = () => {
+    const currentSubChapter = this.getCurrentSubchapter();
+    console.log(currentSubChapter.paragraphs[this.state.paragraphNumber - 1]);
+    return currentSubChapter.paragraphs[this.state.paragraphNumber - 1];
+  };
+
   render() {
+    //retrieve textbook information to display
+    const chapterName = this.getCurrentChapter().name;
+    const subChapterName = this.getCurrentSubchapter().name;
+    const text = this.getCurrentParagraph().text;
+
     return (
       <React.Fragment>
         <button
@@ -71,8 +102,9 @@ class Dashboard extends Component {
           Set
         </button>
         <div>
-          <h1>Text To Be Read:</h1>
-          <p>{this.state.currentTextToRead}</p>
+          <h1>{chapterName}</h1>
+          <h2>{subChapterName}</h2>
+          <p>{text}</p>
         </div>
       </React.Fragment>
     );
