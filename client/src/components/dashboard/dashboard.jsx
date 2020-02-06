@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
 import Textbook from '../../textbook/textbook';
 
+const NAVIGATION = {
+  PARAGRAPH: 0,
+  SUBCHAP: 1,
+  CHAP: 2,
+  MAX: 3,
+};
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       textbookSelected: Textbook,
-      textbookInitialized: false,
+      navigation: NAVIGATION.PARAGRAPH,
       audioSpeed: 1,
       audioConfig: new SpeechSynthesisUtterance(),
       chapterNumber: 0,
@@ -41,43 +48,76 @@ class Dashboard extends Component {
       case 39:
         this.rightArrowHandler();
         break;
+      case 38:
+        this.upArrowHandler();
+        break;
+      case 40:
+        this.downArrowHandler();
       default:
         break;
     }
   };
 
+  //handler for up arrow key events
+  upArrowHandler = () => {
+    //increments the navigation state
+    if (this.state.navigation < NAVIGATION.MAX - 1) {
+      let navigation = this.state.navigation;
+      navigation += 1;
+      this.setState({navigation: navigation});
+    }
+  };
+
+  //handler for down arrow key events
+  downArrowHandler = () => {
+    //decrements the navigation state
+    if (this.state.navigation > 0) {
+      let navigation = this.state.navigation;
+      navigation -= 1;
+      this.setState({navigation: navigation});
+    }
+  };
+
   //handler for left arrow key events
   rightArrowHandler = () => {
-    //check if incrementing paragraph counter will go out of bounds
-    if (
-      this.state.paragraphNumber <
-      this.getCurrentSubchapter().paragraphs.length - 1
-    ) {
-      //increment paragraph counter in state
-      let newParagraphNumber = this.state.paragraphNumber + 1;
-      this.setState({paragraphNumber: newParagraphNumber});
-      //retrieve next paragraph to read and change state
-      let newParagraph = this.getCurrentParagraph().text;
-      this.setState({currentTextToRead: newParagraph});
-      console.log(newParagraph);
-    } else {
-      alert('Reached end of subchapter!');
+    if (this.state.navigation === NAVIGATION.PARAGRAPH) {
+      //check if incrementing paragraph counter will go out of bounds
+      if (
+        this.state.paragraphNumber <
+        this.getCurrentSubchapter().paragraphs.length - 1
+      ) {
+        //cancel speech api
+        speechSynthesis.cancel();
+        //increment paragraph counter in state
+        let newParagraphNumber = this.state.paragraphNumber + 1;
+        this.setState({paragraphNumber: newParagraphNumber});
+        //retrieve next paragraph to read and change state
+        let newParagraph = this.getCurrentParagraph().text;
+        this.setState({currentTextToRead: newParagraph});
+        console.log(newParagraph);
+      } else {
+        alert('Reached end of subchapter!');
+      }
     }
   };
 
   //handler for right arrow key events
   leftArrowHandler = () => {
-    //check if incrementing paragraph counter will go out of bounds
-    if (this.state.paragraphNumber > 0) {
-      //increment paragraph counter in state
-      let newParagraphNumber = this.state.paragraphNumber - 1;
-      this.setState({paragraphNumber: newParagraphNumber});
-      //retrieve next paragraph to read
-      let newParagraph = this.getCurrentParagraph().text;
-      this.setState({currentTextToRead: newParagraph});
-      console.log(newParagraph);
-    } else {
-      alert('Reached end of subchapter!');
+    if (this.state.navigation === NAVIGATION.PARAGRAPH) {
+      //check if incrementing paragraph counter will go out of bounds
+      if (this.state.paragraphNumber > 0) {
+        //cancel speech api
+        speechSynthesis.cancel();
+        //increment paragraph counter in state
+        let newParagraphNumber = this.state.paragraphNumber - 1;
+        this.setState({paragraphNumber: newParagraphNumber});
+        //retrieve next paragraph to read
+        let newParagraph = this.getCurrentParagraph().text;
+        this.setState({currentTextToRead: newParagraph});
+        console.log(newParagraph);
+      } else {
+        alert('Reached end of subchapter!');
+      }
     }
   };
 
@@ -123,6 +163,15 @@ class Dashboard extends Component {
     const chapterName = this.getCurrentChapter().name;
     const subChapterName = this.getCurrentSubchapter().name;
     const text = this.state.currentTextToRead;
+    let navigation;
+
+    if (this.state.navigation === NAVIGATION.PARAGRAPH) {
+      navigation = 'Paragraph';
+    } else if (this.state.navigation === NAVIGATION.CHAP) {
+      navigation = 'Chapter';
+    } else {
+      navigation = 'Subchapter';
+    }
 
     return (
       <React.Fragment>
@@ -154,6 +203,7 @@ class Dashboard extends Component {
           <h1>{chapterName}</h1>
           <h2>{subChapterName}</h2>
           <p>{text}</p>
+          <h3>Current navigation : {navigation}</h3>
         </div>
       </React.Fragment>
     );
