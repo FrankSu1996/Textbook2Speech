@@ -6,7 +6,7 @@ const textbook = {
       subchapters: [
         {
           id: 1,
-          name: '1.1 Linguistics is Science',
+          name: '1.1: Linguistics is Science',
           paragraphs: [
             {
               id: 1,
@@ -27,7 +27,7 @@ const textbook = {
         },
         {
           id: 2,
-          name: '1.2 Mental Grammar',
+          name: '1.2: Mental Grammar',
           paragraphs: [
             {
               id: 1,
@@ -48,7 +48,7 @@ const textbook = {
         },
         {
           id: 2,
-          name: '1.3 The Art of Writing',
+          name: '1.3: The Art of Writing',
           paragraphs: [
             {
               id: 1,
@@ -75,7 +75,7 @@ const textbook = {
       subchapters: [
         {
           id: 1,
-          name: '2.1 Understanding phonetics',
+          name: '2.1: Understanding phonetics',
           paragraphs: [
             {
               id: 1,
@@ -96,7 +96,7 @@ const textbook = {
         },
         {
           id: 2,
-          name: '2.2 Articulators',
+          name: '2.2: Articulators',
           paragraphs: [
             {
               id: 1,
@@ -117,7 +117,7 @@ const textbook = {
         },
         {
           id: 1,
-          name: '2.3 Vocal Chord Anatomy',
+          name: '2.3: Vocal Chord Anatomy',
           paragraphs: [
             {
               id: 1,

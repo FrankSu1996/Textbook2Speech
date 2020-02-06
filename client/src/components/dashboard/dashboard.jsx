@@ -36,6 +36,7 @@ class Dashboard extends Component {
     switch (event.keyCode) {
       //'s' key to start speech api
       case 83:
+        speechSynthesis.cancel();
         this.speech(this.state.currentTextToRead, this.state.audioConfig);
         break;
       //'esc' key to stop speech api
@@ -143,6 +144,11 @@ class Dashboard extends Component {
         //retrieve next paragraph to read and change state
         let newParagraph = this.getCurrentParagraph().text;
         this.setState({currentTextToRead: newParagraph});
+        this.speech(this.getCurrentChapter().name, this.state.audioConfig);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
+          this.state.audioConfig
+        );
       } else {
         alert('Reached end of chapters');
       }
@@ -190,6 +196,11 @@ class Dashboard extends Component {
         //retrieve next paragraph to read and change state
         let newParagraph = this.getCurrentParagraph().text;
         this.setState({currentTextToRead: newParagraph});
+        this.speech(this.getCurrentChapter().name, this.state.audioConfig);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
+          this.state.audioConfig
+        );
       } else {
         alert('Reached end of chapters');
       }
@@ -209,11 +220,10 @@ class Dashboard extends Component {
   };
 
   //function to set the rate of speech. Will cancel the current speech api to do so
-  setAudioSpeed = (speed, config) => {
-    console.log('Setting audio speed to ' + speed);
+  setAudioSpeed = config => {
     speechSynthesis.cancel();
     config.rate = this.state.audioSpeed;
-    console.log(this.state.audioSpeed);
+    this.speech('Audio speed set to:' + config.rate, config);
   };
 
   //function to retrieve the current chapter from textbook
@@ -324,11 +334,7 @@ class Dashboard extends Component {
           type="number"
           onChange={e => this.setState({audioSpeed: e.target.value})}
         />
-        <button
-          onClick={e =>
-            this.setAudioSpeed(e.target.value, this.state.audioConfig)
-          }
-        >
+        <button onClick={e => this.setAudioSpeed(this.state.audioConfig)}>
           Set
         </button>
         <div>
