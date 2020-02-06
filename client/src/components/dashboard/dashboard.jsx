@@ -9,9 +9,9 @@ class Dashboard extends Component {
       textbookInitialized: false,
       audioSpeed: 1,
       audioConfig: new SpeechSynthesisUtterance(),
-      chapterNumber: 1,
-      subChapterNumber: 1,
-      paragraphNumber: 1,
+      chapterNumber: 0,
+      subChapterNumber: 0,
+      paragraphNumber: 0,
       currentTextToRead:
         'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
     };
@@ -35,10 +35,39 @@ class Dashboard extends Component {
       case 27:
         speechSynthesis.cancel();
         break;
+      case 37:
+        this.leftArrowHandler();
+        break;
+      case 39:
+        this.rightArrowHandler();
+        break;
       default:
         break;
     }
   };
+
+  //handler for left arrow key events
+  rightArrowHandler = () => {
+    //check if incrementing paragraph counter will go out of bounds
+    if (
+      this.state.paragraphNumber <
+      this.getCurrentSubchapter().paragraphs.length - 1
+    ) {
+      //increment paragraph counter in state
+      let newParagraphNumber = this.state.paragraphNumber + 1;
+      this.setState({paragraphNumber: newParagraphNumber});
+      //retrieve next paragraph to read
+      let newParagraph = this.getCurrentParagraph().text;
+      this.setState({currentTextToRead: newParagraph});
+      console.log(newParagraph);
+    } else {
+      alert('Reached end of subchapter!');
+    }
+    console.log(this.state.paragraphNumber);
+  };
+
+  //handler for right arrow key events
+  leftArrowHandler = () => {};
 
   speech = (text, config) => {
     console.log('Speech currently playing...');
@@ -62,27 +91,26 @@ class Dashboard extends Component {
 
   //function to retrieve the current chapter from textbook
   getCurrentChapter = () => {
-    return this.state.textbookSelected.chapters[this.state.chapterNumber - 1];
+    return this.state.textbookSelected.chapters[this.state.chapterNumber];
   };
 
   //function to retrieve the current subchapter from textbook
   getCurrentSubchapter = () => {
     const currentChapter = this.getCurrentChapter();
-    return currentChapter.subchapters[this.state.subChapterNumber - 1];
+    return currentChapter.subchapters[this.state.subChapterNumber];
   };
 
   //function to retrieve the current paragraph to be read
   getCurrentParagraph = () => {
     const currentSubChapter = this.getCurrentSubchapter();
-    console.log(currentSubChapter.paragraphs[this.state.paragraphNumber - 1]);
-    return currentSubChapter.paragraphs[this.state.paragraphNumber - 1];
+    return currentSubChapter.paragraphs[this.state.paragraphNumber];
   };
 
   render() {
     //retrieve textbook information to display
     const chapterName = this.getCurrentChapter().name;
     const subChapterName = this.getCurrentSubchapter().name;
-    const text = this.getCurrentParagraph().text;
+    const text = this.state.currentTextToRead;
 
     return (
       <React.Fragment>
