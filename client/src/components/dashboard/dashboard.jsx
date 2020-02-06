@@ -122,6 +122,10 @@ class Dashboard extends Component {
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber + 2;
         this.handleSubchapterNavigation(newSubChapterNumber);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
+          this.state.audioConfig
+        );
       } else {
         alert('Reached end of chapter!');
       }
@@ -177,6 +181,10 @@ class Dashboard extends Component {
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber;
         this.handleSubchapterNavigation(newSubChapterNumber);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
+          this.state.audioConfig
+        );
       } else {
         alert('Reached beginning of chapter!');
       }
