@@ -110,9 +110,8 @@ class Dashboard extends Component {
         speechSynthesis.cancel();
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber + 1;
-        const newParagraphNumber = 0;
         this.setState({
-          paragraphNumber: newParagraphNumber,
+          paragraphNumber: 0,
           subChapterNumber: newSubChapterNumber,
         });
         //retrieve next paragraph to read and change state
@@ -120,6 +119,28 @@ class Dashboard extends Component {
         this.setState({currentTextToRead: newParagraph});
       } else {
         alert('Reached end of chapter!');
+      }
+    }
+    //handling navigation for chapters
+    else {
+      if (
+        this.state.chapterNumber <
+        this.state.textbookSelected.chapters.length - 1
+      ) {
+        //cancel speech api
+        speechSynthesis.cancel();
+        //increment chapter counter and set both subchapter and paragraph counter to 0
+        const newChapterNumber = this.state.chapterNumber + 1;
+        this.setState({
+          chapterNumber: newChapterNumber,
+          subChapterNumber: 0,
+          paragraphNumber: 0,
+        });
+        //retrieve next paragraph to read and change state
+        let newParagraph = this.getCurrentParagraph().text;
+        this.setState({currentTextToRead: newParagraph});
+      } else {
+        alert('Reached end of chapters');
       }
     }
   };
@@ -137,9 +158,8 @@ class Dashboard extends Component {
         //retrieve next paragraph to read
         let newParagraph = this.getCurrentParagraph().text;
         this.setState({currentTextToRead: newParagraph});
-        console.log(newParagraph);
       } else {
-        alert('Reached end of subchapter!');
+        alert('Reached beginning of subchapter!');
       }
     }
     //handling navigation for subchapters
@@ -149,9 +169,8 @@ class Dashboard extends Component {
         speechSynthesis.cancel();
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber - 1;
-        const newParagraphNumber = 0;
         this.setState({
-          paragraphNumber: newParagraphNumber,
+          paragraphNumber: 0,
           subChapterNumber: newSubChapterNumber,
         });
         //retrieve next paragraph to read and change state
@@ -159,6 +178,25 @@ class Dashboard extends Component {
         this.setState({currentTextToRead: newParagraph});
       } else {
         alert('Reached beginning of chapter!');
+      }
+    }
+    //handling navigation for chapters
+    else {
+      if (this.state.chapterNumber > 0) {
+        //cancel speech api
+        speechSynthesis.cancel();
+        //increment chapter counter and set both subchapter and paragraph counter to 0
+        const newChapterNumber = this.state.chapterNumber - 1;
+        this.setState({
+          chapterNumber: newChapterNumber,
+          subChapterNumber: 0,
+          paragraphNumber: 0,
+        });
+        //retrieve next paragraph to read and change state
+        let newParagraph = this.getCurrentParagraph().text;
+        this.setState({currentTextToRead: newParagraph});
+      } else {
+        alert('Reached end of chapters');
       }
     }
   };
