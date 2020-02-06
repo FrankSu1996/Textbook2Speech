@@ -22,33 +22,16 @@ class Dashboard extends Component {
 
   //function to set the text that is to be read. Will cancel the speech api to do so
   setTextToRead = text => {
-    this.cancel();
+    speechSynthesis.cancel();
     this.setState({currentTextToRead: text});
   };
 
   //function to set the rate of speech. Will cancel the current speech api to do so
   setAudioSpeed = (speed, config) => {
     console.log('Setting audio speed to ' + speed);
-    this.cancel();
+    speechSynthesis.cancel();
     config.rate = this.state.audioSpeed;
     console.log(this.state.audioSpeed);
-  };
-
-  //function to pause the speech api. DOES NOT clear text buffer/config settings
-  pause = () => {
-    console.log('Hello');
-    console.log(Textbook);
-    speechSynthesis.pause();
-  };
-
-  //function to step the speech api. Clears the speech buffer, allows changing of speech api config
-  cancel = () => {
-    speechSynthesis.cancel();
-  };
-
-  //function to resume speech api
-  resume = () => {
-    speechSynthesis.resume();
   };
 
   //function to retrieve the current chapter from textbook
@@ -84,9 +67,9 @@ class Dashboard extends Component {
         >
           Speech
         </button>
-        <button onClick={() => this.pause()}>pause</button>
-        <button onClick={() => this.resume()}>resume</button>
-        <button onClick={() => this.cancel()}>cancel</button>
+        <button onClick={() => speechSynthesis.pause()}>pause</button>
+        <button onClick={() => speechSynthesis.resume()}>resume</button>
+        <button onClick={() => speechSynthesis.cancel()}>cancel</button>
         <p>Current audio speed: {this.state.audioSpeed}</p>
         <p>Set speed to:</p>
         <input
