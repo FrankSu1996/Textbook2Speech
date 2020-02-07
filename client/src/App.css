@@ -49,6 +49,18 @@ div.footer {
   background-color: #bababa
 }
 
+/* make the font sizes bigger for all text*/
+h1 {
+  font-size: xx-large;
+}
+
+h2 {
+  font-size: xx-large;
+}
+
+p {
+  font-size: xx-large;
+}
 
 .jumbotron {
   /* soon. background-image: url("cutie.jpg");
