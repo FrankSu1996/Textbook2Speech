@@ -36,8 +36,7 @@ class Dashboard extends Component {
     switch (event.keyCode) {
       //'s' key to start speech api
       case 83:
-        speechSynthesis.cancel();
-        this.speech(this.state.currentTextToRead, this.state.audioConfig);
+        this.startSpeechHandler(this.state.audioConfig);
         break;
       //'esc' key to stop speech api
       case 27:
@@ -54,8 +53,29 @@ class Dashboard extends Component {
         break;
       case 40:
         this.downArrowHandler();
+      case 13:
+        console.log(speechSynthesis.speaking);
       default:
         break;
+    }
+  };
+
+  //handler to start speech api on current text to read. Will continuously read through paragraphs
+  //until another functionality key is pressed
+  startSpeechHandler = config => {
+    speechSynthesis.cancel();
+    this.readAllParagraphs();
+  };
+
+  readAllParagraphs = () => {
+    let currentParagraph = this.state.paragraphNumber;
+    for (
+      let i = currentParagraph;
+      i < this.getCurrentSubchapter.paragraphs.length;
+      i++
+    ) {
+      let text = this.getParagraph(this.state.paragraphNumber).text;
+      this.speech(text, this.state.audioConfig);
     }
   };
 
@@ -146,7 +166,7 @@ class Dashboard extends Component {
           paragraphNumber: 0,
         });
         //retrieve next paragraph to read and change state
-        let newParagraph = this.getCurrentParagraph().text;
+        let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
         this.setState({currentTextToRead: newParagraph});
         this.speech(this.getCurrentChapter().name, this.state.audioConfig);
         this.speech(
@@ -202,7 +222,7 @@ class Dashboard extends Component {
           paragraphNumber: 0,
         });
         //retrieve next paragraph to read and change state
-        let newParagraph = this.getCurrentParagraph().text;
+        let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
         this.setState({currentTextToRead: newParagraph});
         this.speech(this.getCurrentChapter().name, this.state.audioConfig);
         this.speech(
@@ -246,9 +266,9 @@ class Dashboard extends Component {
   };
 
   //function to retrieve the current paragraph to be read
-  getCurrentParagraph = () => {
+  getParagraph = paragraphNumber => {
     const currentSubChapter = this.getCurrentSubchapter();
-    return currentSubChapter.paragraphs[this.state.paragraphNumber];
+    return currentSubChapter.paragraphs[paragraphNumber];
   };
 
   //function to navigate to certain chapter/subchapter/paragraph in the book
@@ -261,7 +281,7 @@ class Dashboard extends Component {
     });
     //retrieve paragraph to read
     //retrieve next paragraph to read and change state
-    let newParagraph = this.getCurrentParagraph().text;
+    let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
     this.setState({currentTextToRead: newParagraph});
   };
 
@@ -276,7 +296,7 @@ class Dashboard extends Component {
         subChapNumber: 0,
         paragraphNumber: 0,
       });
-      let text = this.getCurrentParagraph().text;
+      let text = this.getParagraph(this.state.paragraphNumber).text;
       this.setState({currentTextToRead: text});
     }
   };
@@ -291,7 +311,7 @@ class Dashboard extends Component {
         subChapterNumber: subchapterNumber - 1,
         paragraphNumber: 0,
       });
-      let text = this.getCurrentParagraph().text;
+      let text = this.getParagraph(this.state.paragraphNumber).text;
       this.setState({currentTextToRead: text});
     }
   };
@@ -303,7 +323,7 @@ class Dashboard extends Component {
       paragraphNumber <= this.getCurrentSubchapter().paragraphs.length
     ) {
       this.setState({paragraphNumber: paragraphNumber - 1});
-      let text = this.getCurrentParagraph().text;
+      let text = this.getParagraph(this.state.paragraphNumber).text;
       this.setState({currentTextToRead: text});
     }
   };
