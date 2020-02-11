@@ -64,19 +64,35 @@ class Dashboard extends Component {
   //until another functionality key is pressed
   startSpeechHandler = config => {
     speechSynthesis.cancel();
-    this.readAllParagraphs();
+    this.readAllParagraphs(config);
   };
 
-  readAllParagraphs = () => {
-    let currentParagraph = this.state.paragraphNumber;
-    for (
-      let i = currentParagraph;
-      i < this.getCurrentSubchapter.paragraphs.length;
-      i++
-    ) {
-      let text = this.getParagraph(this.state.paragraphNumber).text;
-      this.speech(text, this.state.audioConfig);
-    }
+  readAllParagraphs = config => {
+    // while (
+    //   this.state.paragraphNumber < this.getCurrentSubchapter().paragraphs.length
+    // ) {
+    //   //read out current text
+    //   //speechSynthesis.cancel();
+    //   let text = this.getParagraph(this.state.paragraphNumber).text;
+    //   console.log(text);
+    //   this.speech(text, config);
+    //   //increment paragraph counter in state
+    //   let newParagraphNumber = this.state.paragraphNumber + 1;
+    //   this.setState({
+    //     paragraphNumber: newParagraphNumber,
+    //   });
+    // }
+    // for (let i = 0; i < 5; i++) {
+    //   let text = 'This is line ' + i;
+    //   this.speech(text, config);
+    // }
+
+    this.speech('This is line 1', config);
+
+    this.speech('This is line 2', config);
+    this.speech('This is line 3', config);
+    this.speech('This is line 4', config);
+    this.speech('This is line 5', config);
   };
 
   //handler for up arrow key events
