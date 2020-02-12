@@ -21,6 +21,7 @@ class Dashboard extends Component {
       paragraphNumber: 0,
       currentTextToRead:
         'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
+      something: ['this is line 1', 'this is line 2', 'this is line 3', 'this is line 4', 'this is the last line'],
     };
   }
 
@@ -86,14 +87,21 @@ class Dashboard extends Component {
     //   let text = 'This is line ' + i;
     //   this.speech(text, config);
     // }
-
-    this.speech('This is line 1', config);
-
-    this.speech('This is line 2', config);
-    this.speech('This is line 3', config);
-    this.speech('This is line 4', config);
-    this.speech('This is line 5', config);
+    this.readWait(0, config);
   };
+
+  //very strange function from peter
+  readWait = (index, config) => {
+    if (speechSynthesis.speaking == true){
+      setTimeout(this.readWait, 100, index, config);
+    }
+    else{
+      if (index < 5){
+        this.speech(this.state.something[index], config);
+        this.readWait(index+1, config)
+      }
+    }
+  }
 
   //handler for up arrow key events
   upArrowHandler = () => {
@@ -362,8 +370,11 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <button
-          onClick={() =>
-            this.speech(this.state.currentTextToRead, this.state.audioConfig)
+          //onClick={() =>
+          //  this.speech(this.state.currentTextToRead, this.state.audioConfig)
+          //}
+          onClick = { () =>
+              this.readAllParagraphs(this.state.audioConfig)
           }
         >
           Speech
