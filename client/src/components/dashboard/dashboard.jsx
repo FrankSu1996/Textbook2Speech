@@ -21,7 +21,6 @@ class Dashboard extends Component {
       paragraphNumber: 0,
       currentTextToRead:
         'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
-      something: ['this is line 1', 'this is line 2', 'this is line 3', 'this is line 4', 'this is the last line'],
     };
   }
 
@@ -55,7 +54,11 @@ class Dashboard extends Component {
       case 40:
         this.downArrowHandler();
       case 13:
-        console.log(speechSynthesis.speaking);
+        console.log('Current chapter number: ' + this.state.chapterNumber);
+        console.log(
+          'Current subchapter number: ' + this.state.subChapterNumber
+        );
+        console.log('Current paragraph number: ' + this.state.paragraphNumber);
       default:
         break;
     }
@@ -65,43 +68,41 @@ class Dashboard extends Component {
   //until another functionality key is pressed
   startSpeechHandler = config => {
     speechSynthesis.cancel();
-    this.readAllParagraphs(config);
+    this.readAllParagraphsInSubchapter(config);
+    console.log(this.state.paragraphNumber);
   };
 
-  readAllParagraphs = config => {
-    // while (
-    //   this.state.paragraphNumber < this.getCurrentSubchapter().paragraphs.length
-    // ) {
-    //   //read out current text
-    //   //speechSynthesis.cancel();
-    //   let text = this.getParagraph(this.state.paragraphNumber).text;
-    //   console.log(text);
-    //   this.speech(text, config);
-    //   //increment paragraph counter in state
-    //   let newParagraphNumber = this.state.paragraphNumber + 1;
-    //   this.setState({
-    //     paragraphNumber: newParagraphNumber,
-    //   });
-    // }
-    // for (let i = 0; i < 5; i++) {
-    //   let text = 'This is line ' + i;
-    //   this.speech(text, config);
-    // }
-    this.readWait(0, config);
-  };
-
-  //very strange function from peter
-  readWait = (index, config) => {
-    if (speechSynthesis.speaking == true){
-      setTimeout(this.readWait, 100, index, config);
+  //function to read all paragraphs in current subchapter, starting from current paragraph
+  readAllParagraphsInSubchapter = config => {
+    let paragraphs = this.getCurrentSubchapter().paragraphs;
+    let paragraphText = [];
+    for (let i = 0; i < paragraphs.length; i++) {
+      paragraphText.push(paragraphs[i].text);
     }
-    else{
-      if (index < 5){
-        this.speech(this.state.something[index], config);
-        this.readWait(index+1, config)
+    let index = this.state.paragraphNumber;
+    this.readWait(paragraphText, index, config);
+  };
+
+  // function that continously reads all string elements in a list
+  // while iterating through, it will also set the currentTextToRead state
+  // so that it will re-render on the browser
+  readWait = (list, index, config) => {
+    if (speechSynthesis.speaking === true) {
+      setTimeout(this.readWait, 100, list, index, config);
+    } else {
+      if (index < list.length) {
+        this.setState({currentTextToRead: list[index]});
+        this.speech(list[index], config);
+        //check if end of subchapter
+        if (index === list.length - 1) {
+          this.speech('End of subchapter', config);
+        }
+        let newIndex = index + 1;
+        this.setState({paragraphNumber: newIndex});
+        this.readWait(list, newIndex, config);
       }
     }
-  }
+  };
 
   //handler for up arrow key events
   upArrowHandler = () => {
@@ -373,9 +374,7 @@ class Dashboard extends Component {
           //onClick={() =>
           //  this.speech(this.state.currentTextToRead, this.state.audioConfig)
           //}
-          onClick = { () =>
-              this.readAllParagraphs(this.state.audioConfig)
-          }
+          onClick={() => this.readAllParagraphs(this.state.audioConfig)}
         >
           Speech
         </button>
