@@ -68,27 +68,38 @@ class Dashboard extends Component {
   //until another functionality key is pressed
   startSpeechHandler = config => {
     speechSynthesis.cancel();
-    this.readAllParagraphsInSubchapter(config);
-    console.log(this.state.paragraphNumber);
+    // let currentSubChap = this.state.subChapterNumber;
+    // //loop through all subchapters in current chapter
+    // for (
+    //   let i = currentSubChap;
+    //   i < this.getCurrentChapter().subchapters.length;
+    //   i++
+    // ) {
+    //   this.readAllParagraphsInSubchapter(i, config);
+    // }
+    //this.readAllParagraphsInSubchapter(0, config);
+    this.readAllParagraphsInSubchapter(2, config);
   };
 
-  //function to read all paragraphs in current subchapter, starting from current paragraph
-  readAllParagraphsInSubchapter = config => {
-    let paragraphs = this.getCurrentSubchapter().paragraphs;
+  //function to read all paragraphs in given subchapter
+  readAllParagraphsInSubchapter = (subChapterNum, config) => {
+    this.setState({subChapterNumber: subChapterNum});
+    let paragraphs = this.getCurrentChapter().subchapters[subChapterNum]
+      .paragraphs;
     let paragraphText = [];
     for (let i = 0; i < paragraphs.length; i++) {
       paragraphText.push(paragraphs[i].text);
     }
     let index = this.state.paragraphNumber;
-    this.readWait(paragraphText, index, config);
+    this.continuousRead(paragraphText, index, config);
   };
 
   // function that continously reads all string elements in a list
   // while iterating through, it will also set the currentTextToRead state
   // so that it will re-render on the browser
-  readWait = (list, index, config) => {
+  continuousRead = (list, index, config) => {
     if (speechSynthesis.speaking === true) {
-      setTimeout(this.readWait, 100, list, index, config);
+      setTimeout(this.continuousRead, 100, list, index, config);
     } else {
       if (index < list.length) {
         this.setState({currentTextToRead: list[index]});
@@ -96,10 +107,11 @@ class Dashboard extends Component {
         //check if end of subchapter
         if (index === list.length - 1) {
           this.speech('End of subchapter', config);
+          return;
         }
         let newIndex = index + 1;
         this.setState({paragraphNumber: newIndex});
-        this.readWait(list, newIndex, config);
+        this.continuousRead(list, newIndex, config);
       }
     }
   };
