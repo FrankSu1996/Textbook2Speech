@@ -107,25 +107,23 @@ class Dashboard extends Component {
   // so that it will re-render on the browser
   continuousRead = (list, index, config) => {
     if (speechSynthesis.speaking === true && this.state.stopPlay !== true) {
-      setTimeout (this.continuousRead, 100, list, index, config);
-    } else {
+      setTimeout (this.continuousRead, 100, list, this.state.paragraphNumber+1, config);
+    }
+    else if(this.state.stopPlay === true){
+      return;
+    } 
+    else {
       if (index < list.length) {
         this.setState ({currentTextToRead: list[index]});
-        if (this.state.stopPlay === false){
-            this.speech(list[index], config);
-          //check if end of subchapter
-          if (index === list.length - 1) {
-            this.speech ('End of subchapter', config);
-            return;
-          }
-          let newIndex = index + 1;
-          this.setState ({paragraphNumber: newIndex});
-          this.continuousRead (list, newIndex, config);
-        }
-        else{
-          console.log("it stopped" + this.state.stopPlay);
+          this.speech(list[index], config);
+        //check if end of subchapter
+        if (index === list.length - 1) {
+          this.speech ('End of subchapter', config);
           return;
         }
+        let newIndex = index;
+        this.setState ({paragraphNumber: newIndex});
+        this.continuousRead (list, newIndex, config);
       }
     }
   };
