@@ -19,6 +19,7 @@ class Dashboard extends Component {
       chapterNumber: 0,
       subChapterNumber: 0,
       paragraphNumber: 0,
+      stopPlay: false,
       currentTextToRead: 'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
     };
   }
@@ -59,6 +60,7 @@ class Dashboard extends Component {
           'Current subchapter number: ' + this.state.subChapterNumber
         );
         console.log ('Current paragraph number: ' + this.state.paragraphNumber);
+        console.log(this.state.currentTextToRead);
       default:
         break;
     }
@@ -83,35 +85,47 @@ class Dashboard extends Component {
 
   //function to read all paragraphs in given subchapter
   readAllParagraphsInSubchapter = (subChapterNum, config) => {
-    this.setState ({subChapterNumber: subChapterNum});
-    let paragraphs = this.getCurrentChapter ().subchapters[subChapterNum]
-      .paragraphs;
-    let paragraphText = [];
-    for (let i = 0; i < paragraphs.length; i++) {
-      paragraphText.push (paragraphs[i].text);
+    this.setState({subChapterNumber: subChapterNum, stopPlay: false});
+    if (this.state.stopPlay === true){
+      setTimeout (this.readAllParagraphsInSubchapter, 100, subChapterNum, config);
     }
-    let index = this.state.paragraphNumber;
-    this.continuousRead (paragraphText, index, config);
+    else{
+      console.log("why? " + this.state.stopPlay);
+      let paragraphs = this.getCurrentChapter ().subchapters[subChapterNum]
+        .paragraphs;
+      let paragraphText = [];
+      for (let i = 0; i < paragraphs.length; i++) {
+        paragraphText.push (paragraphs[i].text);
+      }
+      let index = this.state.paragraphNumber;
+      this.continuousRead (paragraphText, index, config);
+    }
   };
 
   // function that continously reads all string elements in a list
   // while iterating through, it will also set the currentTextToRead state
   // so that it will re-render on the browser
   continuousRead = (list, index, config) => {
-    if (speechSynthesis.speaking === true) {
+    if (speechSynthesis.speaking === true && this.state.stopPlay !== true) {
       setTimeout (this.continuousRead, 100, list, index, config);
     } else {
       if (index < list.length) {
         this.setState ({currentTextToRead: list[index]});
-        this.speech (list[index], config);
-        //check if end of subchapter
-        if (index === list.length - 1) {
-          this.speech ('End of subchapter', config);
+        if (this.state.stopPlay === false){
+            this.speech(list[index], config);
+          //check if end of subchapter
+          if (index === list.length - 1) {
+            this.speech ('End of subchapter', config);
+            return;
+          }
+          let newIndex = index + 1;
+          this.setState ({paragraphNumber: newIndex});
+          this.continuousRead (list, newIndex, config);
+        }
+        else{
+          console.log("it stopped" + this.state.stopPlay);
           return;
         }
-        let newIndex = index + 1;
-        this.setState ({paragraphNumber: newIndex});
-        this.continuousRead (list, newIndex, config);
       }
     }
   };
@@ -361,6 +375,18 @@ class Dashboard extends Component {
     }
   };
 
+  cancel = () => {
+    console.log("something2");
+    var newPNumber = this.state.paragraphNumber;
+    if (this.state.paragraphNumber > 0){
+      newPNumber = this.state.paragraphNumber - 1;
+    }
+    const textToRead = this.getParagraph(newPNumber).text;
+    console.log(textToRead, newPNumber);
+    this.setState({stopPlay: true, paragraphNumber : newPNumber, currentTextToRead: textToRead});
+    speechSynthesis.cancel();
+  };
+
   render () {
     //retrieve textbook information to display
     const chapterName = this.getCurrentChapter ().name;
@@ -392,7 +418,7 @@ class Dashboard extends Component {
         </button>
         <button onClick={() => speechSynthesis.pause ()}>pause</button>
         <button onClick={() => speechSynthesis.resume ()}>resume</button>
-        <button onClick={() => speechSynthesis.cancel ()}>cancel</button>
+        <button onClick={() => this.cancel ()}>cancel</button>
         <p>Current audio speed: {this.state.audioSpeed}</p>
         <p>Set speed to:</p>
         <input
