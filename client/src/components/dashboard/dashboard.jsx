@@ -190,10 +190,22 @@ class Dashboard extends Component {
       //reached end of subchapter: navigates to first paragraph of next subchapter
       else if (
         this.state.paragraphNumber ===
-        this.getCurrentSubchapter().paragraphs.length - 1
+          this.getCurrentSubchapter().paragraphs.length - 1 &&
+        this.state.subChapterNumber <
+          this.getCurrentChapter().subchapters.length - 1
       ) {
         const newSubChapterNumber = this.state.subChapterNumber + 2;
         this.handleSubchapterNavigation(newSubChapterNumber);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
+          this.state.audioConfig
+        );
+      }
+      //reached end of chapter: navigate to first paragraph of first subchapter of next chapter
+      else {
+        //increment chapter counter and set both subchapter and paragraph counter to 0
+        const newChapterNumber = this.state.chapterNumber + 1;
+        this.handleChapterNavigation(newChapterNumber);
       }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
@@ -223,22 +235,33 @@ class Dashboard extends Component {
         speechSynthesis.cancel();
         //increment chapter counter and set both subchapter and paragraph counter to 0
         const newChapterNumber = this.state.chapterNumber + 1;
-        this.setState({
-          chapterNumber: newChapterNumber,
-          subChapterNumber: 0,
-          paragraphNumber: 0,
-        });
-        //retrieve next paragraph to read and change state
-        let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
-        this.setState({currentTextToRead: newParagraph});
-        this.speech(this.getCurrentChapter().name, this.state.audioConfig);
-        this.speech(
-          'subchapter ' + this.getCurrentSubchapter().name,
-          this.state.audioConfig
-        );
+        this.handleChapterNavigation(newChapterNumber);
       } else {
         alert('Reached end of chapters');
       }
+    }
+  };
+
+  handleChapterNavigation = chapterNumber => {
+    //handling navigation for chapters
+    if (
+      this.state.chapterNumber <
+      this.state.textbookSelected.chapters.length - 1
+    ) {
+      speechSynthesis.cancel();
+      this.setState({
+        chapterNumber: chapterNumber,
+        subChapterNumber: 0,
+        paragraphNumber: 0,
+      });
+      //retrieve next paragraph to read and change state
+      let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
+      this.setState({currentTextToRead: newParagraph});
+      this.speech(this.getCurrentChapter().name, this.state.audioConfig);
+      this.speech(
+        'subchapter ' + this.getCurrentSubchapter().name,
+        this.state.audioConfig
+      );
     }
   };
 
@@ -344,22 +367,6 @@ class Dashboard extends Component {
     //retrieve next paragraph to read and change state
     let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
     this.setState({currentTextToRead: newParagraph});
-  };
-
-  //handles navigating to certain chapter
-  handleChapterNavigation = chapterNumber => {
-    if (
-      chapterNumber > 0 &&
-      chapterNumber <= this.state.textbookSelected.chapters.length
-    ) {
-      this.setState({
-        chapterNumber: chapterNumber - 1,
-        subChapNumber: 0,
-        paragraphNumber: 0,
-      });
-      let text = this.getParagraph(this.state.paragraphNumber).text;
-      this.setState({currentTextToRead: text});
-    }
   };
 
   //handles navigating to a certain subChapter, starts at the first paragraph
