@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Dashboard from './components/dashboard/dashboard';
 import Header from './components/header/Header';
 import './App.css';

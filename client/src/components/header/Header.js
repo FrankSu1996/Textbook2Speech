@@ -1,43 +1,41 @@
-import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, Container, NavItem, Collapse } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeadset } from '@fortawesome/free-solid-svg-icons';
+import React, {Component} from 'react';
+import {
+  Nav,
+  Navbar,
+  NavbarBrand,
+  Container,
+  NavItem,
+  Collapse,
+} from 'reactstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faHeadset} from '@fortawesome/free-solid-svg-icons';
 
-
-
-class Header extends React.Component {
-
-  constructor(props){
+class Header extends Component {
+  constructor(props) {
     super(props);
   }
 
   render() {
     return (
       <div>
-      <Navbar color="light" light expand="md" >
-        <Container>
-          <NavbarBrand><FontAwesomeIcon icon={faHeadset}  /> Textbook2Speech </NavbarBrand>
+        <Navbar color="light" light expand="md">
+          <Container>
+            <NavbarBrand>
+              <FontAwesomeIcon icon={faHeadset} /> Textbook2Speech{' '}
+            </NavbarBrand>
             <Nav>
-              <NavItem>
-                Search |
-              </NavItem>
-              <NavItem>
-                Table of Contents |
-              </NavItem>
-              <NavItem>
-                Bookmarks
-              </NavItem>
+              <NavItem>Search |</NavItem>
+              <NavItem>Table of Contents |</NavItem>
+              <NavItem>Bookmarks</NavItem>
             </Nav>
-        </Container>
-      </Navbar>
+          </Container>
+        </Navbar>
       </div>
     );
   }
 }
 
 export default Header;
-
-
 
 //
 // <Container>

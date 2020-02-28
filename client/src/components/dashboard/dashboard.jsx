@@ -9,26 +9,27 @@ const NAVIGATION = {
 };
 
 class Dashboard extends Component {
-  constructor (props) {
-    super (props);
+  constructor(props) {
+    super(props);
     this.state = {
       textbookSelected: Textbook,
       navigation: NAVIGATION.PARAGRAPH,
       audioSpeed: 1,
-      audioConfig: new SpeechSynthesisUtterance (),
+      audioConfig: new SpeechSynthesisUtterance(),
       chapterNumber: 0,
       subChapterNumber: 0,
       paragraphNumber: 0,
       stopPlay: false,
-      currentTextToRead: 'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
+      currentTextToRead:
+        'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
     };
   }
 
-  componentDidMount () {
-    document.addEventListener ('keydown', this.handleKeyPress);
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress);
   }
-  componentWillUnmount () {
-    document.removeEventListener ('keydown', this.handleKeyPress);
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress);
   }
 
   //handler for keypress events
@@ -36,31 +37,32 @@ class Dashboard extends Component {
     switch (event.keyCode) {
       //'s' key to start speech api
       case 83:
-        this.startSpeechHandler (this.state.audioConfig);
+        this.startSpeechHandler(this.state.audioConfig);
         break;
       //'esc' key to stop speech api
       case 27:
-        speechSynthesis.cancel ();
+        speechSynthesis.cancel();
         break;
       case 37:
-        this.leftArrowHandler ();
+        this.leftArrowHandler();
         break;
       case 39:
-        this.rightArrowHandler ();
+        this.rightArrowHandler();
         break;
       case 38:
-        this.upArrowHandler ();
+        this.upArrowHandler();
         break;
       case 40:
-        this.downArrowHandler ();
+        this.downArrowHandler();
+        break;
       // enter key prints out chapter/subchapter/paragraph numbers
       case 13:
-        console.log ('Current chapter number: ' + this.state.chapterNumber);
-        console.log (
+        console.log('Current chapter number: ' + this.state.chapterNumber);
+        console.log(
           'Current subchapter number: ' + this.state.subChapterNumber
         );
-        console.log ('Current paragraph number: ' + this.state.paragraphNumber);
-        console.log(this.state.currentTextToRead);
+        console.log('Current paragraph number: ' + this.state.paragraphNumber);
+        break;
       default:
         break;
     }
@@ -69,7 +71,7 @@ class Dashboard extends Component {
   //handler to start speech api on current text to read. Will continuously read through paragraphs
   //until another functionality key is pressed
   startSpeechHandler = config => {
-    speechSynthesis.cancel ();
+    speechSynthesis.cancel();
     // let currentSubChap = this.state.subChapterNumber;
     // //loop through all subchapters in current chapter
     // for (
@@ -80,25 +82,29 @@ class Dashboard extends Component {
     //   this.readAllParagraphsInSubchapter(i, config);
     // }
     //this.readAllParagraphsInSubchapter(0, config);
-    this.readAllParagraphsInSubchapter (2, config);
+    this.readAllParagraphsInSubchapter(2, config);
   };
 
   //function to read all paragraphs in given subchapter
   readAllParagraphsInSubchapter = (subChapterNum, config) => {
     this.setState({subChapterNumber: subChapterNum, stopPlay: false});
-    if (this.state.stopPlay === true){
-      setTimeout (this.readAllParagraphsInSubchapter, 100, subChapterNum, config);
-    }
-    else{
-      console.log("why? " + this.state.stopPlay);
-      let paragraphs = this.getCurrentChapter ().subchapters[subChapterNum]
+    if (this.state.stopPlay === true) {
+      setTimeout(
+        this.readAllParagraphsInSubchapter,
+        100,
+        subChapterNum,
+        config
+      );
+    } else {
+      console.log('why? ' + this.state.stopPlay);
+      let paragraphs = this.getCurrentChapter().subchapters[subChapterNum]
         .paragraphs;
       let paragraphText = [];
       for (let i = 0; i < paragraphs.length; i++) {
-        paragraphText.push (paragraphs[i].text);
+        paragraphText.push(paragraphs[i].text);
       }
       let index = this.state.paragraphNumber;
-      this.continuousRead (paragraphText, index, config);
+      this.continuousRead(paragraphText, index, config);
     }
   };
 
@@ -107,23 +113,27 @@ class Dashboard extends Component {
   // so that it will re-render on the browser
   continuousRead = (list, index, config) => {
     if (speechSynthesis.speaking === true && this.state.stopPlay !== true) {
-      setTimeout (this.continuousRead, 100, list, this.state.paragraphNumber+1, config);
-    }
-    else if(this.state.stopPlay === true){
+      setTimeout(
+        this.continuousRead,
+        100,
+        list,
+        this.state.paragraphNumber + 1,
+        config
+      );
+    } else if (this.state.stopPlay === true) {
       return;
-    } 
-    else {
+    } else {
       if (index < list.length) {
-        this.setState ({currentTextToRead: list[index]});
-          this.speech(list[index], config);
+        this.setState({currentTextToRead: list[index]});
+        this.speech(list[index], config);
         //check if end of subchapter
         if (index === list.length - 1) {
-          this.speech ('End of subchapter', config);
+          this.speech('End of subchapter', config);
           return;
         }
         let newIndex = index;
-        this.setState ({paragraphNumber: newIndex});
-        this.continuousRead (list, newIndex, config);
+        this.setState({paragraphNumber: newIndex});
+        this.continuousRead(list, newIndex, config);
       }
     }
   };
@@ -134,13 +144,13 @@ class Dashboard extends Component {
     if (this.state.navigation < NAVIGATION.MAX - 1) {
       let navigation = this.state.navigation;
       navigation += 1;
-      this.setState ({navigation: navigation});
+      this.setState({navigation: navigation});
       if (navigation === NAVIGATION.SUBCHAP) {
-        speechSynthesis.cancel ();
-        this.speech ('Subchapter navigation', this.state.audioConfig);
+        speechSynthesis.cancel();
+        this.speech('Subchapter navigation', this.state.audioConfig);
       } else if (navigation === NAVIGATION.CHAP) {
-        speechSynthesis.cancel ();
-        this.speech ('Chapter navigation', this.state.audioConfig);
+        speechSynthesis.cancel();
+        this.speech('Chapter navigation', this.state.audioConfig);
       }
     }
   };
@@ -151,13 +161,13 @@ class Dashboard extends Component {
     if (this.state.navigation > 0) {
       let navigation = this.state.navigation;
       navigation -= 1;
-      this.setState ({navigation: navigation});
+      this.setState({navigation: navigation});
       if (navigation === NAVIGATION.SUBCHAP) {
-        speechSynthesis.cancel ();
-        this.speech ('Subchapter navigation', this.state.audioConfig);
+        speechSynthesis.cancel();
+        this.speech('Subchapter navigation', this.state.audioConfig);
       } else if (navigation === NAVIGATION.PARAGRAPH) {
-        speechSynthesis.cancel ();
-        this.speech ('Paragraph navigation', this.state.audioConfig);
+        speechSynthesis.cancel();
+        this.speech('Paragraph navigation', this.state.audioConfig);
       }
     }
   };
@@ -169,33 +179,39 @@ class Dashboard extends Component {
       //check if incrementing paragraph counter will go out of bounds
       if (
         this.state.paragraphNumber <
-        this.getCurrentSubchapter ().paragraphs.length - 1
+        this.getCurrentSubchapter().paragraphs.length - 1
       ) {
         //cancel speech api
-        speechSynthesis.cancel ();
+        speechSynthesis.cancel();
         //increment paragraph counter in state
         let newParagraphNumber = this.state.paragraphNumber + 2;
-        this.handleParagraphNavigation (newParagraphNumber);
-      } else {
-        alert ('Reached end of subchapter!');
+        this.handleParagraphNavigation(newParagraphNumber);
+      }
+      //reached end of subchapter: navigates to first paragraph of next subchapter
+      else if (
+        this.state.paragraphNumber ===
+        this.getCurrentSubchapter().paragraphs.length - 1
+      ) {
+        const newSubChapterNumber = this.state.subChapterNumber + 2;
+        this.handleSubchapterNavigation(newSubChapterNumber);
       }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
       if (
         this.state.subChapterNumber <
-        this.getCurrentChapter ().subchapters.length - 1
+        this.getCurrentChapter().subchapters.length - 1
       ) {
         //cancel speech api
-        speechSynthesis.cancel ();
+        speechSynthesis.cancel();
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber + 2;
-        this.handleSubchapterNavigation (newSubChapterNumber);
-        this.speech (
-          'subchapter ' + this.getCurrentSubchapter ().name,
+        this.handleSubchapterNavigation(newSubChapterNumber);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
           this.state.audioConfig
         );
       } else {
-        alert ('Reached end of chapter!');
+        alert('Reached end of chapter!');
       }
     } else {
       //handling navigation for chapters
@@ -204,24 +220,24 @@ class Dashboard extends Component {
         this.state.textbookSelected.chapters.length - 1
       ) {
         //cancel speech api
-        speechSynthesis.cancel ();
+        speechSynthesis.cancel();
         //increment chapter counter and set both subchapter and paragraph counter to 0
         const newChapterNumber = this.state.chapterNumber + 1;
-        this.setState ({
+        this.setState({
           chapterNumber: newChapterNumber,
           subChapterNumber: 0,
           paragraphNumber: 0,
         });
         //retrieve next paragraph to read and change state
-        let newParagraph = this.getParagraph (this.state.paragraphNumber).text;
-        this.setState ({currentTextToRead: newParagraph});
-        this.speech (this.getCurrentChapter ().name, this.state.audioConfig);
-        this.speech (
-          'subchapter ' + this.getCurrentSubchapter ().name,
+        let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
+        this.setState({currentTextToRead: newParagraph});
+        this.speech(this.getCurrentChapter().name, this.state.audioConfig);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
           this.state.audioConfig
         );
       } else {
-        alert ('Reached end of chapters');
+        alert('Reached end of chapters');
       }
     }
   };
@@ -232,71 +248,71 @@ class Dashboard extends Component {
       //check if incrementing paragraph counter will go out of bounds
       if (this.state.paragraphNumber > 0) {
         //cancel speech api
-        speechSynthesis.cancel ();
+        speechSynthesis.cancel();
         //increment paragraph counter in state
         let newParagraphNumber = this.state.paragraphNumber;
-        this.handleParagraphNavigation (newParagraphNumber);
+        this.handleParagraphNavigation(newParagraphNumber);
       } else {
-        alert ('Reached beginning of subchapter!');
+        alert('Reached beginning of subchapter!');
       }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
       if (this.state.subChapterNumber > 0) {
         //cancel speech api
-        speechSynthesis.cancel ();
+        speechSynthesis.cancel();
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber;
-        this.handleSubchapterNavigation (newSubChapterNumber);
-        this.speech (
-          'subchapter ' + this.getCurrentSubchapter ().name,
+        this.handleSubchapterNavigation(newSubChapterNumber);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
           this.state.audioConfig
         );
       } else {
-        alert ('Reached beginning of chapter!');
+        alert('Reached beginning of chapter!');
       }
     } else {
       //handling navigation for chapters
       if (this.state.chapterNumber > 0) {
         //cancel speech api
-        speechSynthesis.cancel ();
+        speechSynthesis.cancel();
         //increment chapter counter and set both subchapter and paragraph counter to 0
         const newChapterNumber = this.state.chapterNumber - 1;
-        this.setState ({
+        this.setState({
           chapterNumber: newChapterNumber,
           subChapterNumber: 0,
           paragraphNumber: 0,
         });
         //retrieve next paragraph to read and change state
-        let newParagraph = this.getParagraph (this.state.paragraphNumber).text;
-        this.setState ({currentTextToRead: newParagraph});
-        this.speech (this.getCurrentChapter ().name, this.state.audioConfig);
-        this.speech (
-          'subchapter ' + this.getCurrentSubchapter ().name,
+        let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
+        this.setState({currentTextToRead: newParagraph});
+        this.speech(this.getCurrentChapter().name, this.state.audioConfig);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
           this.state.audioConfig
         );
       } else {
-        alert ('Reached end of chapters');
+        alert('Reached end of chapters');
       }
     }
   };
 
   speech = (text, config) => {
-    console.log ('Speech currently playing...');
+    console.log('Speech currently playing...');
     config.text = text;
-    speechSynthesis.speak (config);
+    speechSynthesis.speak(config);
   };
 
   //function to set the text that is to be read. Will cancel the speech api to do so
   setTextToRead = text => {
-    speechSynthesis.cancel ();
-    this.setState ({currentTextToRead: text});
+    speechSynthesis.cancel();
+    this.setState({currentTextToRead: text});
   };
 
   //function to set the rate of speech. Will cancel the current speech api to do so
   setAudioSpeed = config => {
-    speechSynthesis.cancel ();
+    speechSynthesis.cancel();
     config.rate = this.state.audioSpeed;
-    this.speech ('Audio speed set to:' + config.rate, config);
+    this.speech('Audio speed set to:' + config.rate, config);
   };
 
   //function to retrieve the current chapter from textbook
@@ -306,28 +322,28 @@ class Dashboard extends Component {
 
   //function to retrieve the current subchapter from textbook
   getCurrentSubchapter = () => {
-    const currentChapter = this.getCurrentChapter ();
+    const currentChapter = this.getCurrentChapter();
     return currentChapter.subchapters[this.state.subChapterNumber];
   };
 
   //function to retrieve the current paragraph to be read
   getParagraph = paragraphNumber => {
-    const currentSubChapter = this.getCurrentSubchapter ();
+    const currentSubChapter = this.getCurrentSubchapter();
     return currentSubChapter.paragraphs[paragraphNumber];
   };
 
   //function to navigate to certain chapter/subchapter/paragraph in the book
   //i.e. navigate(1, 1, 1) will navigate to first paragraph of first subchapter of first chapter
   navigate = (chapNumber, subChapNumber, pNumber) => {
-    this.setState ({
+    this.setState({
       chapterNumber: chapNumber - 1,
       subChapterNumber: subChapNumber - 1,
       paragraphNumber: pNumber - 1,
     });
     //retrieve paragraph to read
     //retrieve next paragraph to read and change state
-    let newParagraph = this.getParagraph (this.state.paragraphNumber).text;
-    this.setState ({currentTextToRead: newParagraph});
+    let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
+    this.setState({currentTextToRead: newParagraph});
   };
 
   //handles navigating to certain chapter
@@ -336,28 +352,28 @@ class Dashboard extends Component {
       chapterNumber > 0 &&
       chapterNumber <= this.state.textbookSelected.chapters.length
     ) {
-      this.setState ({
+      this.setState({
         chapterNumber: chapterNumber - 1,
         subChapNumber: 0,
         paragraphNumber: 0,
       });
-      let text = this.getParagraph (this.state.paragraphNumber).text;
-      this.setState ({currentTextToRead: text});
+      let text = this.getParagraph(this.state.paragraphNumber).text;
+      this.setState({currentTextToRead: text});
     }
   };
 
-  //handles navigating to a certain subChapter
+  //handles navigating to a certain subChapter, starts at the first paragraph
   handleSubchapterNavigation = subchapterNumber => {
     if (
       subchapterNumber > 0 &&
-      subchapterNumber <= this.getCurrentChapter ().subchapters.length
+      subchapterNumber <= this.getCurrentChapter().subchapters.length
     ) {
-      this.setState ({
+      this.setState({
         subChapterNumber: subchapterNumber - 1,
         paragraphNumber: 0,
       });
-      let text = this.getParagraph (this.state.paragraphNumber).text;
-      this.setState ({currentTextToRead: text});
+      let text = this.getParagraph(this.state.paragraphNumber).text;
+      this.setState({currentTextToRead: text});
     }
   };
 
@@ -365,30 +381,34 @@ class Dashboard extends Component {
   handleParagraphNavigation = paragraphNumber => {
     if (
       paragraphNumber > 0 &&
-      paragraphNumber <= this.getCurrentSubchapter ().paragraphs.length
+      paragraphNumber <= this.getCurrentSubchapter().paragraphs.length
     ) {
-      this.setState ({paragraphNumber: paragraphNumber - 1});
-      let text = this.getParagraph (this.state.paragraphNumber).text;
-      this.setState ({currentTextToRead: text});
+      this.setState({paragraphNumber: paragraphNumber - 1});
+      let text = this.getParagraph(this.state.paragraphNumber).text;
+      this.setState({currentTextToRead: text});
     }
   };
 
   cancel = () => {
-    console.log("something2");
+    console.log('something2');
     var newPNumber = this.state.paragraphNumber;
-    if (this.state.paragraphNumber > 0){
+    if (this.state.paragraphNumber > 0) {
       newPNumber = this.state.paragraphNumber - 1;
     }
     const textToRead = this.getParagraph(newPNumber).text;
     console.log(textToRead, newPNumber);
-    this.setState({stopPlay: true, paragraphNumber : newPNumber, currentTextToRead: textToRead});
+    this.setState({
+      stopPlay: true,
+      paragraphNumber: newPNumber,
+      currentTextToRead: textToRead,
+    });
     speechSynthesis.cancel();
   };
 
-  render () {
+  render() {
     //retrieve textbook information to display
-    const chapterName = this.getCurrentChapter ().name;
-    const subChapterName = this.getCurrentSubchapter ().name;
+    const chapterName = this.getCurrentChapter().name;
+    const subChapterName = this.getCurrentSubchapter().name;
     const text = this.state.currentTextToRead;
     let navigation;
 
@@ -407,24 +427,25 @@ class Dashboard extends Component {
           //  this.speech(this.state.currentTextToRead, this.state.audioConfig)
           //}
           onClick={() =>
-            this.readAllParagraphsInSubchapter (
+            this.readAllParagraphsInSubchapter(
               this.state.subChapterNumber,
               this.state.audioConfig
-            )}
+            )
+          }
         >
           Speech
         </button>
-        <button onClick={() => speechSynthesis.pause ()}>pause</button>
-        <button onClick={() => speechSynthesis.resume ()}>resume</button>
-        <button onClick={() => this.cancel ()}>cancel</button>
+        <button onClick={() => speechSynthesis.pause()}>pause</button>
+        <button onClick={() => speechSynthesis.resume()}>resume</button>
+        <button onClick={() => this.cancel()}>cancel</button>
         <p>Current audio speed: {this.state.audioSpeed}</p>
         <p>Set speed to:</p>
         <input
           value={this.state.audioSpeed}
           type="number"
-          onChange={e => this.setState ({audioSpeed: e.target.value})}
+          onChange={e => this.setState({audioSpeed: e.target.value})}
         />
-        <button onClick={e => this.setAudioSpeed (this.state.audioConfig)}>
+        <button onClick={e => this.setAudioSpeed(this.state.audioConfig)}>
           Set
         </button>
         <div>
