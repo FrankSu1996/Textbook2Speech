@@ -240,8 +240,17 @@ class Dashboard extends Component {
         //increment paragraph counter in state
         let newParagraphNumber = this.state.paragraphNumber;
         this.handleParagraphNavigation(newParagraphNumber);
-      } else {
-        alert('Reached beginning of subchapter!');
+      }
+      //reached beginning of subchapter: navigates to last paragraph of last subchapter
+      else if (
+        this.state.paragraphNumber === 0 &&
+        this.state.subChapterNumber > 0
+      ) {
+        const newSubChapterNumber = this.state.subChapterNumber;
+        this.handleSubchapterNavigation(newSubChapterNumber);
+        const newParagraphNumber = this.getCurrentSubchapter().paragraphs
+          .length;
+        this.handleParagraphNavigation(newParagraphNumber);
       }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
