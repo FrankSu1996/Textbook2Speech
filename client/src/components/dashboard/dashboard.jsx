@@ -293,8 +293,18 @@ class Dashboard extends Component {
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber;
         this.handleSubchapterNavigation(newSubChapterNumber);
+      }
+      //reached beginning of current chapter: Navigate to last subchapter of previous chapter
+      else if (
+        this.state.subChapterNumber === 0 &&
+        this.state.chapterNumber > 0
+      ) {
+        const newChapterNumber = this.state.chapterNumber - 1;
+        this.handleChapterNavigation(newChapterNumber);
+        const newSubChapterNumber = this.getCurrentChapter().subchapters.length;
+        this.handleSubchapterNavigation(newSubChapterNumber);
       } else {
-        alert('Reached beginning of chapter!');
+        alert('Reaached the beginning of Chapter1');
       }
     } else {
       //handling navigation for chapters
