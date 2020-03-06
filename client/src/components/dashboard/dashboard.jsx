@@ -268,6 +268,10 @@ class Dashboard extends Component {
         const newParagraphNumber = this.getCurrentSubchapter().paragraphs
           .length;
         this.handleParagraphNavigation(newParagraphNumber);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
+          this.state.audioConfig
+        );
       }
       //reached beginning of subchapter: navigates to last paragraph of last subchapter of last chapter
       else if (
@@ -282,6 +286,10 @@ class Dashboard extends Component {
         const newParagraphNumber = this.getCurrentSubchapter().paragraphs
           .length;
         this.handleParagraphNavigation(newParagraphNumber);
+        this.speech(
+          'subchapter ' + this.getCurrentSubchapter().name,
+          this.state.audioConfig
+        );
       }
       //reached beginning of chapters
       else {
