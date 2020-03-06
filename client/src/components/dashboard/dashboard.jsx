@@ -196,7 +196,10 @@ class Dashboard extends Component {
         this.handleSubchapterNavigation(newSubChapterNumber);
       }
       //reached end of chapter: navigate to first paragraph of first subchapter of next chapter
-      else {
+      else if (
+        this.state.chapterNumber <
+        this.state.textbookSelected.chapters.length - 1
+      ) {
         if (
           this.state.chapterNumber <
           this.state.textbookSelected.chapters.length - 1
@@ -204,6 +207,10 @@ class Dashboard extends Component {
           const newChapterNumber = this.state.chapterNumber + 1;
           this.handleChapterNavigation(newChapterNumber);
         }
+      }
+      //reached end of all chapters
+      else {
+        alert('Reached end of chapters!');
       }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
@@ -214,8 +221,18 @@ class Dashboard extends Component {
         //increment subchapter counter and set paragraph counter to 0
         const newSubChapterNumber = this.state.subChapterNumber + 2;
         this.handleSubchapterNavigation(newSubChapterNumber);
+      }
+      //reached end of current chapter: Navigate to first subchapter of next chapter
+      else if (
+        this.state.subChapterNumber ===
+          this.getCurrentChapter().subchapters.length - 1 &&
+        this.state.chapterNumber <
+          this.state.textbookSelected.chapters.length - 1
+      ) {
+        const newChapterNumber = this.state.chapterNumber + 1;
+        this.handleChapterNavigation(newChapterNumber);
       } else {
-        alert('Reached end of chapter!');
+        alert('Reached end of chapters!');
       }
     } else {
       //handling navigation for chapters
@@ -252,6 +269,24 @@ class Dashboard extends Component {
           .length;
         this.handleParagraphNavigation(newParagraphNumber);
       }
+      //reached beginning of subchapter: navigates to last paragraph of last subchapter of last chapter
+      else if (
+        this.state.chapterNumber > 0 &&
+        this.state.paragraphNumber === 0 &&
+        this.state.subChapterNumber === 0
+      ) {
+        const newChapterNumber = this.state.chapterNumber - 1;
+        this.handleChapterNavigation(newChapterNumber);
+        const newSubChapterNumber = this.getCurrentChapter().subchapters.length;
+        this.handleSubchapterNavigation(newSubChapterNumber);
+        const newParagraphNumber = this.getCurrentSubchapter().paragraphs
+          .length;
+        this.handleParagraphNavigation(newParagraphNumber);
+      }
+      //reached beginning of chapters
+      else {
+        alert('Reached beggining of Chapter 1');
+      }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
       if (this.state.subChapterNumber > 0) {
@@ -268,7 +303,7 @@ class Dashboard extends Component {
         const newChapterNumber = this.state.chapterNumber - 1;
         this.handleChapterNavigation(newChapterNumber);
       } else {
-        alert('Reached end of chapters');
+        alert('Reached the beginning of the the first chapter!');
       }
     }
   };
