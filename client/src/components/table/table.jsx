@@ -21,6 +21,9 @@ class Table extends Component {
     //all of this is just copy pasted from dashboard.jsx, so when I actually implement this I feel like I should just import dashboard?
     handleKeyPress = event => {
       switch (event.keyCode) {
+        //case 13:
+          //this.selectSection();
+         // break;
         case 37:
           this.leftArrowHandler();
           break;
@@ -156,6 +159,9 @@ class Table extends Component {
       subChapterNumber: subChapterNumber - 1,
     })
   }
+  //selectSection = () {
+    //go to dashboard and set state values to chapterNumber and subChapterNumber
+  //}
     render (){
         return(
           <div>

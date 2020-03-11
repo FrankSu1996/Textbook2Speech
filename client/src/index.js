@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import Home from './home';
 import Table from './components/table/table';
 //import Dashboard from './components/dashboard/dashboard';
 //import Header from './components/header/Header';
@@ -10,7 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const routing = (
     <Router>
       <div>
-        <Route exact path="/" component={App} />
+        <Route exact path="/" component={Home} />
+        <Route path="/dashboard" component={App} />
         <Route path="/table" component={Table} />
       </div>
     </Router>
