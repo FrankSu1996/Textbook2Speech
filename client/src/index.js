@@ -5,7 +5,7 @@ import Home from './home';
 import Table from './components/table/table';
 //import Dashboard from './components/dashboard/dashboard';
 //import Header from './components/header/Header';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const routing = (
