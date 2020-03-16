@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Textbook from '../../textbook/textbook';
+import Tutorial from '../Tutorial';
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -22,6 +23,7 @@ class Dashboard extends Component {
       stopPlay: false,
       currentTextToRead:
         'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
+      showTutorial: false,
     };
   }
 
@@ -32,6 +34,11 @@ class Dashboard extends Component {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
 
+  toggleTutorial() {
+    this.setState({
+      showTutorial: !this.state.showTutorial
+    });
+  }
   //handler for keypress events
   handleKeyPress = event => {
     switch (event.keyCode) {
@@ -54,6 +61,9 @@ class Dashboard extends Component {
         break;
       case 40:
         this.downArrowHandler();
+        break;
+      case 84:
+        this.toggleTutorial();
         break;
       // enter key prints out chapter/subchapter/paragraph numbers
       case 13:
@@ -482,6 +492,10 @@ class Dashboard extends Component {
           <h2>{subChapterName}</h2>
           <p>{text}</p>
           <h3>Current navigation : {navigation}</h3>
+        {this.state.showTutorial ?
+          <Tutorial closePopup={this.toggleTutorial.bind(this)}/>
+          : null
+        }
         </div>
       </React.Fragment>
     );

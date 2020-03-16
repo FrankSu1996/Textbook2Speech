@@ -1,6 +1,6 @@
 import React from 'react';
 import Dashboard from './components/dashboard/dashboard';
-import Header from './components/header/Header';
+import Header from './components/Header';
 import './App.css';
 
 function App() {
