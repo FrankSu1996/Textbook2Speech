@@ -431,9 +431,9 @@ class Dashboard extends Component {
   cancel = () => {
     console.log('something2');
     var newPNumber = this.state.paragraphNumber;
-    if (this.state.paragraphNumber > 0) {
-      newPNumber = this.state.paragraphNumber - 1;
-    }
+    //if (this.state.paragraphNumber > 0) {
+      //newPNumber = this.state.paragraphNumber - 1;
+    //}
     const textToRead = this.getParagraph(newPNumber).text;
     console.log(textToRead, newPNumber);
     this.setState({
