@@ -36,7 +36,7 @@ class Dashboard extends Component {
 
   toggleTutorial() {
     this.setState({
-      showTutorial: !this.state.showTutorial
+      showTutorial: !this.state.showTutorial,
     });
   }
   //handler for keypress events
@@ -48,7 +48,7 @@ class Dashboard extends Component {
         break;
       //'esc' key to stop speech api
       case 27:
-        speechSynthesis.cancel();
+        this.cancel();
         break;
       case 37:
         this.leftArrowHandler();
@@ -432,7 +432,7 @@ class Dashboard extends Component {
     console.log('something2');
     var newPNumber = this.state.paragraphNumber;
     //if (this.state.paragraphNumber > 0) {
-      //newPNumber = this.state.paragraphNumber - 1;
+    //newPNumber = this.state.paragraphNumber - 1;
     //}
     const textToRead = this.getParagraph(newPNumber).text;
     console.log(textToRead, newPNumber);
@@ -492,10 +492,9 @@ class Dashboard extends Component {
           <h2>{subChapterName}</h2>
           <p>{text}</p>
           <h3>Current navigation : {navigation}</h3>
-        {this.state.showTutorial ?
-          <Tutorial closePopup={this.toggleTutorial.bind(this)}/>
-          : null
-        }
+          {this.state.showTutorial ? (
+            <Tutorial closePopup={this.toggleTutorial.bind(this)} />
+          ) : null}
         </div>
       </React.Fragment>
     );
