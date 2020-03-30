@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-
+import { Route, Link, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 const NAVIGATION = {
     SUBCHAP: 0,
@@ -15,15 +15,17 @@ class Table extends Component {
         navigation: NAVIGATION.CHAP,
         chapterNumber: 0,
         subChapterNumber: 0,
-        text: 'hello'
+        text: 'hello',
+        choice: 0,
+        done: false
       }
     };
     //all of this is just copy pasted from dashboard.jsx, so when I actually implement this I feel like I should just import dashboard?
     handleKeyPress = event => {
       switch (event.keyCode) {
-        //case 13:
-          //this.selectSection();
-         // break;
+        case 13:
+          this.selectSection();
+          break;
         case 37:
           this.leftArrowHandler();
           break;
@@ -43,6 +45,13 @@ class Table extends Component {
     componentDidMount() {
       document.addEventListener('keydown', this.handleKeyPress);
     }
+    //"selects section" aka changes the state and calls dashboard with the new state passed as props 
+  selectSection = () => {
+    let choice = this.state.chapterNumber;
+    this.state.choice = choice;
+    this.state.done = true; 
+    
+  }
     //handler for up arrow key events
   upArrowHandler = () => {
     //increments the navigation state
@@ -159,17 +168,21 @@ class Table extends Component {
       subChapterNumber: subChapterNumber - 1,
     })
   }
-  //selectSection = () {
-    //go to dashboard and set state values to chapterNumber and subChapterNumber
-  //}
-    render (){
-        return(
-          <div>
-            <h1>Chapter: {this.state.chapterNumber}</h1>
-            <h2>Subchapter: {this.state.subChapterNumber}</h2>
-          </div>
-        )
+  
+  render (){
+    if (this.done == true) {
+      return (
+        <Redirect to="/dashboard"/>
+      )
     }
+    return(
+      <div>
+        <h1>Chapter: {this.state.chapterNumber}</h1>
+        <h2>Subchapter: {this.state.subChapterNumber}</h2>
+        <h2>Choice: {this.state.choice}</h2>
+      </div>
+    )
   }
+}
 
   export default Table;

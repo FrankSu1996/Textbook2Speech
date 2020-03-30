@@ -29,6 +29,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress);
+    //const { start } = this.props.location.state;
   }
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);

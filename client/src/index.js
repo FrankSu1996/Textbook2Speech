@@ -5,14 +5,19 @@ import Home from './home';
 import Table from './components/table/table';
 //import Dashboard from './components/dashboard/dashboard';
 //import Header from './components/header/Header';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const routing = (
     <Router>
       <div>
         <Route exact path="/" component={Home} />
-        <Route path="/dashboard" component={App} />
+        <Route 
+          path="/dashboard"
+          render = {(props) => (
+            <App {...props} start={"hello"} />
+          )}
+          />
         <Route path="/table" component={Table} />
       </div>
     </Router>
