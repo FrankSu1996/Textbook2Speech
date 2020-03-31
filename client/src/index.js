@@ -8,6 +8,7 @@ import Table from './components/table/table';
 import { Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+window.$start = 0
 const routing = (
     <Router>
       <div>
@@ -15,7 +16,7 @@ const routing = (
         <Route 
           path="/dashboard"
           render = {(props) => (
-            <App {...props} start={"hello"} />
+            <App {...props} start={window.$start} />
           )}
           />
         <Route path="/table" component={Table} />

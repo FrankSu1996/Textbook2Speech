@@ -50,6 +50,7 @@ class Table extends Component {
     let choice = this.state.chapterNumber;
     this.state.choice = choice;
     this.state.done = true; 
+    window.$start = this.state.choice;
     
   }
     //handler for up arrow key events
@@ -170,16 +171,16 @@ class Table extends Component {
   }
   
   render (){
-    if (this.done == true) {
+    if (this.state.done == true) {
       return (
-        <Redirect to="/dashboard"/>
+        <Redirect to='/dashboard'/>
       )
     }
     return(
       <div>
         <h1>Chapter: {this.state.chapterNumber}</h1>
         <h2>Subchapter: {this.state.subChapterNumber}</h2>
-        <h2>Choice: {this.state.choice}</h2>
+        <h2>Choice: {this.state.done}</h2>
       </div>
     )
   }

@@ -496,6 +496,7 @@ class Dashboard extends Component {
           {this.state.showTutorial ? (
             <Tutorial closePopup={this.toggleTutorial.bind(this)} />
           ) : null}
+          <h3>Start: {this.props.start} </h3>
         </div>
       </React.Fragment>
     );
