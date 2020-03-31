@@ -3,11 +3,11 @@ import Dashboard from './components/dashboard/dashboard';
 import Header from './components/Header';
 import './App.css';
 
-function App( {start} ) {
+function App( {chapterStart, subChapterStart} ) {
   return (
     <div className="App">
       <Header />
-      <Dashboard start = {start}></Dashboard>
+      <Dashboard chapterStart = {chapterStart} subChapterStart = {subChapterStart}></Dashboard>
     </div>
   );
 }

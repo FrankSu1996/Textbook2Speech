@@ -16,7 +16,6 @@ class Table extends Component {
         chapterNumber: 0,
         subChapterNumber: 0,
         text: 'hello',
-        choice: 0,
         done: false
       }
     };
@@ -47,10 +46,10 @@ class Table extends Component {
     }
     //"selects section" aka changes the state and calls dashboard with the new state passed as props 
   selectSection = () => {
-    let choice = this.state.chapterNumber;
-    this.state.choice = choice;
+    window.$chStart = this.state.chapterNumber;
+    window.$subStart = this.state.subChapterNumber;
     this.state.done = true; 
-    window.$start = this.state.choice;
+    
     
   }
     //handler for up arrow key events
