@@ -17,6 +17,7 @@
     "js-tokens": "^5.0.0",
     "loose-envify": "^1.4.0",
     "react": "^16.12.0",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "^16.12.0",
     "react-native": "^0.61.5",
     "react-native-cli": "^2.0.1",

@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import Textbook from '../../textbook/textbook';
 import Tutorial from '../Tutorial';
 import styles from './dashboard.module.css';
+import leftArrow from '../../images/left_arrow.png';
+import upArrow from '../../images/up_arrow.png';
+import downArrow from '../../images/down_arrow.png';
+import rightArrow from '../../images/right_arrow.png';
+import Button from 'react-bootstrap/Button';
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -25,13 +30,15 @@ class Dashboard extends Component {
       currentTextToRead:
         'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
       showTutorial: false,
+      upArrowBoxColor: 'black',
+      downArrowBoxColor: 'black',
     };
   }
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress);
-    //const { start } = this.props.location.state;
   }
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
@@ -145,6 +152,7 @@ class Dashboard extends Component {
 
   //handler for up arrow key events
   upArrowHandler = () => {
+    this.setState({upArrowBoxColor: 'blue'});
     //increments the navigation state
     if (this.state.navigation < NAVIGATION.MAX - 1) {
       let navigation = this.state.navigation;
@@ -158,10 +166,14 @@ class Dashboard extends Component {
         this.speech('Chapter navigation', this.state.audioConfig);
       }
     }
+    setTimeout(() => {
+      this.setState({upArrowBoxColor: 'black'});
+    }, 65);
   };
 
   //handler for down arrow key events
   downArrowHandler = () => {
+    this.setState({downArrowBoxColor: 'blue'});
     //decrements the navigation state
     if (this.state.navigation > 0) {
       let navigation = this.state.navigation;
@@ -175,6 +187,9 @@ class Dashboard extends Component {
         this.speech('Paragraph navigation', this.state.audioConfig);
       }
     }
+    setTimeout(() => {
+      this.setState({downArrowBoxColor: 'black'});
+    }, 65);
   };
 
   //handler for left arrow key events
@@ -446,6 +461,14 @@ class Dashboard extends Component {
     const text = this.state.currentTextToRead;
     let navigation;
 
+    const upArrowBoxColor = {
+      backgroundColor: this.state.upArrowBoxColor,
+    };
+
+    const downArrowBoxColor = {
+      backgroundColor: this.state.downArrowBoxColor,
+    };
+
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
       navigation = 'Paragraph';
     } else if (this.state.navigation === NAVIGATION.CHAP) {
@@ -481,23 +504,29 @@ class Dashboard extends Component {
         </button>
 
         {/* Div for the up arrow */}
-        <div className={styles.UpArrowDiv}>
+        <div className={styles.UpArrowDiv} style={upArrowBoxColor}>
+          <img src={upArrow} alt="UpArrow" width="50" height="50" />
           <h2>Set Navigation To: </h2>
         </div>
 
-        {/* Div for the textbook text */}
-        <div className={styles.TextbookDiv}>
-          <h1>{chapterName}</h1>
-          <h2>{subChapterName}</h2>
-          <p>{text}</p>
-          <h3>Current navigation : {navigation}</h3>
-          {this.state.showTutorial ? (
-            <Tutorial closePopup={this.toggleTutorial.bind(this)} />
-          ) : null}
+        {/* Div for the middle part */}
+        <div className={styles.MiddleDiv}>
+          {/* Div for textbook text */}
+          <div className={styles.TextbookDiv}>
+            <h1>{chapterName}</h1>
+            <h2>{subChapterName}</h2>
+            <p>{text}</p>
+            <h3>Current navigation : {navigation}</h3>
+            {this.state.showTutorial ? (
+              <Tutorial closePopup={this.toggleTutorial.bind(this)} />
+            ) : null}
+          </div>
+          <div className={styles.RightArrowDiv}></div>
         </div>
 
-        {/* Div for the up arrow */}
-        <div className={styles.DownArrowDiv}>
+        {/* Div for the down arrow */}
+        <div className={styles.DownArrowDiv} style={downArrowBoxColor}>
+          <img src={downArrow} alt="downArrow" width="50" height="50" />
           <h2>Set Navigation To: </h2>
         </div>
       </React.Fragment>
