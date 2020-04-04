@@ -1,0 +1,26 @@
+.UpArrowDiv {
+  width: 50%;
+  margin: auto;
+  height: 100px;
+  background-color: black;
+  color: white;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.DownArrowDiv {
+  width: 50%;
+  margin: auto;
+  height: 100px;
+  background-color: black;
+  color: white;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.TextbookDiv {
+  width: 100%;
+  text-align: center;
+}

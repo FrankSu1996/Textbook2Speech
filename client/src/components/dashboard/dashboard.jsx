@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Textbook from '../../textbook/textbook';
 import Tutorial from '../Tutorial';
+import styles from './dashboard.module.css';
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -83,17 +84,10 @@ class Dashboard extends Component {
   //until another functionality key is pressed
   startSpeechHandler = config => {
     speechSynthesis.cancel();
-    // let currentSubChap = this.state.subChapterNumber;
-    // //loop through all subchapters in current chapter
-    // for (
-    //   let i = currentSubChap;
-    //   i < this.getCurrentChapter().subchapters.length;
-    //   i++
-    // ) {
-    //   this.readAllParagraphsInSubchapter(i, config);
-    // }
-    //this.readAllParagraphsInSubchapter(0, config);
-    this.readAllParagraphsInSubchapter(0, config);
+    this.readAllParagraphsInSubchapter(
+      this.state.subChapterNumber,
+      this.state.audioConfig
+    );
   };
 
   //function to read all paragraphs in given subchapter
@@ -463,9 +457,6 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <button
-          //onClick={() =>
-          //  this.speech(this.state.currentTextToRead, this.state.audioConfig)
-          //}
           onClick={() =>
             this.readAllParagraphsInSubchapter(
               this.state.subChapterNumber,
@@ -488,7 +479,14 @@ class Dashboard extends Component {
         <button onClick={e => this.setAudioSpeed(this.state.audioConfig)}>
           Set
         </button>
-        <div>
+
+        {/* Div for the up arrow */}
+        <div className={styles.UpArrowDiv}>
+          <h2>Set Navigation To: </h2>
+        </div>
+
+        {/* Div for the textbook text */}
+        <div className={styles.TextbookDiv}>
           <h1>{chapterName}</h1>
           <h2>{subChapterName}</h2>
           <p>{text}</p>
@@ -496,7 +494,11 @@ class Dashboard extends Component {
           {this.state.showTutorial ? (
             <Tutorial closePopup={this.toggleTutorial.bind(this)} />
           ) : null}
-          <h3>Start: {this.props.start} </h3>
+        </div>
+
+        {/* Div for the up arrow */}
+        <div className={styles.DownArrowDiv}>
+          <h2>Set Navigation To: </h2>
         </div>
       </React.Fragment>
     );
