@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Route, Link, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom';
+import Textbook from '../../textbook/textbook';
 
 const NAVIGATION = {
     SUBCHAP: 0,
@@ -12,6 +13,7 @@ class Table extends Component {
     constructor(props) {
       super(props);
       this.state = {
+        textbook: Textbook,
         navigation: NAVIGATION.CHAP,
         chapterNumber: 0,
         subChapterNumber: 0,
@@ -49,8 +51,6 @@ class Table extends Component {
     window.$chStart = this.state.chapterNumber;
     window.$subStart = this.state.subChapterNumber;
     this.state.done = true; 
-    
-    
   }
     //handler for up arrow key events
   upArrowHandler = () => {
@@ -91,20 +91,19 @@ class Table extends Component {
       //handling navigation for subchapters
     if (this.state.navigation === NAVIGATION.SUBCHAP) {
       if (
-        this.state.subChapterNumber <
-        5//this.getCurrentChapter().subchapters.length - 1
+        this.state.subChapterNumber < this.getCurrentChapter().subchapters.length - 1
       ) {
         //increment subchapter counter 
         const newSubChapterNumber = this.state.subChapterNumber + 2;
         this.handleSubchapterNavigation(newSubChapterNumber);
       } else {
-        alert('Reached end of chapter!');
+        const newChapterNumber = this.state.chapterNumber + 1;
+        this.handleChapterNavigation(newChapterNumber);
       }
     } else {
       //handling navigation for chapters
       if (
-        this.state.chapterNumber <
-        4//this.state.textbookSelected.chapters.length - 1
+        this.state.chapterNumber < this.state.textbook.chapters.length - 1
       ) {
         //increment chapter counter and set subchapter counter to 0
         const newChapterNumber = this.state.chapterNumber + 1;
@@ -137,8 +136,8 @@ class Table extends Component {
     }
   };
   //function to retrieve the current chapter from textbook
-  /*getCurrentChapter = () => {
-    return this.state.textbookSelected.chapters[this.state.chapterNumber];
+  getCurrentChapter = () => {
+    return this.state.textbook.chapters[this.state.chapterNumber];
   };
 
   //function to retrieve the current subchapter from textbook
@@ -155,7 +154,6 @@ class Table extends Component {
       subChapterNumber: subChapNumber - 1,
     });
   };
-*/
   handleChapterNavigation = chapterNumber => {
     //speechSynthesis.cancel();
     this.setState({

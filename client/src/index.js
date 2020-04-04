@@ -8,8 +8,8 @@ import Table from './components/table/table';
 import { Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-window.$chStart = 0
-window.$subStart = 0
+window.$chStart = 1
+window.$subStart = 1
 const routing = (
     <Router>
       <div>
