@@ -6,7 +6,6 @@ import leftArrow from '../../images/left_arrow.png';
 import upArrow from '../../images/up_arrow.png';
 import downArrow from '../../images/down_arrow.png';
 import rightArrow from '../../images/right_arrow.png';
-import Button from 'react-bootstrap/Button';
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -152,7 +151,6 @@ class Dashboard extends Component {
 
   //handler for up arrow key events
   upArrowHandler = () => {
-    this.setState({upArrowBoxColor: 'blue'});
     //increments the navigation state
     if (this.state.navigation < NAVIGATION.MAX - 1) {
       let navigation = this.state.navigation;
@@ -166,6 +164,8 @@ class Dashboard extends Component {
         this.speech('Chapter navigation', this.state.audioConfig);
       }
     }
+    //hacky way to flicker background color
+    this.setState({upArrowBoxColor: 'blue'});
     setTimeout(() => {
       this.setState({upArrowBoxColor: 'black'});
     }, 65);
@@ -173,7 +173,6 @@ class Dashboard extends Component {
 
   //handler for down arrow key events
   downArrowHandler = () => {
-    this.setState({downArrowBoxColor: 'blue'});
     //decrements the navigation state
     if (this.state.navigation > 0) {
       let navigation = this.state.navigation;
@@ -187,6 +186,8 @@ class Dashboard extends Component {
         this.speech('Paragraph navigation', this.state.audioConfig);
       }
     }
+    //hacky way to flicker background color
+    this.setState({downArrowBoxColor: 'blue'});
     setTimeout(() => {
       this.setState({downArrowBoxColor: 'black'});
     }, 65);
@@ -460,6 +461,8 @@ class Dashboard extends Component {
     const subChapterName = this.getCurrentSubchapter().name;
     const text = this.state.currentTextToRead;
     let navigation;
+    let nextNavigation;
+    let previousNavigation;
 
     const upArrowBoxColor = {
       backgroundColor: this.state.upArrowBoxColor,
@@ -471,10 +474,16 @@ class Dashboard extends Component {
 
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
       navigation = 'Paragraph';
+      nextNavigation = 'Subchapter';
+      previousNavigation = 'Paragraph';
     } else if (this.state.navigation === NAVIGATION.CHAP) {
       navigation = 'Chapter';
+      nextNavigation = 'Chapter';
+      previousNavigation = 'Subchapter';
     } else {
       navigation = 'Subchapter';
+      nextNavigation = 'Chapter';
+      previousNavigation = 'Paragraph';
     }
 
     return (
@@ -506,7 +515,7 @@ class Dashboard extends Component {
         {/* Div for the up arrow */}
         <div className={styles.UpArrowDiv} style={upArrowBoxColor}>
           <img src={upArrow} alt="UpArrow" width="50" height="50" />
-          <h2>Set Navigation To: </h2>
+          <h2>Set Navigation To: {nextNavigation}</h2>
         </div>
 
         {/* Div for the middle part */}
@@ -527,7 +536,7 @@ class Dashboard extends Component {
         {/* Div for the down arrow */}
         <div className={styles.DownArrowDiv} style={downArrowBoxColor}>
           <img src={downArrow} alt="downArrow" width="50" height="50" />
-          <h2>Set Navigation To: </h2>
+          <h2>Set Navigation To: {previousNavigation}</h2>
         </div>
       </React.Fragment>
     );
