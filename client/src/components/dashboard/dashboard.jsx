@@ -33,6 +33,8 @@ class Dashboard extends Component {
       showTutorial: false,
       upArrowBoxColor: 'black',
       downArrowBoxColor: 'black',
+      leftArrowBoxColor: 'black',
+      rightArrowBoxColor: 'black',
     };
   }
 
@@ -197,6 +199,11 @@ class Dashboard extends Component {
 
   //handler for left arrow key events
   rightArrowHandler = () => {
+    //hacky way to flicker background color
+    this.setState({rightArrowBoxColor: 'red'});
+    setTimeout(() => {
+      this.setState({rightArrowBoxColor: 'black'});
+    }, 65);
     //handling navigation for paragraphs
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
       //check if incrementing paragraph counter will go out of bounds
@@ -274,6 +281,11 @@ class Dashboard extends Component {
 
   //handler for right arrow key events
   leftArrowHandler = () => {
+    //hacky way to flicker background color
+    this.setState({leftArrowBoxColor: 'red'});
+    setTimeout(() => {
+      this.setState({leftArrowBoxColor: 'black'});
+    }, 65);
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
       //check if incrementing paragraph counter will go out of bounds
       if (this.state.paragraphNumber > 0) {
@@ -474,6 +486,14 @@ class Dashboard extends Component {
       backgroundColor: this.state.downArrowBoxColor,
     };
 
+    const leftArrowBoxColor = {
+      backgroundColor: this.state.leftArrowBoxColor,
+    };
+
+    const rightArrowBoxColor = {
+      backgroundColor: this.state.rightArrowBoxColor,
+    };
+
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
       navigation = 'Paragraph';
       nextNavigation = 'Subchapter';
@@ -491,6 +511,12 @@ class Dashboard extends Component {
     const ColStyle = {
       paddingLeft: 0,
       paddingRight: 0,
+    };
+
+    const leftRightArrowStyle = {
+      display: 'block',
+      margin: 'auto',
+      marginTop: 180,
     };
 
     return (
@@ -519,9 +545,22 @@ class Dashboard extends Component {
           Set
         </button>
 
+        <div className={styles.Title}>
+          <h1>{this.state.textbookSelected.name}</h1>
+        </div>
+
         <Container>
           <Row>
-            <Col className={styles.LeftArrowDiv}>1 of 3</Col>
+            <Col className={styles.LeftArrowDiv} style={leftArrowBoxColor}>
+              <img
+                src={leftArrow}
+                alt="UpArrow"
+                width="50"
+                height="50"
+                style={leftRightArrowStyle}
+              />
+              <h4>Prev Paragraph</h4>
+            </Col>
             <Col xs={8} style={ColStyle}>
               {/* Div for the up arrow */}
               <div className={styles.UpArrowDiv} style={upArrowBoxColor}>
@@ -529,13 +568,11 @@ class Dashboard extends Component {
                 <h2>Set Navigation To: {nextNavigation}</h2>
               </div>
 
-              {/* Div for the middle part */}
-
               {/* Div for textbook text */}
               <div className={styles.TextbookDiv}>
                 <h1>{chapterName}</h1>
                 <h2>{subChapterName}</h2>
-                <p>{text}</p>
+                <h5 className={styles.TextArea}>{text}</h5>
                 <h3>Current navigation : {navigation}</h3>
                 {this.state.showTutorial ? (
                   <Tutorial closePopup={this.toggleTutorial.bind(this)} />
@@ -548,7 +585,16 @@ class Dashboard extends Component {
                 <h2>Set Navigation To: {previousNavigation}</h2>
               </div>
             </Col>
-            <Col className={styles.RightArrowDiv}>3 of 3</Col>
+            <Col className={styles.RightArrowDiv} style={rightArrowBoxColor}>
+              <img
+                src={rightArrow}
+                alt="UpArrow"
+                width="50"
+                height="50"
+                style={leftRightArrowStyle}
+              />
+              <h4>Next Paragraph</h4>
+            </Col>
           </Row>
         </Container>
       </React.Fragment>

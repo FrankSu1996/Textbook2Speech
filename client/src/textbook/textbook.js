@@ -144,6 +144,7 @@ const textbook = {
       ],
     },
   ],
+  name: 'Essentials of Linguistics',
 };
 
 export default textbook;

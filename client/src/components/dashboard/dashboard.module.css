@@ -2,11 +2,17 @@
   margin: auto;
   height: 110px;
   color: white;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   text-align: center;
   border: 6px solid red;
   border-right: 3px;
   border-left: 3px;
+}
+
+.Title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .DownArrowDiv {
@@ -14,25 +20,31 @@
   height: 110px;
   color: white;
   text-align: center;
-  margin-top: 50px;
+  margin-top: 40px;
   border: 6px solid red;
   border-right: 3px;
   border-left: 3px;
 }
 
 .LeftArrowDiv {
-  background-color: black;
   border: 6px solid red;
   color: white;
+  text-align: center;
 }
 
 .RightArrowDiv {
-  background-color: black;
   border: 6px solid red;
   color: white;
+  text-align: center;
 }
 
 .TextbookDiv {
   width: 100%;
   text-align: center;
+  font-size: 10px;
+}
+
+.TextArea {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
