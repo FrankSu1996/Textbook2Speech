@@ -488,7 +488,7 @@ class Dashboard extends Component {
       previousNavigation = 'Paragraph';
     }
 
-    const middleColStyle = {
+    const ColStyle = {
       paddingLeft: 0,
       paddingRight: 0,
     };
@@ -522,7 +522,7 @@ class Dashboard extends Component {
         <Container>
           <Row>
             <Col className={styles.LeftArrowDiv}>1 of 3</Col>
-            <Col xs={8} style={middleColStyle}>
+            <Col xs={8} style={ColStyle}>
               {/* Div for the up arrow */}
               <div className={styles.UpArrowDiv} style={upArrowBoxColor}>
                 <img src={upArrow} alt="UpArrow" width="50" height="50" />
@@ -541,7 +541,6 @@ class Dashboard extends Component {
                   <Tutorial closePopup={this.toggleTutorial.bind(this)} />
                 ) : null}
               </div>
-              <div className={styles.RightArrowDiv}></div>
 
               {/* Div for the down arrow */}
               <div className={styles.DownArrowDiv} style={downArrowBoxColor}>

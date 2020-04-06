@@ -1,30 +1,34 @@
 .UpArrowDiv {
-  width: 100%;
   margin: auto;
   height: 110px;
   color: white;
   margin-bottom: 50px;
   text-align: center;
   border: 6px solid red;
+  border-right: 3px;
+  border-left: 3px;
 }
 
 .DownArrowDiv {
-  width: 100%;
   margin: auto;
   height: 110px;
   color: white;
   text-align: center;
   margin-top: 50px;
   border: 6px solid red;
+  border-right: 3px;
+  border-left: 3px;
 }
 
 .LeftArrowDiv {
   background-color: black;
+  border: 6px solid red;
   color: white;
 }
 
 .RightArrowDiv {
   background-color: black;
+  border: 6px solid red;
   color: white;
 }
 
