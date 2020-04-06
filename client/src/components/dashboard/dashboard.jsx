@@ -7,6 +7,8 @@ import upArrow from '../../images/up_arrow.png';
 import downArrow from '../../images/down_arrow.png';
 import rightArrow from '../../images/right_arrow.png';
 
+import {Container, Row, Col} from 'react-bootstrap';
+
 const NAVIGATION = {
   PARAGRAPH: 0,
   SUBCHAP: 1,
@@ -165,7 +167,7 @@ class Dashboard extends Component {
       }
     }
     //hacky way to flicker background color
-    this.setState({upArrowBoxColor: 'blue'});
+    this.setState({upArrowBoxColor: 'red'});
     setTimeout(() => {
       this.setState({upArrowBoxColor: 'black'});
     }, 65);
@@ -187,7 +189,7 @@ class Dashboard extends Component {
       }
     }
     //hacky way to flicker background color
-    this.setState({downArrowBoxColor: 'blue'});
+    this.setState({downArrowBoxColor: 'red'});
     setTimeout(() => {
       this.setState({downArrowBoxColor: 'black'});
     }, 65);
@@ -486,6 +488,11 @@ class Dashboard extends Component {
       previousNavigation = 'Paragraph';
     }
 
+    const middleColStyle = {
+      paddingLeft: 0,
+      paddingRight: 0,
+    };
+
     return (
       <React.Fragment>
         <button
@@ -512,32 +519,39 @@ class Dashboard extends Component {
           Set
         </button>
 
-        {/* Div for the up arrow */}
-        <div className={styles.UpArrowDiv} style={upArrowBoxColor}>
-          <img src={upArrow} alt="UpArrow" width="50" height="50" />
-          <h2>Set Navigation To: {nextNavigation}</h2>
-        </div>
+        <Container>
+          <Row>
+            <Col className={styles.LeftArrowDiv}>1 of 3</Col>
+            <Col xs={8} style={middleColStyle}>
+              {/* Div for the up arrow */}
+              <div className={styles.UpArrowDiv} style={upArrowBoxColor}>
+                <img src={upArrow} alt="UpArrow" width="50" height="50" />
+                <h2>Set Navigation To: {nextNavigation}</h2>
+              </div>
 
-        {/* Div for the middle part */}
-        <div className={styles.MiddleDiv}>
-          {/* Div for textbook text */}
-          <div className={styles.TextbookDiv}>
-            <h1>{chapterName}</h1>
-            <h2>{subChapterName}</h2>
-            <p>{text}</p>
-            <h3>Current navigation : {navigation}</h3>
-            {this.state.showTutorial ? (
-              <Tutorial closePopup={this.toggleTutorial.bind(this)} />
-            ) : null}
-          </div>
-          <div className={styles.RightArrowDiv}></div>
-        </div>
+              {/* Div for the middle part */}
 
-        {/* Div for the down arrow */}
-        <div className={styles.DownArrowDiv} style={downArrowBoxColor}>
-          <img src={downArrow} alt="downArrow" width="50" height="50" />
-          <h2>Set Navigation To: {previousNavigation}</h2>
-        </div>
+              {/* Div for textbook text */}
+              <div className={styles.TextbookDiv}>
+                <h1>{chapterName}</h1>
+                <h2>{subChapterName}</h2>
+                <p>{text}</p>
+                <h3>Current navigation : {navigation}</h3>
+                {this.state.showTutorial ? (
+                  <Tutorial closePopup={this.toggleTutorial.bind(this)} />
+                ) : null}
+              </div>
+              <div className={styles.RightArrowDiv}></div>
+
+              {/* Div for the down arrow */}
+              <div className={styles.DownArrowDiv} style={downArrowBoxColor}>
+                <img src={downArrow} alt="downArrow" width="50" height="50" />
+                <h2>Set Navigation To: {previousNavigation}</h2>
+              </div>
+            </Col>
+            <Col className={styles.RightArrowDiv}>3 of 3</Col>
+          </Row>
+        </Container>
       </React.Fragment>
     );
   }
