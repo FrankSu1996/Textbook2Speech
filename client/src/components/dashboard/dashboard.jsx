@@ -24,8 +24,8 @@ class Dashboard extends Component {
       navigation: NAVIGATION.PARAGRAPH,
       audioSpeed: 1,
       audioConfig: new SpeechSynthesisUtterance(),
-      chapterNumber: this.props.chapterStart - 1,
-      subChapterNumber: this.props.subChapterStart - 1,
+      chapterNumber: this.props.chapterStart,
+      subChapterNumber: this.props.subChapterStart,
       paragraphNumber: 0,
       stopPlay: false,
       currentTextToRead:
