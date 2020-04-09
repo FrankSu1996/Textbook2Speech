@@ -16,13 +16,6 @@ import {faHeadset} from '@fortawesome/free-solid-svg-icons';
 class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = { showTutorial: false }
-  }
-
-  toggleTutorial() {
-    this.setState({
-      showTutorial: !this.state.showTutorial
-    });
   }
 
   render() {
@@ -36,14 +29,9 @@ class Header extends Component {
             <Nav>
               <NavItem>Search |</NavItem>
               <NavItem>Table of Contents</NavItem>
-              <NavItem><button onClick={this.toggleTutorial.bind(this)}> Tutorial</button></NavItem>
             </Nav>
           </Container>
         </Navbar>
-        {this.state.showTutorial ?
-          <Tutorial closePopup={this.toggleTutorial.bind(this)}/>
-          : null
-        }
       </div>
 
     );

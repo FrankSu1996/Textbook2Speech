@@ -16,17 +16,26 @@ class Tutorial extends React.Component {
   }
 
   closeTutorial() {
-    this.props.closePopup();
     speechSynthesis.cancel();
+    this.props.closePopup();
+
+  }
+
+  keyPress = (event) => {
+    if (event.keyCode == 84) {
+      this.closeTutorial();
+    }
   }
 
   render() {
     const text = this.state.text;
     return (
-      <div className='popup'>
+      <div className='popup' onKeyPress={this.keyPress} tabIndex="0">
         <div className='popup_inner'>
+
           <button onClick={this.closeTutorial}>X</button>
           <p style={{fontSize: "20px"}}> {this.state.text} </p>
+
         </div>
       </div>
 

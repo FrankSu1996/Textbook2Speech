@@ -521,6 +521,7 @@ class Dashboard extends Component {
 
     return (
       <React.Fragment>
+        <button class="float-right" onClick={this.toggleTutorial.bind(this)}> Tutorial</button>
         <button
           onClick={() =>
             this.readAllParagraphsInSubchapter(
