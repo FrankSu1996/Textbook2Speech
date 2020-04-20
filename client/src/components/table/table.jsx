@@ -15,8 +15,8 @@ class Table extends Component {
       this.state = {
         textbook: Textbook,
         navigation: NAVIGATION.CHAP,
-        chapterNumber: 0,
-        subChapterNumber: 0,
+        chapterNumber: 1,
+        subChapterNumber: 1,
         text: 'hello',
         done: false
       }
@@ -168,16 +168,25 @@ class Table extends Component {
   }
   
   render (){
-    if (this.state.done == true) {
+    let navigation;
+    let chapter = this.getCurrentChapter().name;
+    let subChapter = this.getCurrentSubchapter().name;
+    if (this.state.navigation === 0){
+      navigation = 'Subchapter'
+    }
+    else {
+      navigation = 'Chapter'
+    }
+    if (this.state.done === true) {
       return (
         <Redirect to='/dashboard'/>
       )
     }
     return(
       <div>
-        <h1>Chapter: {this.state.chapterNumber}</h1>
-        <h2>Subchapter: {this.state.subChapterNumber}</h2>
-        <h2>Choice: {this.state.done}</h2>
+        <h1>{chapter} </h1>
+        <h2>{subChapter} </h2>
+        <h2>Current navigation: {navigation} </h2>
       </div>
     )
   }

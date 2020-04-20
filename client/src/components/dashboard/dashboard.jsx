@@ -24,8 +24,8 @@ class Dashboard extends Component {
       navigation: NAVIGATION.PARAGRAPH,
       audioSpeed: 1,
       audioConfig: new SpeechSynthesisUtterance(),
-      chapterNumber: this.props.chapterStart - 1,
-      subChapterNumber: this.props.subChapterStart - 1,
+      chapterNumber: this.props.chapterStart,
+      subChapterNumber: this.props.subChapterStart,
       paragraphNumber: 0,
       stopPlay: false,
       currentTextToRead:
@@ -538,6 +538,7 @@ class Dashboard extends Component {
 
     return (
       <React.Fragment>
+        <button class="float-right" onClick={this.toggleTutorial.bind(this)}> Tutorial</button>
         <button
           onClick={() =>
             this.readAllParagraphsInSubchapter(
