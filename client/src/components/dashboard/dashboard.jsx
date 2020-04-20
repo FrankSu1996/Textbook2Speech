@@ -40,6 +40,18 @@ class Dashboard extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress);
+
+    //disables up and down arrow causing browser to scroll
+    window.addEventListener(
+      'keydown',
+      function(e) {
+        // space and arrow keys
+        if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+          e.preventDefault();
+        }
+      },
+      false
+    );
   }
 
   componentWillUnmount() {
@@ -51,6 +63,7 @@ class Dashboard extends Component {
       showTutorial: !this.state.showTutorial,
     });
   }
+
   //handler for keypress events
   handleKeyPress = event => {
     switch (event.keyCode) {
@@ -63,15 +76,19 @@ class Dashboard extends Component {
         this.cancel();
         break;
       case 37:
+        // left arrow key handler
         this.leftArrowHandler();
         break;
       case 39:
+        // right arrow key handler
         this.rightArrowHandler();
         break;
       case 38:
+        // up arrow key handler
         this.upArrowHandler();
         break;
       case 40:
+        // down arrow key handler
         this.downArrowHandler();
         break;
       case 84:
