@@ -6,7 +6,7 @@ import leftArrow from '../../images/left_arrow.png';
 import upArrow from '../../images/up_arrow.png';
 import downArrow from '../../images/down_arrow.png';
 import rightArrow from '../../images/right_arrow.png';
-
+import ErrorModal from '../errorModal/errorModal';
 import {Container, Row, Col} from 'react-bootstrap';
 
 const NAVIGATION = {
@@ -34,6 +34,8 @@ class Dashboard extends Component {
       downArrowBoxColor: 'black',
       leftArrowBoxColor: 'black',
       rightArrowBoxColor: 'black',
+      showErrorModal: false,
+      modalMessage: '',
     };
   }
 
@@ -57,6 +59,16 @@ class Dashboard extends Component {
     document.removeEventListener ('keydown', this.handleKeyPress);
   }
 
+  //function to show modal
+  showErrorModal = e => {
+    this.setState ({showErrorModal: true});
+  };
+
+  //function to close error modal
+  closeErrorModal = e => {
+    this.setState ({showErrorModal: false});
+  };
+
   toggleTutorial () {
     this.setState ({
       showTutorial: !this.state.showTutorial,
@@ -65,36 +77,42 @@ class Dashboard extends Component {
 
   //handler for keypress events
   handleKeyPress = event => {
-    switch (event.keyCode) {
-      //'s' key to start speech api
-      case 83:
-        this.startSpeechHandler (this.state.audioConfig);
-        break;
-      //'esc' key to stop speech api
-      case 27:
-        this.cancel ();
-        break;
-      case 37:
-        // left arrow key handler
-        this.leftArrowHandler ();
-        break;
-      case 39:
-        // right arrow key handler
-        this.rightArrowHandler ();
-        break;
-      case 38:
-        // up arrow key handler
-        this.upArrowHandler ();
-        break;
-      case 40:
-        // down arrow key handler
-        this.downArrowHandler ();
-        break;
-      case 84:
-        this.toggleTutorial ();
-        break;
-      default:
-        break;
+    if (!this.state.showErrorModal) {
+      switch (event.keyCode) {
+        //'s' key to start speech api
+        case 83:
+          this.startSpeechHandler (this.state.audioConfig);
+          break;
+        //'esc' key to stop speech api
+        case 27:
+          this.cancel ();
+          break;
+        case 37:
+          // left arrow key handler
+          this.leftArrowHandler ();
+          break;
+        case 39:
+          // right arrow key handler
+          this.rightArrowHandler ();
+          break;
+        case 38:
+          // up arrow key handler
+          this.upArrowHandler ();
+          break;
+        case 40:
+          // down arrow key handler
+          this.downArrowHandler ();
+          break;
+        case 84:
+          this.toggleTutorial ();
+          break;
+        default:
+          break;
+      }
+    } else if (this.state.showErrorModal) {
+      if (event.keyCode === 27) {
+        this.closeErrorModal ();
+      }
     }
   };
 
@@ -243,8 +261,15 @@ class Dashboard extends Component {
           this.handleChapterNavigation (newChapterNumber);
         }
       } else {
-        //reached end of all chapters
-        alert ('Reached end of chapters!');
+        this.setState ({
+          modalMessage: 'Reached end of chapters! Please hit Escape to exit this window',
+        });
+        this.showErrorModal ();
+        this.cancel ();
+        this.speech (
+          'Error: Reached end of chapters! Please hit Escape to exit this window',
+          this.state.audioConfig
+        );
       }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
@@ -265,7 +290,15 @@ class Dashboard extends Component {
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation (newChapterNumber);
       } else {
-        alert ('Reached end of chapters!');
+        this.setState ({
+          modalMessage: 'Reached end of chapters! Please hit Escape to exit this window',
+        });
+        this.showErrorModal ();
+        this.cancel ();
+        this.speech (
+          'Error: Reached end of chapters! Please hit Escape to exit this window',
+          this.state.audioConfig
+        );
       }
     } else {
       //handling navigation for chapters
@@ -277,7 +310,15 @@ class Dashboard extends Component {
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation (newChapterNumber);
       } else {
-        alert ('Reached end of chapters');
+        this.setState ({
+          modalMessage: 'Reached end of chapters! Please hit Escape to exit this window',
+        });
+        this.showErrorModal ();
+        this.cancel ();
+        this.speech (
+          'Error: Reached end of chapters! Please hit Escape to exit this window',
+          this.state.audioConfig
+        );
       }
     }
   };
@@ -328,8 +369,15 @@ class Dashboard extends Component {
           this.state.audioConfig
         );
       } else {
-        //reached beginning of chapters
-        alert ('Reached beggining of Chapter 1');
+        this.setState ({
+          modalMessage: 'Reached the beginning of the first chapter! Please hit Escape to exit this window',
+        });
+        this.showErrorModal ();
+        this.cancel ();
+        this.speech (
+          'Error: Reached the beginning of the first chapter! Please hit Escape to exit this window',
+          this.state.audioConfig
+        );
       }
     } else if (this.state.navigation === NAVIGATION.SUBCHAP) {
       //handling navigation for subchapters
@@ -348,7 +396,15 @@ class Dashboard extends Component {
           .length;
         this.handleSubchapterNavigation (newSubChapterNumber);
       } else {
-        alert ('Reaached the beginning of Chapter1');
+        this.setState ({
+          modalMessage: 'Reached the beginning of the first chapter! Please hit Escape to exit this window',
+        });
+        this.showErrorModal ();
+        this.cancel ();
+        this.speech (
+          'Error: Reached the beginning of the first chapter! Please hit Escape to exit this window',
+          this.state.audioConfig
+        );
       }
     } else {
       //handling navigation for chapters
@@ -357,7 +413,15 @@ class Dashboard extends Component {
         const newChapterNumber = this.state.chapterNumber - 1;
         this.handleChapterNavigation (newChapterNumber);
       } else {
-        alert ('Reached the beginning of the the first chapter!');
+        this.setState ({
+          modalMessage: 'Reached the beginning of the first chapter! Please hit Escape to exit this window',
+        });
+        this.showErrorModal ();
+        this.cancel ();
+        this.speech (
+          'Error: Reached the beginning of the first chapter! Please hit Escape to exit this window',
+          this.state.audioConfig
+        );
       }
     }
   };
@@ -598,7 +662,15 @@ class Dashboard extends Component {
               <h4>Next Paragraph</h4>
             </Col>
           </Row>
+          <ErrorModal
+            show={this.state.showErrorModal}
+            closeErrorModal={this.closeErrorModal}
+          >
+            <h1 style={{textAlign: 'center'}}>Error!</h1>
+            <h2>{this.state.modalMessage}</h2>
+          </ErrorModal>
         </Container>
+
       </React.Fragment>
     );
   }
