@@ -69,11 +69,12 @@ class Dashboard extends Component {
     this.setState ({showErrorModal: false});
   };
 
-  toggleTutorial () {
+  toggleTutorial = () => {
+    this.cancel ();
     this.setState ({
       showTutorial: !this.state.showTutorial,
     });
-  }
+  };
 
   //handler for keypress events
   handleKeyPress = event => {
@@ -585,9 +586,7 @@ class Dashboard extends Component {
 
     return (
       <React.Fragment>
-        <button class="float-right" onClick={this.toggleTutorial.bind (this)}>
-          {' '}Tutorial
-        </button>
+
         <button
           onClick={() =>
             this.readAllParagraphsInSubchapter (
