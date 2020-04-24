@@ -27,13 +27,11 @@ class Header extends Component {
               <FontAwesomeIcon icon={faHeadset} /> Textbook2Speech{' '}
             </NavbarBrand>
             <Nav>
-              <NavItem>Search |</NavItem>
               <NavItem>Table of Contents</NavItem>
             </Nav>
           </Container>
         </Navbar>
       </div>
-
     );
   }
 }
