@@ -9,6 +9,11 @@
   border-left: 3px;
 }
 
+.AudioPanel {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .Title {
   text-align: center;
   margin-top: 20px;

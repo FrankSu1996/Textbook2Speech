@@ -599,16 +599,17 @@ class Dashboard extends Component {
 
     return (
       <React.Fragment>
-        <p>Current audio speed: {this.state.audioSpeed}</p>
-        <p>Set speed to:</p>
-        <input
-          value={this.state.audioSpeed}
-          type="number"
-          onChange={e => this.setState({audioSpeed: e.target.value})}
-        />
-        <button onClick={e => this.setAudioSpeed(this.state.audioConfig)}>
-          Set
-        </button>
+        <div className={styles.AudioPanel}>
+          <p>Set audio speed to: (Between 1 - 10)</p>
+          <input
+            value={this.state.audioSpeed}
+            type="number"
+            onChange={e => this.setState({audioSpeed: e.target.value})}
+          />
+          <button onClick={e => this.setAudioSpeed(this.state.audioConfig)}>
+            Set
+          </button>
+        </div>
 
         <div className={styles.Title}>
           <h1>{this.state.textbookSelected.name}</h1>
@@ -616,7 +617,11 @@ class Dashboard extends Component {
 
         <Container>
           <Row>
-            <Col className={styles.LeftArrowDiv} style={leftArrowBoxColor}>
+            <Col
+              xs={2}
+              className={styles.LeftArrowDiv}
+              style={leftArrowBoxColor}
+            >
               <img
                 src={leftArrow}
                 alt="UpArrow"
@@ -626,7 +631,7 @@ class Dashboard extends Component {
               />
               <h4>Prev Paragraph</h4>
             </Col>
-            <Col xs={7} style={ColStyle}>
+            <Col xs={6} md={8} style={ColStyle}>
               {/* Div for the up arrow */}
               <div className={styles.UpArrowDiv} style={upArrowBoxColor}>
                 <img src={upArrow} alt="UpArrow" width="50" height="50" />
@@ -650,7 +655,11 @@ class Dashboard extends Component {
                 <h2>Set Navigation To: {previousNavigation}</h2>
               </div>
             </Col>
-            <Col className={styles.RightArrowDiv} style={rightArrowBoxColor}>
+            <Col
+              xs={2}
+              className={styles.RightArrowDiv}
+              style={rightArrowBoxColor}
+            >
               <img
                 src={rightArrow}
                 alt="UpArrow"
