@@ -15,8 +15,8 @@ class Table extends Component {
       this.state = {
         textbook: Textbook,
         navigation: NAVIGATION.CHAP,
-        chapterNumber: 1,
-        subChapterNumber: 1,
+        chapterNumber: 0,
+        subChapterNumber: 0,
         audioSpeed: 1,
         audioConfig: new SpeechSynthesisUtterance(),
         stopPlay: false,
