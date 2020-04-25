@@ -639,9 +639,7 @@ class Dashboard extends Component {
                 <h2>{subChapterName}</h2>
                 <h5 className={styles.TextArea}>{text}</h5>
                 <h3>Current navigation : {navigation}</h3>
-                {this.state.showTutorial
-                  ? <Tutorial closePopup={this.toggleTutorial.bind (this)} />
-                  : null}
+
               </div>
 
               {/* Div for the down arrow */}
@@ -649,6 +647,7 @@ class Dashboard extends Component {
                 <img src={downArrow} alt="downArrow" width="50" height="50" />
                 <h2>Set Navigation To: {previousNavigation}</h2>
               </div>
+
             </Col>
             <Col className={styles.RightArrowDiv} style={rightArrowBoxColor}>
               <img
@@ -660,6 +659,9 @@ class Dashboard extends Component {
               />
               <h4>Next Paragraph</h4>
             </Col>
+            {this.state.showTutorial
+              ? <Tutorial closePopup={this.toggleTutorial.bind (this)} />
+              : null}
           </Row>
           <ErrorModal
             show={this.state.showErrorModal}
