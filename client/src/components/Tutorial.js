@@ -10,7 +10,7 @@ class Tutorial extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      text: "With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard. Keyboard commands: Press s to start the textbook reader. Press the up and down arrow keys to change the navigation state. Press the left and right arrow keys to navigate through the current navigation state.  Press t to access this tutorial at any time. Layout. At the top of the screen, you can view the current audio speed and change to your preferred speed. In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the textbook. It displays the chapter title, subchapter title,, the appropriate passage from the textbook, and the current navigation level.",
+      text: "With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard. Keyboard commands: Press s to start the textbook reader. Press the up and down arrow keys to change the navigation state. Press the left and right arrow keys to navigate through the current navigation state.  Press t to access this tutorial at any time. Layout: At the top of the screen, you may view and set your preferred audio speed. In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.",
       audioConfig: new SpeechSynthesisUtterance()
     }
     this.closeTutorial = this.closeTutorial.bind(this);
@@ -51,9 +51,9 @@ class Tutorial extends React.Component {
            <br/>
            <b>Layout</b>
            <br/>
-           At the top of the screen, you can view the current audio speed and change to your preferred speed.
+           At the top of the screen, you may view and set your preferred audio speed.
            In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the
-           textbook. It displays the chapter title, subchapter title,, the appropriate passage from the textbook, and the current navigation level.
+           textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.
           </p>
 
 
