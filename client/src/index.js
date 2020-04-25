@@ -13,14 +13,13 @@ window.$subStart = 0
 const routing = (
     <Router>
       <div>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Table} />
         <Route 
           path="/dashboard"
           render = {(props) => (
             <App {...props} chapterStart={window.$chStart} subChapterStart={window.$subStart} />
           )}
           />
-        <Route path="/table" component={Table} />
       </div>
     </Router>
   )

@@ -17,13 +17,20 @@ class Table extends Component {
         navigation: NAVIGATION.CHAP,
         chapterNumber: 1,
         subChapterNumber: 1,
+        audioSpeed: 1,
+        audioConfig: new SpeechSynthesisUtterance(),
+        stopPlay: false,
         text: 'hello',
         done: false
       }
     };
-    //all of this is just copy pasted from dashboard.jsx, so when I actually implement this I feel like I should just import dashboard?
+    
     handleKeyPress = event => {
       switch (event.keyCode) {
+        //'esc' key to stop speech api
+        case 27:
+          this.cancel();
+          break;
         case 13:
           this.selectSection();
           break;
@@ -52,6 +59,12 @@ class Table extends Component {
     window.$subStart = this.state.subChapterNumber;
     this.state.done = true; 
   }
+  //function to start the speech api
+  speech = (text, config) => {
+    console.log('Speech currently playing...');
+    config.text = text;
+    speechSynthesis.speak(config);
+  };
     //handler for up arrow key events
   upArrowHandler = () => {
     //increments the navigation state
@@ -59,13 +72,13 @@ class Table extends Component {
       let navigation = this.state.navigation;
       navigation += 1;
       this.setState({navigation: navigation});
-      //if (navigation === NAVIGATION.SUBCHAP) {
-        //speechSynthesis.cancel();
-        //this.speech('Subchapter navigation', this.state.audioConfig);
-      //} else {
-        //speechSynthesis.cancel();
-        //this.speech('Chapter navigation', this.state.audioConfig);
-      //}
+      if (navigation === NAVIGATION.SUBCHAP) {
+        speechSynthesis.cancel();
+        this.speech('Subchapter navigation', this.state.audioConfig);
+      } else {
+        speechSynthesis.cancel();
+        this.speech('Chapter navigation', this.state.audioConfig);
+      }
     }
   };
 
@@ -76,13 +89,13 @@ class Table extends Component {
       let navigation = this.state.navigation;
       navigation -= 1;
       this.setState({navigation: navigation});
-      //if (navigation === NAVIGATION.SUBCHAP) {
-        //speechSynthesis.cancel();
-        //this.speech('Subchapter navigation', this.state.audioConfig);
-      //} else {
-        //speechSynthesis.cancel();
-        //this.speech('Chapter navigation', this.state.audioConfig);
-      //}
+      if (navigation === NAVIGATION.SUBCHAP) {
+        speechSynthesis.cancel();
+        this.speech('Subchapter navigation', this.state.audioConfig);
+      } else {
+        speechSynthesis.cancel();
+        this.speech('Chapter navigation', this.state.audioConfig);
+      }
     }
   };
 
@@ -96,9 +109,11 @@ class Table extends Component {
         //increment subchapter counter 
         const newSubChapterNumber = this.state.subChapterNumber + 2;
         this.handleSubchapterNavigation(newSubChapterNumber);
+        this.readSubChap();
       } else {
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
+        this.readChap();
       }
     } else {
       //handling navigation for chapters
@@ -108,6 +123,7 @@ class Table extends Component {
         //increment chapter counter and set subchapter counter to 0
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
+        this.readChap();
       } else {
         alert('Reached end of chapters');
       }
@@ -121,20 +137,38 @@ class Table extends Component {
         //increment subchapter counter
         const newSubChapterNumber = this.state.subChapterNumber;
         this.handleSubchapterNavigation(newSubChapterNumber);
+        this.readSubChap();
       } else {
-        alert('Reached beginning of chapter!');
+        if (this.state.chapterNumber > 0) {
+          //increment chapter counter and set subchapter counter to 0
+          const newChapterNumber = this.state.chapterNumber - 1;
+          this.handleChapterNavigation(newChapterNumber);
+          this.readChap();
+        } else {
+          alert('Reached end of chapters');
+        }
       }
     } else {
       //handling navigation for chapters
       if (this.state.chapterNumber > 0) {
-        //increment chapter counter and set both subchapter and paragraph counter to 0
+        //increment chapter counter and set subchapter counter to 0
         const newChapterNumber = this.state.chapterNumber - 1;
         this.handleChapterNavigation(newChapterNumber);
+        this.readChap();
       } else {
         alert('Reached end of chapters');
       }
     }
   };
+  //function to read the current chapter name
+  readChap = () => {
+    let chapName = this.getCurrentChapter().name;
+    this.speech(chapName, this.state.audioConfig);
+  }
+  readSubChap = () => {
+    let subChapName = this.getCurrentSubchapter().name;
+    this.speech(subChapName, this.state.audioConfig);
+  }
   //function to retrieve the current chapter from textbook
   getCurrentChapter = () => {
     return this.state.textbook.chapters[this.state.chapterNumber];
@@ -155,7 +189,7 @@ class Table extends Component {
     });
   };
   handleChapterNavigation = chapterNumber => {
-    //speechSynthesis.cancel();
+    speechSynthesis.cancel();
     this.setState({
       chapterNumber: chapterNumber,
       subChapterNumber: 0,

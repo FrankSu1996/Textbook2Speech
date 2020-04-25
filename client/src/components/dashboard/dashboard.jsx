@@ -8,6 +8,7 @@ import downArrow from '../../images/down_arrow.png';
 import rightArrow from '../../images/right_arrow.png';
 import ErrorModal from '../errorModal/errorModal';
 import {Container, Row, Col} from 'react-bootstrap';
+import { Route, Link, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -37,6 +38,7 @@ class Dashboard extends Component {
       rightArrowBoxColor: 'black',
       showErrorModal: false,
       modalMessage: '',
+      nav: false,
     };
   }
 
@@ -86,6 +88,10 @@ class Dashboard extends Component {
         //'s' key to start speech api
         case 83:
           this.startSpeechHandler(this.state.audioConfig);
+          break;
+        //'c' key to navigate to contentes
+        case 67:
+          this.state.nav = true;
           break;
         //'esc' key to stop speech api
         case 27:
@@ -557,7 +563,12 @@ class Dashboard extends Component {
     let navigation;
     let nextNavigation;
     let previousNavigation;
-
+    //navigate to table of contents if t is pressed
+    if (this.state.nav === true){
+      return (
+        <Redirect to='/'/>
+      )
+    }
     const upArrowBoxColor = {
       backgroundColor: this.state.upArrowBoxColor,
     };
