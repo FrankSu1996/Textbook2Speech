@@ -57,6 +57,8 @@ class Table extends Component {
   selectSection = () => {
     window.$chStart = this.state.chapterNumber;
     window.$subStart = this.state.subChapterNumber;
+    speechSynthesis.cancel();
+    this.state.stopPlay = true;
     this.state.done = true; 
   }
   //function to start the speech api

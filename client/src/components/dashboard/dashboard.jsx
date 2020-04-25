@@ -8,7 +8,7 @@ import downArrow from '../../images/down_arrow.png';
 import rightArrow from '../../images/right_arrow.png';
 import ErrorModal from '../errorModal/errorModal';
 import {Container, Row, Col} from 'react-bootstrap';
-import { Route, Link, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom';
+import { Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -92,6 +92,8 @@ class Dashboard extends Component {
         //'c' key to navigate to contentes
         case 67:
           this.state.nav = true;
+          this.cancel();
+          speechSynthesis.cancel();
           break;
         //'esc' key to stop speech api
         case 27:
