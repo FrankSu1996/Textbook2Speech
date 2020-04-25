@@ -4,13 +4,18 @@ import leftArrow from '../images/left_arrow.png';
 import upArrow from '../images/up_arrow.png';
 import downArrow from '../images/down_arrow.png';
 import rightArrow from '../images/right_arrow.png';
+// import s from '../images/s_key.png';
+import p from '../images/p_key.png';
+import r from '../images/r_key.png';
+import t from '../images/t_key.png';
+import esc from '../images/esc_key.png';
 
 
 class Tutorial extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      text: "With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard. Keyboard commands: Press s to start the textbook reader. Press the up and down arrow keys to change the navigation state. Press the left and right arrow keys to navigate through the current navigation state.  Press t to access this tutorial at any time. Layout: At the top of the screen, you may view and set your preferred audio speed. In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.",
+      text: "With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard. Keyboard commands: Press s to start the textbook reader. Press p to pause. Press r to resume. Press the escape key to cancel. Press the up and down arrow keys to change the navigation state. Press the left and right arrow keys to navigate through the current navigation state.  Press t to access this tutorial at any time. Layout: At the top of the screen, you may view and set your preferred audio speed. In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.",
       audioConfig: new SpeechSynthesisUtterance()
     }
     this.closeTutorial = this.closeTutorial.bind(this);
@@ -44,7 +49,7 @@ class Tutorial extends React.Component {
            <br/>
            <b>Keyboard commands</b>
            <br/>
-           Press s to start the textbook reader. Press the <img src={upArrow} />  and <img src={downArrow} /> arrow keys to change the navigation state.
+           Press s to start the textbook reader. Press <img src={p}/> to pause. Press <img src={r}/> to resume. Press <img src={esc}/> to cancel. Press the <img src={upArrow} />  and <img src={downArrow} /> arrow keys to change the navigation state.
            Press the <img src={leftArrow} /> and <img src={rightArrow} /> arrow keys to navigate through the current navigation state.
            Press t to access this tutorial at any time.
            <br/>
