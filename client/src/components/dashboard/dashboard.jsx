@@ -62,11 +62,13 @@ class Dashboard extends Component {
 
   //function to show modal
   showErrorModal = e => {
+    this.cancel();
     this.setState({showErrorModal: true});
   };
 
   //function to close error modal
   closeErrorModal = e => {
+    this.cancel();
     this.setState({showErrorModal: false});
   };
 
@@ -654,7 +656,6 @@ class Dashboard extends Component {
                 <img src={downArrow} alt="downArrow" width="50" height="50" />
                 <h2>Set Navigation To: {previousNavigation}</h2>
               </div>
-
             </Col>
             <Col
               xs={2}
@@ -670,9 +671,9 @@ class Dashboard extends Component {
               />
               <h4>Next Paragraph</h4>
             </Col>
-            {this.state.showTutorial
-              ? <Tutorial closePopup={this.toggleTutorial.bind (this)} />
-              : null}
+            {this.state.showTutorial ? (
+              <Tutorial closePopup={this.toggleTutorial.bind(this)} />
+            ) : null}
           </Row>
           <ErrorModal
             show={this.state.showErrorModal}
