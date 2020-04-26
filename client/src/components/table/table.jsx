@@ -37,6 +37,7 @@ class Table extends Component {
         break;
       case 13:
         this.selectSection();
+        console.log(this.state.done);
         break;
       case 37:
         this.leftArrowHandle();
@@ -65,11 +66,11 @@ class Table extends Component {
     window.$chStart = this.state.chapterNumber;
     window.$subStart = this.state.subChapterNumber;
     this.cancel();
-    this.state.done = true;
+    this.setState({done: true});
   };
   cancel = () => {
     speechSynthesis.cancel();
-    this.state.stopPlay = true;
+    this.setState({stopPlay: true});
   };
   //function to start the speech api
   read = (text, config) => {
@@ -221,6 +222,9 @@ class Table extends Component {
   };
 
   render() {
+    if (this.state.done) {
+      return <Redirect to="/dashboard" />;
+    }
     let navigation;
     let chapter = this.getCurrentChap().name;
     let subChapter = this.getCurrentSubchap().name;
@@ -229,9 +233,7 @@ class Table extends Component {
     } else {
       navigation = 'Chapter';
     }
-    if (this.state.done === true) {
-      return <Redirect to="/dashboard" />;
-    }
+
     return (
       <div>
         <h1>{chapter} </h1>
