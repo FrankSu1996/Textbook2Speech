@@ -8,27 +8,27 @@ import rightArrow from '../images/right_arrow.png';
 import p from '../images/p_key.png';
 import r from '../images/r_key.png';
 import t from '../images/t_key.png';
+import s from '../images/s_key.png';
+import c from '../images/c_key.png';
 import esc from '../images/esc_key.png';
 
-
 class Tutorial extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      text: "With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard. Keyboard commands: Press s to start the textbook reader. Press p to pause. Press r to resume. Press the escape key to cancel. Press the up and down arrow keys to change the navigation state. Press the left and right arrow keys to navigate through the current navigation state.  Press t to access this tutorial at any time. Layout: At the top of the screen, you may view and set your preferred audio speed. In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.",
-      audioConfig: new SpeechSynthesisUtterance()
-    }
+      text:
+        'With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard. Keyboard commands: Press s to start the textbook reader. Press p to pause. Press r to resume. Press the escape key to cancel the reader. Press the up and down arrow keys to change the navigation state. Press the left and right arrow keys to navigate through the current navigation state.  Press t to open or close this tutorial at any time. Layout: At the top of the screen, you may view and set your preferred audio speed. In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.',
+      audioConfig: new SpeechSynthesisUtterance(),
+    };
     this.closeTutorial = this.closeTutorial.bind(this);
   }
-  componentDidMount(){
+  componentDidMount() {
     this.startAudio();
-
   }
 
   closeTutorial() {
     speechSynthesis.cancel();
     this.props.closePopup();
-
   }
 
   startAudio() {
@@ -43,36 +43,63 @@ class Tutorial extends React.Component {
     if (event.keyCode == 84) {
       this.closeTutorial();
     }
-  }
+  };
 
   render() {
     const text = this.state.text;
     return (
-      <div className='popup' onKeyPress={this.keyPress} tabIndex="0">
-        <div className='popup_inner'>
-
+      <div className="popup" onKeyPress={this.keyPress} tabIndex="0">
+        <div className="popup_inner">
           <button onClick={this.closeTutorial}>X</button>
-          <p style={{fontSize: "20px"}}> With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard.
-           <br/>
-           <br/>
-           <b>Keyboard commands</b>
-           <br/>
-           Press s to start the textbook reader. Press <img src={p}/> to pause. Press <img src={r}/> to resume. Press <img src={esc}/> to cancel. Press the <img src={upArrow} />  and <img src={downArrow} /> arrow keys to change the navigation state.
-           Press the <img src={leftArrow} /> and <img src={rightArrow} /> arrow keys to navigate through the current navigation state.
-           Press t to access this tutorial at any time.
-           <br/>
-           <br/>
-           <b>Layout</b>
-           <br/>
-           At the top of the screen, you may view and set your preferred audio speed.
-           In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the
-           textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.
+          <p style={{fontSize: '20px'}}>
+            {' '}
+            With Textbook2Speech, you can navigate and interact with your
+            textbooks using only your keyboard.
+            <br />
+            <br />
+            <b>Keyboard commands</b>
+            <br />
+            <ul>
+              <li>
+                Press <img src={s}></img> to start the textbook reader
+              </li>
+              <li>
+                Press <img src={p} /> to pause.{' '}
+              </li>
+              <li>
+                Press <img src={r} /> to resume.{' '}
+              </li>
+              <li>
+                Press <img src={esc} /> to cancel.{' '}
+              </li>
+              <li>
+                Press the <img src={upArrow} /> and <img src={downArrow} />{' '}
+                arrow keys to change the navigation state.{' '}
+              </li>
+              <li>
+                Press the <img src={leftArrow} /> and <img src={rightArrow} />{' '}
+                arrow keys to navigate through the current navigation state.{' '}
+              </li>
+              <li>
+                Press <img src={t}></img> to open/close this tutorial at any
+                time.
+              </li>
+              <li>
+                Press <img src={c}></img> to go to the table of contents
+              </li>
+            </ul>
+            <br />
+            <b>Layout</b>
+            <br />
+            At the top of the screen, you may view and set your preferred audio
+            speed. In the center of the screen, you will see the title of the
+            textbook. Below that is the navigation tool where you can see the
+            contents of the textbook. It displays the chapter title, subchapter
+            title, the appropriate passage from the textbook, and the current
+            navigation level.
           </p>
-
-
         </div>
       </div>
-
     );
   }
 }
