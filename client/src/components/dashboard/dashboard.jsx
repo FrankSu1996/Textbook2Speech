@@ -36,7 +36,10 @@ class Header extends Component {
               <FontAwesomeIcon icon={faHeadset} /> Textbook2Speech{' '}
             </NavbarBrand>
             <Nav>
-              <NavItem>Table of Contents</NavItem>
+              <NavItem>
+                Capstone 2019-2020 Group 3: Anna Jo, Frank Su, Anna LM, Peter
+                Weng
+              </NavItem>
             </Nav>
           </Container>
         </Navbar>
@@ -119,7 +122,7 @@ class Dashboard extends Component {
           break;
         //'c' key to navigate to contentes
         case 67:
-          this.state.nav = true;
+          this.setState({nav: true});
           this.cancel();
           speechSynthesis.cancel();
           break;
