@@ -48,7 +48,12 @@ class Tutorial extends React.Component {
   render() {
     const text = this.state.text;
     return (
-      <div className="popup" onKeyPress={this.keyPress} tabIndex="0">
+      <div
+        className="popup"
+        onKeyPress={this.keyPress}
+        tabIndex="0"
+        style={{height: '1300px'}}
+      >
         <div className="popup_inner">
           <button onClick={this.closeTutorial}>X</button>
           <p style={{fontSize: '20px'}}>
