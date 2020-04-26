@@ -659,9 +659,7 @@ class Dashboard extends Component {
                 <h2>{subChapterName}</h2>
                 <h5 className={styles.TextArea}>{text}</h5>
                 <h3>Current navigation : {navigation}</h3>
-                {this.state.showTutorial ? (
-                  <Tutorial closePopup={this.toggleTutorial.bind(this)} />
-                ) : null}
+                
               </div>
 
               {/* Div for the down arrow */}

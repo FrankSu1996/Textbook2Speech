@@ -21,14 +21,22 @@ class Tutorial extends React.Component {
     this.closeTutorial = this.closeTutorial.bind(this);
   }
   componentDidMount(){
-    var text = this.state.text;
-    speechSynthesis.speak(new SpeechSynthesisUtterance(text))
+    this.startAudio();
+
   }
 
   closeTutorial() {
     speechSynthesis.cancel();
     this.props.closePopup();
 
+  }
+
+  startAudio() {
+    var synth = window.speechSynthesis;
+    var text = this.state.text;
+    var audio = new SpeechSynthesisUtterance(text);
+    audio.onstart = () => console.log(audio.text);
+    synth.speak(audio);
   }
 
   keyPress = (event) => {
