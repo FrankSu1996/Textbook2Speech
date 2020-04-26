@@ -37,7 +37,6 @@ class Table extends Component {
         break;
       case 13:
         this.selectSection();
-        console.log(this.state.done);
         break;
       case 37:
         this.leftArrowHandle();

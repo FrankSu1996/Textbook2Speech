@@ -6,9 +6,14 @@ import leftArrow from '../../images/left_arrow.png';
 import upArrow from '../../images/up_arrow.png';
 import downArrow from '../../images/down_arrow.png';
 import rightArrow from '../../images/right_arrow.png';
+import cKey from '../../images/c_key.png';
+import tKey from '../../images/t_key.png';
 import ErrorModal from '../errorModal/errorModal';
 import {Container, Row, Col} from 'react-bootstrap';
-import { Redirect, BrowserRouter as Router } from 'react-router-dom';
+import {Redirect, BrowserRouter as Router} from 'react-router-dom';
+import {Nav, Navbar, NavbarBrand, NavItem, NavLink, Collapse} from 'reactstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faHeadset} from '@fortawesome/free-solid-svg-icons';
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -16,6 +21,29 @@ const NAVIGATION = {
   CHAP: 2,
   MAX: 3,
 };
+
+class Header extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        <Navbar color="light" light expand="md">
+          <Container>
+            <NavbarBrand>
+              <FontAwesomeIcon icon={faHeadset} /> Textbook2Speech{' '}
+            </NavbarBrand>
+            <Nav>
+              <NavItem>Table of Contents</NavItem>
+            </Nav>
+          </Container>
+        </Navbar>
+      </div>
+    );
+  }
+}
 
 class Dashboard extends Component {
   constructor(props) {
@@ -48,7 +76,7 @@ class Dashboard extends Component {
     //disables up and down arrow causing browser to scroll
     window.addEventListener(
       'keydown',
-      function(e) {
+      function (e) {
         // space and arrow keys
         if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
           e.preventDefault();
@@ -63,13 +91,13 @@ class Dashboard extends Component {
   }
 
   //function to show modal
-  showErrorModal = e => {
+  showErrorModal = (e) => {
     this.cancel();
     this.setState({showErrorModal: true});
   };
 
   //function to close error modal
-  closeErrorModal = e => {
+  closeErrorModal = (e) => {
     this.cancel();
     this.setState({showErrorModal: false});
   };
@@ -82,7 +110,7 @@ class Dashboard extends Component {
   };
 
   //handler for keypress events
-  handleKeyPress = event => {
+  handleKeyPress = (event) => {
     if (!this.state.showErrorModal) {
       switch (event.keyCode) {
         //'s' key to start speech api
@@ -138,7 +166,7 @@ class Dashboard extends Component {
 
   //handler to start speech api on current text to read. Will continuously read through paragraphs
   //until another functionality key is pressed
-  startSpeechHandler = config => {
+  startSpeechHandler = (config) => {
     speechSynthesis.cancel();
     this.readAllParagraphsInSubchapter(
       this.state.subChapterNumber,
@@ -458,13 +486,13 @@ class Dashboard extends Component {
   };
 
   //function to set the text that is to be read. Will cancel the speech api to do so
-  setTextToRead = text => {
+  setTextToRead = (text) => {
     speechSynthesis.cancel();
     this.setState({currentTextToRead: text});
   };
 
   //function to set the rate of speech. Will cancel the current speech api to do so
-  setAudioSpeed = config => {
+  setAudioSpeed = (config) => {
     speechSynthesis.cancel();
     config.rate = this.state.audioSpeed;
     this.speech('Audio speed set to:' + config.rate, config);
@@ -482,7 +510,7 @@ class Dashboard extends Component {
   };
 
   //function to retrieve the current paragraph to be read
-  getParagraph = paragraphNumber => {
+  getParagraph = (paragraphNumber) => {
     const currentSubChapter = this.getCurrentSubchapter();
     return currentSubChapter.paragraphs[paragraphNumber];
   };
@@ -502,7 +530,7 @@ class Dashboard extends Component {
   };
 
   //handles navigating to a certain subChapter, starts at the first paragraph
-  handleSubchapterNavigation = subchapterNumber => {
+  handleSubchapterNavigation = (subchapterNumber) => {
     //cancel speech api
     speechSynthesis.cancel();
     this.setState({
@@ -518,7 +546,7 @@ class Dashboard extends Component {
   };
 
   //handles navigating to a certain paragraph
-  handleParagraphNavigation = paragraphNumber => {
+  handleParagraphNavigation = (paragraphNumber) => {
     //cancel speech api
     speechSynthesis.cancel();
     this.setState({paragraphNumber: paragraphNumber - 1});
@@ -527,7 +555,7 @@ class Dashboard extends Component {
   };
 
   //handles navigating to a certain chapter
-  handleChapterNavigation = chapterNumber => {
+  handleChapterNavigation = (chapterNumber) => {
     speechSynthesis.cancel();
     this.setState({
       chapterNumber: chapterNumber,
@@ -566,10 +594,8 @@ class Dashboard extends Component {
     let nextNavigation;
     let previousNavigation;
     //navigate to table of contents if t is pressed
-    if (this.state.nav === true){
-      return (
-        <Redirect to='/'/>
-      )
+    if (this.state.nav === true) {
+      return <Redirect to="/" />;
     }
     const upArrowBoxColor = {
       backgroundColor: this.state.upArrowBoxColor,
@@ -614,17 +640,32 @@ class Dashboard extends Component {
 
     return (
       <React.Fragment>
-        <div className={styles.AudioPanel}>
-          <p>Set audio speed to: (Between 1 - 10)</p>
-          <input
-            value={this.state.audioSpeed}
-            type="number"
-            onChange={e => this.setState({audioSpeed: e.target.value})}
-          />
-          <button onClick={e => this.setAudioSpeed(this.state.audioConfig)}>
-            Set
-          </button>
-        </div>
+        <Header></Header>
+        <Container>
+          <Row>
+            <Col xs={6}>
+              <div className={styles.AudioPanel}>
+                <h1>Set audio speed to: (Between 1 - 10)</h1>
+                <input
+                  value={this.state.audioSpeed}
+                  type="number"
+                  onChange={(e) => this.setState({audioSpeed: e.target.value})}
+                />
+                <button
+                  onClick={(e) => this.setAudioSpeed(this.state.audioConfig)}
+                >
+                  Set
+                </button>
+              </div>
+            </Col>
+            <Col xs={6} className={styles.AudioPanel}>
+              <h1>
+                Press <img src={tKey} alt="UpArrow" width="50" height="50" /> to
+                open the Tutorial
+              </h1>
+            </Col>
+          </Row>
+        </Container>
 
         <div className={styles.Title}>
           <h1>{this.state.textbookSelected.name}</h1>
@@ -659,7 +700,6 @@ class Dashboard extends Component {
                 <h2>{subChapterName}</h2>
                 <h5 className={styles.TextArea}>{text}</h5>
                 <h3>Current navigation : {navigation}</h3>
-                
               </div>
 
               {/* Div for the down arrow */}
