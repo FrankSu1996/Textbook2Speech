@@ -28,9 +28,12 @@ class Table extends Component {
       done: false,
     };
   }
-
   handleKeyPress = event => {
     switch (event.keyCode) {
+      //'s' to start speech
+      case 83:
+        this.start();
+        break;
       //'esc' key to stop speech api
       case 27:
         this.cancel();
@@ -60,6 +63,11 @@ class Table extends Component {
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
+  start = () => {
+    this.read('welcome to Textbook to Speech. To hear the tutorial, press t. Otherwise, navigate the table of contents to pick your chapter', this.state.audioConfig);
+    let firstChapName = this.state.textbook.chapters[0].name;
+    this.read(firstChapName, this.state.audioConfig);
+  };
   //"selects section" aka changes the state and calls dashboard with the new state passed as props
   selectSection = () => {
     window.$chStart = this.state.chapterNumber;
@@ -84,13 +92,9 @@ class Table extends Component {
       let navigation = this.state.nav;
       navigation += 1;
       this.setState({nav: navigation});
-      if (navigation === NAV.SUBCHAP) {
-        speechSynthesis.cancel();
-        this.read('Subchapter navigation', this.state.audioConfig);
-      } else {
-        speechSynthesis.cancel();
-        this.read('Chapter navigation', this.state.audioConfig);
-      }
+      speechSynthesis.cancel();
+      this.read('Chapter navigation', this.state.audioConfig);
+      this.read(this.getCurrentChap().name, this.state.audioConfig);
     }
   };
 
@@ -101,17 +105,13 @@ class Table extends Component {
       let navigation = this.state.nav;
       navigation -= 1;
       this.setState({nav: navigation});
-      if (navigation === NAV.SUBCHAP) {
-        speechSynthesis.cancel();
-        this.read('Subchapter navigation', this.state.audioConfig);
-      } else {
-        speechSynthesis.cancel();
-        this.read('Chapter navigation', this.state.audioConfig);
-      }
+      speechSynthesis.cancel();
+      this.read('Subchapter navigation', this.state.audioConfig);
+      this.read(this.getCurrentSubchap().name, this.state.audioConfig);
     }
   };
 
-  //handler for left arrow key events
+  //handler for right arrow key events
   rightArrowHandle = () => {
     //handling navigation for subchapters
     if (this.state.nav === NAV.SUBCHAP) {
@@ -122,13 +122,12 @@ class Table extends Component {
         //increment subchapter counter
         const newSubChapterNumber = this.state.subChapterNumber + 2;
         this.handleSubchapterNavigation(newSubChapterNumber);
-        this.read('monday', this.state.audioConfig);
         this.readSubChap();
       } else {
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
-        this.read('tuesday', this.state.audioConfig);
-        this.readChap();
+        this.read(this.getCurrentChap().name, this.state.audioConfig);
+        this.read(this.getCurrentSubchap().name, this.state.audioConfig);
       }
     } else {
       //handling navigation for chapters
@@ -136,14 +135,13 @@ class Table extends Component {
         //increment chapter counter and set subchapter counter to 0
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
-        this.read('wednesday', this.state.audioConfig);
         this.readChap();
       } else {
         alert('Reached end of chapters');
       }
     }
   };
-  //handler for right arrow key events
+  //handler for left arrow key events
   leftArrowHandle = () => {
     if (this.state.nav === NAV.SUBCHAP) {
       //handling navigation for subchapters
@@ -151,15 +149,14 @@ class Table extends Component {
         //increment subchapter counter
         const newSubChapterNumber = this.state.subChapterNumber;
         this.handleSubchapterNavigation(newSubChapterNumber);
-        this.read('thursday', this.state.audioConfig);
         this.readSubChap();
       } else {
         if (this.state.chapterNumber > 0) {
           //increment chapter counter and set subchapter counter to 0
           const newChapterNumber = this.state.chapterNumber - 1;
           this.handleChapterNavigation(newChapterNumber);
-          this.read('friday', this.state.audioConfig);
-          this.readChap();
+          this.read(this.getCurrentChap().name, this.state.audioConfig);
+          this.read(this.getCurrentSubchap().name, this.state.audioConfig);
         } else {
           alert('Reached end of chapters');
         }
