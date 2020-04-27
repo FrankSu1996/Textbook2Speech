@@ -26,6 +26,7 @@ class Table extends Component {
       audioConfig: new SpeechSynthesisUtterance(),
       stopPlay: false,
       done: false,
+      starting: true,
     };
   }
   handleKeyPress = event => {
@@ -64,9 +65,18 @@ class Table extends Component {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
   start = () => {
-    this.read('welcome to Textbook to Speech. To hear the tutorial, press t. Otherwise, navigate the table of contents to pick your chapter', this.state.audioConfig);
-    let firstChapName = this.state.textbook.chapters[0].name;
-    this.read(firstChapName, this.state.audioConfig);
+    this.cancel();
+    if (this.state.starting === true) {
+      this.read('welcome to Textbook to Speech. To hear the tutorial, press t. Otherwise, navigate the table of contents to pick your chapter', this.state.audioConfig);
+      let firstChapName = this.state.textbook.chapters[0].name;
+      this.read(firstChapName, this.state.audioConfig);
+      this.setState({starting: false});
+    }
+    else {
+      this.read(this.getCurrentChap().name, this.state.audioConfig);
+      this.read(this.getCurrentSubchap().name, this.state.audioConfig);
+    }
+    
   };
   //"selects section" aka changes the state and calls dashboard with the new state passed as props
   selectSection = () => {
