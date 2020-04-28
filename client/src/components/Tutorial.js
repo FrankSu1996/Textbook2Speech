@@ -16,7 +16,25 @@ class Tutorial extends React.Component {
     super(props);
     this.state = {
       text:
-        'With Textbook2Speech, you can navigate and interact with your textbooks using only your keyboard. Keyboard commands: Press s to start the textbook reader. Press p to pause. Press r to resume. Press the escape key to cancel the reader. Press the up and down arrow keys to change the navigation state. Press the left and right arrow keys to navigate through the current navigation state.  Press t to open or close this tutorial at any time. Layout: At the top of the screen, you may view and set your preferred audio speed. In the center of the screen, you will see the title of the textbook. Below that is the navigation tool where you can see the contents of the textbook. It displays the chapter title, subchapter title, the appropriate passage from the textbook, and the current navigation level.',
+        'With Textbook2Speech, you can navigate and interact with your textbooks using only your \
+         keyboard. To make our application as simple and convenient \
+         as possible, we use \"navigation states\". To understand what navigation \
+         states are, imagine the textbook as a hierarchy divided into \
+         chapters, subchapters, and paragraphs. A navigation state refers to \
+         a level in this hierarchy. Continue this tutorial to learn the different \
+         keyboard commands that are used to control Textbook2Speech. \
+         Keyboard commands: Press s to start the textbook reader. Press p to pause. \
+         Press r to resoom. Press the escape key to cancel. Press the up and down arrow \
+         keys to change the navigation state. Press the left and right arrow keys to navigate through \
+         the current navigation state. For example, if you are currently on the subchapters navigation state, press \
+         the up arrow key to set the navigation state to chapter. Press the down arrow \
+         key to set the navigation state to paragraphs. For example, if you are currently on the chapter navigation state, \
+         press the right arrow key to go to the next chapter. Press the left \
+         arrow key to go to the previous chapter. Press t to open or close this tutorial at any time. \
+         Layout: At the top of the screen, you may view and set your preferred audio speed. \
+         In the center of the screen, you will see the title of the textbook. Below that is the \
+         navigation tool where you can see the contents of the textbook. It displays the chapter title, \
+         subchapter title, the appropriate passage from the textbook, and the current navigation level.',
       audioConfig: new SpeechSynthesisUtterance(),
     };
     this.closeTutorial = this.closeTutorial.bind(this);
@@ -58,7 +76,12 @@ class Tutorial extends React.Component {
           <p style={{fontSize: '20px'}}>
             {' '}
             With Textbook2Speech, you can navigate and interact with your
-            textbooks using only your keyboard.
+            textbooks using only your keyboard. To make our application as simple and convenient
+            as possible, we use "navigation states". To understand what navigation
+            states are, imagine the textbook as a hierarchy divided into
+            chapters, subchapters, and paragraphs. A navigation state refers to
+            a level in this hierarchy. Continue this tutorial to learn the different
+            keyboard commands that are used to control Textbook2Speech.
             <br />
             <br />
             <b>Keyboard commands</b>
@@ -79,10 +102,16 @@ class Tutorial extends React.Component {
               <li>
                 Press the <img src={upArrow} /> and <img src={downArrow} />{' '}
                 arrow keys to change the navigation state.{' '}
+                For example, if you are currently on the subchapters navigation state, press
+                <img src={upArrow} /> to set the navigation state to chapter. Press <img src={downArrow} />
+                to set the navigation state to paragraphs.
               </li>
               <li>
                 Press the <img src={leftArrow} /> and <img src={rightArrow} />{' '}
                 arrow keys to navigate through the current navigation state.{' '}
+                For example, if you are currently on the chapter navigation state,
+                press <img src={leftArrow} /> to go to the previous chapter.
+                Press <img src={rightArrow} /> to go to the next chapter.
               </li>
               <li>
                 Press <img src={t}></img> to open/close this tutorial at any
