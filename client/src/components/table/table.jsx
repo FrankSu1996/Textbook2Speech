@@ -9,6 +9,8 @@ import {
 } from 'react-router-dom';
 import Textbook from '../../textbook/textbook';
 import Tutorial from '../Tutorial';
+import {Container, Row, Col} from 'react-bootstrap';
+import TC from './tableComponents';
 
 const NAV = {
   SUBCHAP: 0,
@@ -29,6 +31,7 @@ class Table extends Component {
       done: false,
       starting: true,
       showTutorial: false,
+      colours: [0,0,0,0,0,0,0,0,0]
     };
   }
   handleKeyPress = event => {
@@ -75,17 +78,37 @@ class Table extends Component {
       showTutorial: !this.state.showTutorial,
     });
   };
+  //changes colour of one badge from blue to black or vice versa
+  flipColour = () => {
+    let elem;
+    if (this.state.nav === 0) {
+      elem = this.state.subChapterNumber;
+    } else {
+      elem = this.state.chapterNumber;
+    }
+    //this.setState({colours[elem]:})
+  };
+  //inverts all colours in array
+  invertColours = () => {
+
+  }
+  //reads welcome message if user just beginning, otherwise reads current state to remind user where they are
   start = () => {
     this.cancel();
     if (this.state.starting === true) {
       this.read('welcome to Textbook to Speech. To hear the tutorial, press t. Otherwise, navigate the table of contents to pick your chapter', this.state.audioConfig);
-      let firstChapName = this.state.textbook.chapters[0].name;
+      let firstChapName = this.getCurrentChap.name;
       this.read(firstChapName, this.state.audioConfig);
       this.setState({starting: false});
     }
     else {
-      this.read(this.getCurrentChap().name, this.state.audioConfig);
-      this.read(this.getCurrentSubchap().name, this.state.audioConfig);
+      let text = this.getCurrentChap().name + ". " + this.getCurrentSubchap().name + ". ";
+      if (this.state.nav === 0) {
+        text += "navigation: Subchapter";
+      } else {
+        text += "navigation: Chapter";
+      }
+      this.read(text, this.state.audioConfig);
     }
 
   };
@@ -158,7 +181,7 @@ class Table extends Component {
         this.handleChapterNavigation(newChapterNumber);
         this.readChap();
       } else {
-        alert('Reached end of chapters');
+        this.read('You have reached the end of the textbook', this.state.audioConfig);
       }
     }
   };
@@ -179,7 +202,7 @@ class Table extends Component {
           this.read(this.getCurrentChap().name, this.state.audioConfig);
           this.read(this.getCurrentSubchap().name, this.state.audioConfig);
         } else {
-          alert('Reached end of chapters');
+          this.read('You have reached the beginning of the textbook', this.state.audioConfig);
         }
       }
     } else {
@@ -191,7 +214,7 @@ class Table extends Component {
         this.read('saturday', this.state.audioConfig);
         this.readChap();
       } else {
-        alert('Reached end of chapters');
+        this.read('You have reached the beginning of the textbook', this.state.audioConfig);
       }
     }
   };
@@ -253,13 +276,28 @@ class Table extends Component {
 
     return (
       <div>
-        <h1>{chapter} </h1>
-        <h2>{subChapter} </h2>
-        <h2>Current navigation: {navigation} </h2>
-        {this.state.showTutorial ? (
-          <Tutorial closePopup={this.toggleTutorial.bind(this)} />
-        ) : null}
+      <h1>{chapter} </h1>
+      <h2>{subChapter} </h2>
+      <h2>Current navigation: {navigation} </h2>
+      <div style={{ display: 'flex '}}>
+        <TC />
+        <TC /> 
+        <TC />
       </div>
+      <div style={{ display: 'flex '}}>
+        <TC />
+        <TC /> 
+        <TC />
+      </div><div style={{ display: 'flex '}}>
+        <TC />
+        <TC /> 
+        <TC />
+      </div>
+      {this.state.showTutorial ? (
+        <Tutorial closePopup={this.toggleTutorial.bind(this)} />
+      ) : null}
+    </div>
+      
     );
   }
 }
