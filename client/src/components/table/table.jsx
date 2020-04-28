@@ -31,7 +31,7 @@ class Table extends Component {
       done: false,
       starting: true,
       showTutorial: false,
-      colours: [0,0,0,0,0,0,0,0,0]
+      colours: [0,1,1,1,1,1,1,1,1]
     };
   }
   handleKeyPress = event => {
@@ -90,7 +90,14 @@ class Table extends Component {
   };
   //inverts all colours in array
   invertColours = () => {
-
+    let tempList;
+    if (this.state.nav === 0){
+      tempList = this.state.colours.map((val) => val + 1);
+    } 
+    else {
+      tempList = this.state.colours.map((val) => val - 1);
+    }
+    this.setState({colours: tempList});
   }
   //reads welcome message if user just beginning, otherwise reads current state to remind user where they are
   start = () => {
@@ -133,6 +140,7 @@ class Table extends Component {
   upArrowHandle = () => {
     //increments the navigation state
     if (this.state.nav < NAV.MAX - 1) {
+      this.invertColours();
       let navigation = this.state.nav;
       navigation += 1;
       this.setState({nav: navigation});
@@ -149,6 +157,7 @@ class Table extends Component {
       let navigation = this.state.nav;
       navigation -= 1;
       this.setState({nav: navigation});
+      this.invertColours();
       speechSynthesis.cancel();
       this.read('Subchapter navigation', this.state.audioConfig);
       this.read(this.getCurrentSubchap().name, this.state.audioConfig);
@@ -268,10 +277,13 @@ class Table extends Component {
     let navigation;
     let chapter = this.getCurrentChap().name;
     let subChapter = this.getCurrentSubchap().name;
+    let curNum;
     if (this.state.nav === 0) {
       navigation = 'Subchapter';
+      curNum = this.state.subChapterNumber;
     } else {
       navigation = 'Chapter';
+      curNum = this.state.chapterNumber;
     }
 
     return (
@@ -280,18 +292,18 @@ class Table extends Component {
       <h2>{subChapter} </h2>
       <h2>Current navigation: {navigation} </h2>
       <div style={{ display: 'flex '}}>
-        <TC />
-        <TC /> 
-        <TC />
+        <TC num={1} colour={this.state.colours[0]}/>
+        <TC num={2} colour={this.state.colours[1]}/> 
+        <TC num={3} colour={this.state.colours[2]}/>
       </div>
       <div style={{ display: 'flex '}}>
-        <TC />
-        <TC /> 
-        <TC />
+        <TC num={4} colour={this.state.colours[3]}/>
+        <TC num={5} colour={this.state.colours[4]}/> 
+        <TC num={6} colour={this.state.colours[5]}/>
       </div><div style={{ display: 'flex '}}>
-        <TC />
-        <TC /> 
-        <TC />
+        <TC num={7} colour={this.state.colours[6]}/>
+        <TC num={8} colour={this.state.colours[7]}/> 
+        <TC num={9} colour={this.state.colours[8]}/>
       </div>
       {this.state.showTutorial ? (
         <Tutorial closePopup={this.toggleTutorial.bind(this)} />
