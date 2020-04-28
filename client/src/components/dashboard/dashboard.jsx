@@ -6,7 +6,6 @@ import leftArrow from '../../images/left_arrow.png';
 import upArrow from '../../images/up_arrow.png';
 import downArrow from '../../images/down_arrow.png';
 import rightArrow from '../../images/right_arrow.png';
-import cKey from '../../images/c_key.png';
 import tKey from '../../images/t_key.png';
 import ErrorModal from '../errorModal/errorModal';
 import {Container, Row, Col} from 'react-bootstrap';
@@ -275,6 +274,7 @@ class Dashboard extends Component {
 
   //handler for left arrow key events
   rightArrowHandler = () => {
+    this.cancel();
     //hacky way to flicker background color
     this.setState({rightArrowBoxColor: 'red'});
     setTimeout(() => {
@@ -379,6 +379,7 @@ class Dashboard extends Component {
 
   //handler for right arrow key events
   leftArrowHandler = () => {
+    this.cancel();
     //hacky way to flicker background color
     this.setState({leftArrowBoxColor: 'red'});
     setTimeout(() => {
