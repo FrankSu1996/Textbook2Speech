@@ -230,6 +230,7 @@ class Dashboard extends Component {
 
   //handler for up arrow key events
   upArrowHandler = () => {
+    this.cancel();
     //increments the navigation state
     if (this.state.navigation < NAVIGATION.MAX - 1) {
       let navigation = this.state.navigation;
@@ -252,6 +253,7 @@ class Dashboard extends Component {
 
   //handler for down arrow key events
   downArrowHandler = () => {
+    this.cancel();
     //decrements the navigation state
     if (this.state.navigation > 0) {
       let navigation = this.state.navigation;
