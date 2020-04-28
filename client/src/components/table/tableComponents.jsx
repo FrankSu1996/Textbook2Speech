@@ -2,16 +2,15 @@ import React, { Component } from "react";
 
 class TC extends Component {
     state = {
-        num: this.props.num,
-        colour: this.props.colour
+        num: this.props.num
     };
 
     styles = {
-        fontSize: 100
+        fontSize: 110
     };
     render () {
         let colour;
-        if (this.state.colour == 0){
+        if (this.props.colour == 0){
             colour = "badge badge-primary m-2"
         }
         else {
@@ -19,7 +18,7 @@ class TC extends Component {
         }
         return (
             <div>
-                <span style = {this.styles} className={colour}> {this.state.num}</span>
+                <span style = {this.styles} className={colour}> {this.props.num}</span>
             </div>
         );
     }

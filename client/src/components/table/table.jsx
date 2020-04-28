@@ -269,7 +269,6 @@ class Table extends Component {
       subChapterNumber: subChapterNumber - 1,
     });
   };
-
   render() {
     if (this.state.done) {
       return <Redirect to="/dashboard" />;
@@ -285,7 +284,6 @@ class Table extends Component {
       navigation = 'Chapter';
       curNum = this.state.chapterNumber;
     }
-
     return (
       <div>
       <h1>{chapter} </h1>
