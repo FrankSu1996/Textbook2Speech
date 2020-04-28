@@ -4,7 +4,6 @@ import leftArrow from '../images/left_arrow.png';
 import upArrow from '../images/up_arrow.png';
 import downArrow from '../images/down_arrow.png';
 import rightArrow from '../images/right_arrow.png';
-// import s from '../images/s_key.png';
 import p from '../images/p_key.png';
 import r from '../images/r_key.png';
 import t from '../images/t_key.png';

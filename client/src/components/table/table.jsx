@@ -8,6 +8,7 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 import Textbook from '../../textbook/textbook';
+import Tutorial from '../Tutorial';
 
 const NAV = {
   SUBCHAP: 0,
@@ -27,6 +28,7 @@ class Table extends Component {
       stopPlay: false,
       done: false,
       starting: true,
+      showTutorial: false,
     };
   }
   handleKeyPress = event => {
@@ -54,6 +56,9 @@ class Table extends Component {
       case 40:
         this.downArrowHandle();
         break;
+      case 84:
+        this.toggleTutorial();
+        break;
       default:
         break;
     }
@@ -64,6 +69,12 @@ class Table extends Component {
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
+  toggleTutorial = () => {
+    this.cancel();
+    this.setState({
+      showTutorial: !this.state.showTutorial,
+    });
+  };
   start = () => {
     this.cancel();
     if (this.state.starting === true) {
@@ -76,7 +87,7 @@ class Table extends Component {
       this.read(this.getCurrentChap().name, this.state.audioConfig);
       this.read(this.getCurrentSubchap().name, this.state.audioConfig);
     }
-    
+
   };
   //"selects section" aka changes the state and calls dashboard with the new state passed as props
   selectSection = () => {
@@ -245,6 +256,9 @@ class Table extends Component {
         <h1>{chapter} </h1>
         <h2>{subChapter} </h2>
         <h2>Current navigation: {navigation} </h2>
+        {this.state.showTutorial ? (
+          <Tutorial closePopup={this.toggleTutorial.bind(this)} />
+        ) : null}
       </div>
     );
   }
