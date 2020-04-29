@@ -182,9 +182,9 @@ class Dashboard extends Component {
           break;
         //'c' key to navigate to contentes
         case 67:
-          this.setState({ nav: true });
           this.cancel();
           speechSynthesis.cancel();
+          this.setState({ nav: true });
           break;
         //'esc' key to stop speech api
         case 27:
