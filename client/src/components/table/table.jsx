@@ -413,12 +413,13 @@ class Table extends Component {
     let row2 = this.state.componentValues.slice(x, 2*x);
     let row3 = this.state.componentValues.slice(2*x, this.state.componentValues.length);
     return (
-      <div>
+      <div>       
       <div>
         <h1>{chapter} </h1>
         <h2>{subChapter} </h2>
         <h2>Current navigation: {navigation} </h2>
-        <div style={{ display: 'flex '}}>
+        <div style={{ 
+          display: 'flex '}}>
           {row1.map(cell => (
             <TC num={cell} colour={this.state.colours[cell - 1]} />
           ))}
@@ -436,8 +437,8 @@ class Table extends Component {
         {this.state.showTutorial ? (
           <Tutorial closePopup={this.toggleTutorial.bind(this)} />
         ) : null}
-    </div>
-      <React.Fragment> 
+    </div>    
+      <React.Fragment>
         <Container>
           <SpeechModal show={this.state.showSpeechModal}>
               <div className={styles.AudioPanel}>
