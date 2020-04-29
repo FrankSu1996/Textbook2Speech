@@ -178,13 +178,15 @@ class Table extends Component {
         this.handleSubchapterNavigation(newSubChapterNumber);
         this.flipColour(this.state.subChapterNumber);
         this.readSubChap();
-      } else {
+      } else if (this.state.chapterNumber < this.state.textbook.chapters.length - 1){
         this.flipColour(this.state.subChapterNumber);
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
         this.flipColour(this.state.subChapterNumber);
         this.read(this.getCurrentChap().name, this.state.audioConfig);
         this.read(this.getCurrentSubchap().name, this.state.audioConfig);
+      } else {
+        this.read('You have reached the end of the textbook', this.state.audioConfig);
       }
     } else {
       //handling navigation for chapters
@@ -204,16 +206,20 @@ class Table extends Component {
   leftArrowHandle = () => {
     if (this.state.nav === NAV.SUBCHAP) {
       //handling navigation for subchapters
-      if (this.state.subChapterNumber > 0) {
+      if (this.state.subChapterNumber > 0) {        
+        this.flipColour(this.state.subChapterNumber);
         //increment subchapter counter
         const newSubChapterNumber = this.state.subChapterNumber;
         this.handleSubchapterNavigation(newSubChapterNumber);
+        this.flipColour(this.state.subChapterNumber);
         this.readSubChap();
       } else {
         if (this.state.chapterNumber > 0) {
+          this.flipColour(this.state.subChapterNumber);
           //increment chapter counter and set subchapter counter to 0
           const newChapterNumber = this.state.chapterNumber - 1;
           this.handleChapterNavigation(newChapterNumber);
+          this.flipColour(this.state.subChapterNumber);
           this.read(this.getCurrentChap().name, this.state.audioConfig);
           this.read(this.getCurrentSubchap().name, this.state.audioConfig);
         } else {
@@ -223,10 +229,11 @@ class Table extends Component {
     } else {
       //handling navigation for chapters
       if (this.state.chapterNumber > 0) {
+        this.flipColour(this.state.subChapterNumber);
         //increment chapter counter and set subchapter counter to 0
         const newChapterNumber = this.state.chapterNumber - 1;
         this.handleChapterNavigation(newChapterNumber);
-        this.read('saturday', this.state.audioConfig);
+        this.flipColour(this.state.subChapterNumber);
         this.readChap();
       } else {
         this.read('You have reached the beginning of the textbook', this.state.audioConfig);
