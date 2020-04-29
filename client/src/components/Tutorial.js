@@ -23,17 +23,18 @@ class Tutorial extends React.Component {
          chapters, subchapters, and paragraphs. A navigation state refers to \
          a level in this hierarchy. Continue this tutorial to learn the different \
          keyboard commands that are used to control Textbook2Speech. \
-         Keyboard commands: Press s to start the textbook reader. Press p to pause. \
+         Keyboard commands: Press s to start the textbook reader, or restart after navigation. Press p to pause. \
          Press r to resoom. Press the escape key to cancel. Press the up and down arrow \
-         keys to change the navigation state. Press the left and right arrow keys to navigate through \
-         the current navigation state. For example, if you are currently on the subchapters navigation state, press \
+         keys to change the navigation state. For example, if you are currently on the subchapters navigation state, press \
          the up arrow key to set the navigation state to chapter. Press the down arrow \
-         key to set the navigation state to paragraphs. For example, if you are currently on the chapter navigation state, \
-         press the right arrow key to go to the next chapter. Press the left \
-         arrow key to go to the previous chapter. Press t to open or close this tutorial at any time. \
-         Layout: At the top of the screen, you may view and set your preferred audio speed. \
-         In the center of the screen, you will see the title of the textbook. Below that is the \
-         navigation tool where you can see the contents of the textbook. It displays the chapter title, \
+         key to set the navigation state to paragraphs. Press the left and right arrow keys to navigate through \
+         the current navigation state. For example, if you are currently on the chapter navigation state, \
+         press the left arrow key to go to the previous chapter. Press the right \
+         arrow key to go to the next chapter. Press t to open or close this tutorial at any time. \
+         For the table of contents, all of the commands are the same. Press enter to select the current chapter and subchapter. \
+         Layout: For users who can view the screen, your audio preference settings are located at the top of the screen. \
+         The title of the textbook is located at the centre of the screen. Below that is the \
+         navigation tool containing the contents of the textbook. It displays the chapter title, \
          subchapter title, the appropriate passage from the textbook, and the current navigation level.',
       audioConfig: new SpeechSynthesisUtterance(),
     };
@@ -88,7 +89,7 @@ class Tutorial extends React.Component {
             <br />
             <ul>
               <li>
-                Press <img src={s}></img> to start the textbook reader
+                Press <img src={s}></img> to start the textbook reader, or restart after navigation
               </li>
               <li>
                 Press <img src={p} /> to pause.{' '}
@@ -120,16 +121,17 @@ class Tutorial extends React.Component {
               <li>
                 Press <img src={c}></img> to go to the table of contents
               </li>
+              <li>
+                For the table of contents, all of the commands are the same. Press enter to select the current chapter and subchapter.
+              </li>
             </ul>
             <br />
             <b>Layout</b>
             <br />
-            At the top of the screen, you may view and set your preferred audio
-            speed. In the center of the screen, you will see the title of the
-            textbook. Below that is the navigation tool where you can see the
-            contents of the textbook. It displays the chapter title, subchapter
-            title, the appropriate passage from the textbook, and the current
-            navigation level.
+            For users who can view the screen, your audio preference settings are located at the top of the screen. 
+            The title of the textbook is located at the centre of the screen. Below that is the 
+            navigation tool containing the contents of the textbook. It displays the chapter title, 
+            subchapter title, the appropriate passage from the textbook, and the current navigation level.
           </p>
         </div>
       </div>
