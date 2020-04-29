@@ -35,7 +35,7 @@ class Table extends Component {
       done: false,
       starting: true,
       showTutorial: false,
-      colours: [0,1,1,1,1,1,1,1,1],
+      colours: [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
       componentValues: ["Press 's' to start"],
       natNumList: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
       showSpeechModal: false,
@@ -173,13 +173,12 @@ class Table extends Component {
   resetColours = () => {
     //let tempList;
     if (this.state.nav === 0){
-      this.setState({colours: [1,1,1,1,1,1,1,1,1]})//tempList = this.state.colours.map((val) => val + 1);
+      this.setState({colours: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]})
       this.flipColour(this.state.chapterNumber);
     } 
     else {
-      this.setState({colours: [1,0,0,0,0,0,0,0,0]})//tempList = this.state.colours.map((val) => val - 1);
+      this.setState({colours: [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]})
     }
-    //this.setState({colours: tempList});
   };
   //resets the number of components in componentValues to reflect current chapter / subchapter
   resetComponents = () => {
@@ -190,7 +189,7 @@ class Table extends Component {
       currentNum = this.state.textbook.chapters.length;
     }
     let tempList = this.state.natNumList;
-    this.setState({componentValues: tempList.slice(0, currentNum)});
+    this.setState({componentValues: tempList.slice(0,currentNum)});
   };
   //reads welcome message if user just beginning, otherwise reads current state to remind user where they are
   start = () => {
