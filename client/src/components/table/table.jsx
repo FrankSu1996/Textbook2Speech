@@ -319,6 +319,7 @@ class Table extends Component {
           //increment chapter counter and set subchapter counter to 0
           const newChapterNumber = this.state.chapterNumber - 1;
           this.handleChapterNavigation(newChapterNumber);
+          this.handleSubchapterNavigation(this.getCurrentChap().subchapters.length);
           this.flipColour(this.state.subChapterNumber);
           this.resetComponents();
           this.read(this.getCurrentChap().name, this.state.audioConfig);
