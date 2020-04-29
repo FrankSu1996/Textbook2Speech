@@ -7,6 +7,8 @@ import upArrow from "../../images/up_arrow.png";
 import downArrow from "../../images/down_arrow.png";
 import rightArrow from "../../images/right_arrow.png";
 import tKey from "../../images/t_key.png";
+import escKey from "../../images/esc_key.png";
+import enterKey from "../../images/enter_key.png";
 import ErrorModal from "../errorModal/errorModal";
 import SpeechModal from "../errorModal/errorModal";
 import { Container, Row, Col } from "react-bootstrap";
@@ -78,6 +80,7 @@ class Dashboard extends Component {
       showSpeechModal: false,
       modalMessage: "",
       nav: false,
+      nextAudioSpeed: 1,
     };
   }
 
@@ -117,7 +120,7 @@ class Dashboard extends Component {
   showSpeechModal = (e) => {
     this.cancel();
     this.speech(
-      "Select your audio speed from 1 to 10 and hit escape to exit",
+      "Enter a number from 1 to 9 and hit the enter key to confirm your choice! Press Escape to exit this window",
       this.state.audioConfig
     );
     this.setState({ showSpeechModal: true });
@@ -146,6 +149,30 @@ class Dashboard extends Component {
     } else if (this.state.showSpeechModal) {
       if (event.keyCode === 27) {
         this.closeSpeechModal();
+        // 1 - 9 selects the audio speed to set to
+      } else if (event.keyCode === 49) {
+        this.setState({ nextAudioSpeed: 1 });
+      } else if (event.keyCode === 50) {
+        this.setState({ nextAudioSpeed: 2 });
+      } else if (event.keyCode === 51) {
+        this.setState({ nextAudioSpeed: 3 });
+      } else if (event.keyCode === 52) {
+        this.setState({ nextAudioSpeed: 4 });
+      } else if (event.keyCode === 53) {
+        this.setState({ nextAudioSpeed: 5 });
+      } else if (event.keyCode === 54) {
+        this.setState({ nextAudioSpeed: 6 });
+      } else if (event.keyCode === 55) {
+        this.setState({ nextAudioSpeed: 7 });
+      } else if (event.keyCode === 56) {
+        this.setState({ nextAudioSpeed: 8 });
+      } else if (event.keyCode === 57) {
+        this.setState({ nextAudioSpeed: 9 });
+      }
+      //enter confirms the selection
+      else if (event.keyCode === 13) {
+        console.log("Enter hit");
+        this.setAudioSpeed(this.state.audioConfig);
       }
     } else {
       switch (event.keyCode) {
@@ -537,7 +564,8 @@ class Dashboard extends Component {
   //function to set the rate of speech. Will cancel the current speech api to do so
   setAudioSpeed = (config) => {
     speechSynthesis.cancel();
-    config.rate = this.state.audioSpeed;
+    config.rate = this.state.nextAudioSpeed;
+    this.setState({ audioSpeed: this.state.nextAudioSpeed });
     this.speech("Audio speed set to:" + config.rate, config);
   };
 
@@ -691,8 +719,8 @@ class Dashboard extends Component {
             marginTop: "40px",
           }}
         >
-          Press <img src={tKey} alt="UpArrow" width="50" height="50" /> to open
-          the Tutorial
+          Press <img src={tKey} alt="UpArrow" width="50" height="50" /> to
+          open/close the Tutorial
         </h1>
 
         <div className={styles.Title}>
@@ -760,19 +788,17 @@ class Dashboard extends Component {
           </ErrorModal>
           <SpeechModal show={this.state.showSpeechModal}>
             <div className={styles.AudioPanel}>
+              <h1>Current audio speed: {this.state.audioSpeed}</h1>
+              <h1>Set Speed to: {this.state.nextAudioSpeed}</h1>
+              <br></br>
+              <br></br>
+              <br></br>
               <h1>
-                Set audio speed to: (Between 1 - 10) and hit Escape to exit!
+                Hit <img src={enterKey}></img> to confirm your choice!
               </h1>
-              <input
-                value={this.state.audioSpeed}
-                type="number"
-                onChange={(e) => this.setState({ audioSpeed: e.target.value })}
-              />
-              <button
-                onClick={(e) => this.setAudioSpeed(this.state.audioConfig)}
-              >
-                Set
-              </button>
+              <h1>
+                Hit <img src={escKey}></img> to exit this window!
+              </h1>
             </div>
           </SpeechModal>
         </Container>
