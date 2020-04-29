@@ -79,25 +79,25 @@ class Table extends Component {
     });
   };
   //changes colour of one badge from blue to black or vice versa
-  flipColour = () => {
-    let elem;
-    if (this.state.nav === 0) {
-      elem = this.state.subChapterNumber;
+  flipColour = (index) => {
+    let tempList = this.state.colours;
+    if (tempList[index] === 0){
+      tempList[index] = 1
     } else {
-      elem = this.state.chapterNumber;
+      tempList[index] = 0
     }
-    //this.setState({colours[elem]:})
+    this.setState({colours: tempList})
   };
-  //inverts all colours in array
-  invertColours = () => {
-    let tempList;
+  //resets array to begin chapter / subchapter navigation with first element selected
+  resetColours = () => {
+    //let tempList;
     if (this.state.nav === 0){
-      tempList = this.state.colours.map((val) => val + 1);
+      this.setState({colours: [0,1,1,1,1,1,1,1,1]})//tempList = this.state.colours.map((val) => val + 1);
     } 
     else {
-      tempList = this.state.colours.map((val) => val - 1);
+      this.setState({colours: [1,0,0,0,0,0,0,0,0]})//tempList = this.state.colours.map((val) => val - 1);
     }
-    this.setState({colours: tempList});
+    //this.setState({colours: tempList});
   }
   //reads welcome message if user just beginning, otherwise reads current state to remind user where they are
   start = () => {
@@ -140,7 +140,7 @@ class Table extends Component {
   upArrowHandle = () => {
     //increments the navigation state
     if (this.state.nav < NAV.MAX - 1) {
-      this.invertColours();
+      this.resetColours();
       let navigation = this.state.nav;
       navigation += 1;
       this.setState({nav: navigation});
@@ -154,10 +154,10 @@ class Table extends Component {
   downArrowHandle = () => {
     //decrements the navigation state
     if (this.state.nav > 0) {
+      this.resetColours();
       let navigation = this.state.nav;
       navigation -= 1;
       this.setState({nav: navigation});
-      this.invertColours();
       speechSynthesis.cancel();
       this.read('Subchapter navigation', this.state.audioConfig);
       this.read(this.getCurrentSubchap().name, this.state.audioConfig);
@@ -173,12 +173,16 @@ class Table extends Component {
         this.getCurrentChap().subchapters.length - 1
       ) {
         //increment subchapter counter
+        this.flipColour(this.state.subChapterNumber);
         const newSubChapterNumber = this.state.subChapterNumber + 2;
         this.handleSubchapterNavigation(newSubChapterNumber);
+        this.flipColour(this.state.subChapterNumber);
         this.readSubChap();
       } else {
+        this.flipColour(this.state.subChapterNumber);
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
+        this.flipColour(this.state.subChapterNumber);
         this.read(this.getCurrentChap().name, this.state.audioConfig);
         this.read(this.getCurrentSubchap().name, this.state.audioConfig);
       }
@@ -186,8 +190,10 @@ class Table extends Component {
       //handling navigation for chapters
       if (this.state.chapterNumber < this.state.textbook.chapters.length - 1) {
         //increment chapter counter and set subchapter counter to 0
+        this.flipColour(this.state.chapterNumber);
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
+        this.flipColour(this.state.chapterNumber);
         this.readChap();
       } else {
         this.read('You have reached the end of the textbook', this.state.audioConfig);
@@ -289,6 +295,7 @@ class Table extends Component {
       <h1>{chapter} </h1>
       <h2>{subChapter} </h2>
       <h2>Current navigation: {navigation} </h2>
+      <h2>{this.state.chapterNumber}</h2>
       <div style={{ display: 'flex '}}>
         <TC num={1} colour={this.state.colours[0]}/>
         <TC num={2} colour={this.state.colours[1]}/> 
