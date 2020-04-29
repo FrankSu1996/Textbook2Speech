@@ -209,11 +209,13 @@ class Table extends Component {
         this.handleSubchapterNavigation(newSubChapterNumber);
         this.flipColour(this.state.subChapterNumber);
         this.readSubChap();
+        //go into first subchapter of next chapter
       } else if (this.state.chapterNumber < this.state.textbook.chapters.length - 1){
         this.flipColour(this.state.subChapterNumber);
         const newChapterNumber = this.state.chapterNumber + 1;
         this.handleChapterNavigation(newChapterNumber);
         this.flipColour(this.state.subChapterNumber);
+        this.resetComponents();
         this.read(this.getCurrentChap().name, this.state.audioConfig);
         this.read(this.getCurrentSubchap().name, this.state.audioConfig);
       } else {
