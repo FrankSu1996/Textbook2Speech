@@ -11,6 +11,10 @@ import Textbook from '../../textbook/textbook';
 import Tutorial from '../Tutorial';
 import {Container, Row, Col} from 'react-bootstrap';
 import TC from './tableComponents';
+import escKey from "../../images/esc_key.png";
+import enterKey from "../../images/enter_key.png";
+import SpeechModal from "../errorModal/errorModal";
+import styles from "../dashboard/dashboard.module.css";
 
 const NAV = {
   SUBCHAP: 0,
@@ -33,54 +37,92 @@ class Table extends Component {
       showTutorial: false,
       colours: [0,1,1,1,1,1,1,1,1],
       componentValues: ["Press 's' to start"],
-      natNumList: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+      natNumList: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
+      showSpeechModal: false,
+      modalMessage: "",
     };
   }
   handleKeyPress = event => {
-    switch (event.keyCode) {
-      //'s' to start speech
-      case 83:
-        this.start();
-        break;
-      //'esc' key to stop speech api
-      case 27:
-        this.cancel();
-        break;
-      //'enter' selects current section 
-      case 13:
-        this.selectSection();
-        break;
-      //left arrow key calls method to handle navigation
-      case 37:
-        this.leftArrowHandle();
-        break;
-      //right arrow key calls method to handle navigation
-      case 39:
-        this.rightArrowHandle();
-        break;
-      //up arrow key calls method to handle navigation
-      case 38:
-        this.upArrowHandle();
-        break;
-      //up arrow key calls method to handle navigation
-      case 40:
-        this.downArrowHandle();
-        break;
-      //'t' pulls up tutorial 
-      case 84:
-        this.toggleTutorial();
-        break;
-      //p key pauses speech api
-      case 80:
-        speechSynthesis.pause();
-        break;
-      //r key resumes
-      case 82:
-        speechSynthesis.resume();
-        break;
-      default:
-        break;
-    }
+    if (this.state.showSpeechModal){
+      if (event.keyCode === 27) {
+        this.closeSpeechModal();
+        // 1 - 9 selects the audio speed to set to
+      } else if (event.keyCode === 49) {
+        this.setState({ nextAudioSpeed: 1 });
+      } else if (event.keyCode === 50) {
+        this.setState({ nextAudioSpeed: 2 });
+      } else if (event.keyCode === 51) {
+        this.setState({ nextAudioSpeed: 3 });
+      } else if (event.keyCode === 52) {
+        this.setState({ nextAudioSpeed: 4 });
+      } else if (event.keyCode === 53) {
+        this.setState({ nextAudioSpeed: 5 });
+      } else if (event.keyCode === 54) {
+        this.setState({ nextAudioSpeed: 6 });
+      } else if (event.keyCode === 55) {
+        this.setState({ nextAudioSpeed: 7 });
+      } else if (event.keyCode === 56) {
+        this.setState({ nextAudioSpeed: 8 });
+      } else if (event.keyCode === 57) {
+        this.setState({ nextAudioSpeed: 9 });
+      }
+      //enter confirms the selection
+      else if (event.keyCode === 13) {
+        console.log("Enter hit");
+        this.setAudioSpeed(this.state.audioConfig);
+      }
+    } else {
+      switch (event.keyCode) {
+        //'s' to start speech
+        case 83:
+          this.start();
+          break;
+        //'esc' key to stop speech api
+        case 27:
+          this.cancel();
+          break;
+        //'enter' selects current section 
+        case 13:
+          this.selectSection();
+          break;
+        //left arrow key calls method to handle navigation
+        case 37:
+          this.leftArrowHandle();
+          break;
+        //right arrow key calls method to handle navigation
+        case 39:
+          this.rightArrowHandle();
+          break;
+        //up arrow key calls method to handle navigation
+        case 38:
+          this.upArrowHandle();
+          break;
+        //up arrow key calls method to handle navigation
+        case 40:
+          this.downArrowHandle();
+          break;
+        //'t' pulls up tutorial 
+        case 84:
+          this.toggleTutorial();
+          break;
+        //p key pauses speech api
+        case 80:
+          speechSynthesis.pause();
+          break;
+        //r key resumes
+        case 82:
+          speechSynthesis.resume();
+          break;
+        //o opens speech modal
+        case 79:
+          if (!this.state.showTutorial) {
+            this.showSpeechModal();
+          }
+          break;
+        default:
+          break;
+        }
+      }
   };
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress);
@@ -88,11 +130,34 @@ class Table extends Component {
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
+  //function to open speech modal
+  showSpeechModal = (e) => {
+    this.cancel();
+    this.read(
+      "Enter a number from 1 to 9 and hit the enter key to confirm your choice! Press Escape to exit this window",
+      this.state.audioConfig
+    );
+    this.setState({ showSpeechModal: true });
+  };
+
+  //function to close speech modal
+  closeSpeechModal = (e) => {
+    this.cancel();
+    this.setState({ showSpeechModal: false });
+  };
+  //function to open tutorial
   toggleTutorial = () => {
     this.cancel();
     this.setState({
       showTutorial: !this.state.showTutorial,
     });
+  };
+  //function to set the rate of speech. Will cancel the current speech api to do so
+  setAudioSpeed = (config) => {
+    speechSynthesis.cancel();
+    config.rate = this.state.nextAudioSpeed;
+    this.setState({ audioSpeed: this.state.nextAudioSpeed });
+    this.read("Audio speed set to:" + config.rate, config);
   };
   //changes colour of one badge from blue to black or vice versa
   flipColour = (index) => {
@@ -326,13 +391,6 @@ class Table extends Component {
     }
     return nearest3;
   };
-  split3 = () => {
-    let x = this.nearest3Mul(this.state.componentValues.length)/3;
-    let list1 = this.state.componentValues.slice(0,x - 1);
-    let list2 = this.state.componentValues.slice(x, 2*x - 1);
-    let list3 = this.state.componentValues.slice(2*x - 1, this.state.componentValues.length - 1);
-    return list1, list2, list3;
-  };
   render() {
     if (this.state.done) {
       return <Redirect to="/dashboard" />;
@@ -354,29 +412,49 @@ class Table extends Component {
     let row3 = this.state.componentValues.slice(2*x, this.state.componentValues.length);
     return (
       <div>
-      <h1>{chapter} </h1>
-      <h2>{subChapter} </h2>
-      <h2>Current navigation: {navigation} </h2>
-      <div style={{ display: 'flex '}}>
-        {row1.map(cell => (
-          <TC num={cell} colour={this.state.colours[cell - 1]} />
-        ))}
-      </div>
-      <div style={{ display: 'flex '}}>
-        {row2.map(cell => (
-          <TC num={cell} colour={this.state.colours[cell - 1]} />
-        ))}
-      </div>
-      <div style={{ display: 'flex '}}>
-        {row3.map(cell => (
-          <TC num={cell} colour={this.state.colours[cell - 1]} />
-        ))}
-      </div>
-      {this.state.showTutorial ? (
-        <Tutorial closePopup={this.toggleTutorial.bind(this)} />
-      ) : null}
+      <div>
+        <h1>{chapter} </h1>
+        <h2>{subChapter} </h2>
+        <h2>Current navigation: {navigation} </h2>
+        <div style={{ display: 'flex '}}>
+          {row1.map(cell => (
+            <TC num={cell} colour={this.state.colours[cell - 1]} />
+          ))}
+        </div>
+        <div style={{ display: 'flex '}}>
+          {row2.map(cell => (
+            <TC num={cell} colour={this.state.colours[cell - 1]} />
+          ))}
+        </div>
+        <div style={{ display: 'flex '}}>
+          {row3.map(cell => (
+            <TC num={cell} colour={this.state.colours[cell - 1]} />
+          ))}
+        </div>
+        {this.state.showTutorial ? (
+          <Tutorial closePopup={this.toggleTutorial.bind(this)} />
+        ) : null}
     </div>
-      
+      <React.Fragment> 
+        <Container>
+          <SpeechModal show={this.state.showSpeechModal}>
+              <div className={styles.AudioPanel}>
+                <h1>Current audio speed: {this.state.audioSpeed}</h1>
+                <h1>Set Speed to: {this.state.nextAudioSpeed}</h1>
+                <br></br>
+                <br></br>
+                <br></br>
+                <h1>
+                  Hit <img src={enterKey}></img> to confirm your choice!
+                </h1>
+                <h1>
+                  Hit <img src={escKey}></img> to exit this window!
+                </h1>
+              </div>
+            </SpeechModal>
+        </Container>
+      </React.Fragment>
+      </div>
     );
   }
 }
