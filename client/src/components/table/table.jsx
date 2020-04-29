@@ -320,6 +320,7 @@ class Table extends Component {
           const newChapterNumber = this.state.chapterNumber - 1;
           this.handleChapterNavigation(newChapterNumber);
           this.flipColour(this.state.subChapterNumber);
+          this.resetComponents();
           this.read(this.getCurrentChap().name, this.state.audioConfig);
           this.read(this.getCurrentSubchap().name, this.state.audioConfig);
         } else {
