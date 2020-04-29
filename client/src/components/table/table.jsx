@@ -316,6 +316,20 @@ class Table extends Component {
       subChapterNumber: subChapterNumber - 1,
     });
   };
+  nearest3Mul = num => {
+    let nearest3 = num;
+    while ((nearest3%3) != 0) {
+      nearest3 += 1;
+    }
+    return nearest3;
+  };
+  split3 = () => {
+    let x = this.nearest3Mul(this.state.componentValues.length)/3;
+    let list1 = this.state.componentValues.slice(0,x - 1);
+    let list2 = this.state.componentValues.slice(x, 2*x - 1);
+    let list3 = this.state.componentValues.slice(2*x - 1, this.state.componentValues.length - 1);
+    return list1, list2, list3;
+  };
   render() {
     if (this.state.done) {
       return <Redirect to="/dashboard" />;
@@ -331,14 +345,28 @@ class Table extends Component {
       navigation = 'Chapter';
       curNum = this.state.chapterNumber;
     }
+    let x = this.nearest3Mul(this.state.componentValues.length)/3;
+    let row1 = this.state.componentValues.slice(0,x);
+    let row2 = this.state.componentValues.slice(x, 2*x);
+    let row3 = this.state.componentValues.slice(2*x, this.state.componentValues.length);
     return (
       <div>
       <h1>{chapter} </h1>
       <h2>{subChapter} </h2>
       <h2>Current navigation: {navigation} </h2>
-      <h2>{this.state.natNumList[9]}</h2>
+      <h2>{row1}</h2>
       <div style={{ display: 'flex '}}>
-        {this.state.componentValues.map(cell => (
+        {row1.map(cell => (
+          <TC num={cell} colour={this.state.colours[cell - 1]} />
+        ))}
+      </div>
+      <div style={{ display: 'flex '}}>
+        {row2.map(cell => (
+          <TC num={cell} colour={this.state.colours[cell - 1]} />
+        ))}
+      </div>
+      <div style={{ display: 'flex '}}>
+        {row3.map(cell => (
           <TC num={cell} colour={this.state.colours[cell - 1]} />
         ))}
       </div>
