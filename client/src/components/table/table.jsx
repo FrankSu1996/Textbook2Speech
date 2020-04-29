@@ -46,23 +46,37 @@ class Table extends Component {
       case 27:
         this.cancel();
         break;
+      //'enter' selects current section 
       case 13:
         this.selectSection();
         break;
+      //left arrow key calls method to handle navigation
       case 37:
         this.leftArrowHandle();
         break;
+      //right arrow key calls method to handle navigation
       case 39:
         this.rightArrowHandle();
         break;
+      //up arrow key calls method to handle navigation
       case 38:
         this.upArrowHandle();
         break;
+      //up arrow key calls method to handle navigation
       case 40:
         this.downArrowHandle();
         break;
+      //'t' pulls up tutorial 
       case 84:
         this.toggleTutorial();
+        break;
+      //p key pauses speech api
+      case 80:
+        speechSynthesis.pause();
+        break;
+      //r key resumes
+      case 82:
+        speechSynthesis.resume();
         break;
       default:
         break;

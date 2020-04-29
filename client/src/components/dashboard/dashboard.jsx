@@ -36,7 +36,7 @@ class Header extends Component {
             </NavbarBrand>
             <Nav>
               <NavItem>
-                Capstone 2019-2020 Group 3: Anna Jo, Frank Su, Anna LM, Peter
+                Capstone 2019-2020 Group 3: Anna Jo, Frank Su, Anna Lindsay-Mosher, Peter
                 Weng
               </NavItem>
             </Nav>
