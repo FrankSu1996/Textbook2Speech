@@ -32,11 +32,15 @@ class Tutorial extends React.Component {
          the current navigation state. For example, if you are currently on the chapter navigation state, \
          press the left arrow key to go to the previous chapter. Press the right \
          arrow key to go to the next chapter. Press t to open or close this tutorial at any time. \
-         For the table of contents, all of the commands are the same. Press enter to select the current chapter and subchapter. \
-         Layout: For users who can view the screen, your audio preference settings are located at the top of the screen. \
-         The title of the textbook is located at the centre of the screen. Below that is the \
+         Press c to go to the table of contents\
+         In the table of contents, the navigation commands are the same. Press s to begin navigation, \
+         then press enter to select the current chapter and subchapter you wish to listen to. \
+         Layout of main user interface: For users who can view the screen, the title of the textbook is located at the centre of the screen. Below that is the \
          navigation tool containing the contents of the textbook. It displays the chapter title, \
-         subchapter title, the appropriate passage from the textbook, and the current navigation level.',
+         subchapter title, the appropriate passage from the textbook, and the current navigation level.\
+         Layout of table of contents: there is a grid representation of the current chapter or subchapter you are navigating through. \
+         If the boxes are grey, you are navigating through the chapters. If the boxes are blue, you are navigating through the \
+         subchapters of a specific chapter. The current chapter, subchapter, and navigation are also displayed at the top of the page',
       audioConfig: new SpeechSynthesisUtterance(),
     };
     this.closeTutorial = this.closeTutorial.bind(this);

@@ -218,7 +218,7 @@ class Dashboard extends Component {
         case 84:
           this.toggleTutorial();
           break;
-        //o opens peech modal
+        //o opens speech modal
         case 79:
           if (!this.state.showTutorial) {
             this.showSpeechModal();

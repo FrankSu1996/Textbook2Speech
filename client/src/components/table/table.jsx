@@ -145,7 +145,7 @@ class Table extends Component {
     this.cancel();
     this.setState({ showSpeechModal: false });
   };
-  //function to open tutorial
+  //function to open or close tutorial
   toggleTutorial = () => {
     this.cancel();
     this.setState({
@@ -219,6 +219,7 @@ class Table extends Component {
     this.cancel();
     this.setState({done: true});
   };
+  //cancels whatever speech is currently playing 
   cancel = () => {
     speechSynthesis.cancel();
     this.setState({stopPlay: true});
@@ -273,7 +274,7 @@ class Table extends Component {
         this.handleSubchapterNavigation(newSubChapterNumber);
         this.flipColour(this.state.subChapterNumber);
         this.readSubChap();
-        //go into first subchapter of next chapter
+        //if end of current chapter, go into first subchapter of next chapter
       } else if (this.state.chapterNumber < this.state.textbook.chapters.length - 1){
         this.flipColour(this.state.subChapterNumber);
         const newChapterNumber = this.state.chapterNumber + 1;
@@ -283,6 +284,7 @@ class Table extends Component {
         this.read(this.getCurrentChap().name, this.state.audioConfig);
         this.read(this.getCurrentSubchap().name, this.state.audioConfig);
       } else {
+        //if reached end of textbook
         this.cancel();
         this.read('You have reached the end of the textbook', this.state.audioConfig);
       }
@@ -296,6 +298,7 @@ class Table extends Component {
         this.flipColour(this.state.chapterNumber);
         this.readChap();
       } else {
+        //if reached end of textbook
         this.cancel();
         this.read('You have reached the end of the textbook', this.state.audioConfig);
       }
@@ -307,15 +310,16 @@ class Table extends Component {
       //handling navigation for subchapters
       if (this.state.subChapterNumber > 0) {        
         this.flipColour(this.state.subChapterNumber);
-        //increment subchapter counter
+        //decrement subchapter counter
         const newSubChapterNumber = this.state.subChapterNumber;
         this.handleSubchapterNavigation(newSubChapterNumber);
         this.flipColour(this.state.subChapterNumber);
         this.readSubChap();
       } else {
+        //if at the beginning of a chapter
         if (this.state.chapterNumber > 0) {
           this.flipColour(this.state.subChapterNumber);
-          //increment chapter counter and set subchapter counter to 0
+          //decrement chapter counter and set subchapter to end of previous chapter
           const newChapterNumber = this.state.chapterNumber - 1;
           this.handleChapterNavigation(newChapterNumber);
           this.handleSubchapterNavigation(this.getCurrentChap().subchapters.length);
@@ -324,6 +328,7 @@ class Table extends Component {
           this.read(this.getCurrentChap().name, this.state.audioConfig);
           this.read(this.getCurrentSubchap().name, this.state.audioConfig);
         } else {
+          //if at beginning of textbook
           this.cancel();
           this.read('You have reached the beginning of the textbook', this.state.audioConfig);
         }
@@ -338,6 +343,7 @@ class Table extends Component {
         this.flipColour(this.state.chapterNumber);
         this.readChap();
       } else {
+        //if at beginning of textbook
         this.cancel();
         this.read('You have reached the beginning of the textbook', this.state.audioConfig);
       }
@@ -349,6 +355,7 @@ class Table extends Component {
     let chapName = this.getCurrentChap().name;
     this.read(chapName, this.state.audioConfig);
   };
+  //function to read the current subchapter name
   readSubChap = () => {
     speechSynthesis.cancel();
     let subChapName = this.getCurrentSubchap().name;
@@ -364,15 +371,7 @@ class Table extends Component {
     const currentChapter = this.getCurrentChap();
     return currentChapter.subchapters[this.state.subChapterNumber];
   };
-
-  //function to navigate to certain chapter/subchapter/paragraph in the book
-  //i.e. navigate(1, 1, 1) will navigate to first paragraph of first subchapter of first chapter
-  navigate = (chapNumber, subChapNumber) => {
-    this.setState({
-      chapterNumber: chapNumber - 1,
-      subChapterNumber: subChapNumber - 1,
-    });
-  };
+  //function to set new chapter 
   handleChapterNavigation = chapterNumber => {
     speechSynthesis.cancel();
     this.setState({
@@ -380,11 +379,13 @@ class Table extends Component {
       subChapterNumber: 0,
     });
   };
+  //function to set new subchapter
   handleSubchapterNavigation = subChapterNumber => {
     this.setState({
       subChapterNumber: subChapterNumber - 1,
     });
   };
+  //function to find the number of badges per line
   nearest3Mul = num => {
     let nearest3 = num;
     while ((nearest3%3) != 0) {
@@ -393,20 +394,20 @@ class Table extends Component {
     return nearest3;
   };
   render() {
+    //if chapter and subchapter have been selected, navigate to dashboard
     if (this.state.done) {
       return <Redirect to="/dashboard" />;
     }
+    //set current chapter, subchapter, and navigation level to be displayed
     let navigation;
     let chapter = this.getCurrentChap().name;
     let subChapter = this.getCurrentSubchap().name;
-    let curNum;
     if (this.state.nav === 0) {
       navigation = 'Subchapter';
-      curNum = this.state.subChapterNumber;
     } else {
       navigation = 'Chapter';
-      curNum = this.state.chapterNumber;
     }
+    // create 3 rows of badges to be displayed 
     let x = this.nearest3Mul(this.state.componentValues.length)/3;
     let row1 = this.state.componentValues.slice(0,x);
     let row2 = this.state.componentValues.slice(x, 2*x);
@@ -461,16 +462,3 @@ class Table extends Component {
 }
 
 export default Table;
-/*
-        <TC num={1} colour={this.state.colours[0]}/>
-        <TC num={2} colour={this.state.colours[1]}/> 
-        <TC num={3} colour={this.state.colours[2]}/>
-      </div>
-      <div style={{ display: 'flex '}}>
-        <TC num={4} colour={this.state.colours[3]}/>
-        <TC num={5} colour={this.state.colours[4]}/> 
-        <TC num={6} colour={this.state.colours[5]}/>
-      </div><div style={{ display: 'flex '}}>
-        <TC num={7} colour={this.state.colours[6]}/>
-        <TC num={8} colour={this.state.colours[7]}/> 
-        <TC num={'~'} colour={this.state.colours[8]}/>*/
