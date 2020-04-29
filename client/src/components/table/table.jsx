@@ -31,7 +31,9 @@ class Table extends Component {
       done: false,
       starting: true,
       showTutorial: false,
-      colours: [0,1,1,1,1,1,1,1,1]
+      colours: [0,1,1,1,1,1,1,1,1],
+      componentValues: [1,2,3,4],
+      natNumList: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
     };
   }
   handleKeyPress = event => {
@@ -92,13 +94,25 @@ class Table extends Component {
   resetColours = () => {
     //let tempList;
     if (this.state.nav === 0){
-      this.setState({colours: [0,1,1,1,1,1,1,1,1]})//tempList = this.state.colours.map((val) => val + 1);
+      this.setState({colours: [1,1,1,1,1,1,1,1,1]})//tempList = this.state.colours.map((val) => val + 1);
+      this.flipColour(this.state.chapterNumber);
     } 
     else {
       this.setState({colours: [1,0,0,0,0,0,0,0,0]})//tempList = this.state.colours.map((val) => val - 1);
     }
     //this.setState({colours: tempList});
-  }
+  };
+  //resets the number of components in componentValues to reflect current chapter / subchapter
+  resetComponents = () => {
+    let currentNum;
+    if (this.state.nav === 0) {
+      currentNum = this.getCurrentChap().subchapters.length;
+    } else {
+      currentNum = this.state.textbook.chapters.length;
+    }
+    let tempList = this.state.natNumList;
+    this.setState({componentValues: tempList.slice(0, currentNum)});
+  };
   //reads welcome message if user just beginning, otherwise reads current state to remind user where they are
   start = () => {
     this.cancel();
@@ -144,6 +158,7 @@ class Table extends Component {
       let navigation = this.state.nav;
       navigation += 1;
       this.setState({nav: navigation});
+      this.resetComponents();
       speechSynthesis.cancel();
       this.read('Chapter navigation', this.state.audioConfig);
       this.read(this.getCurrentChap().name, this.state.audioConfig);
@@ -158,6 +173,7 @@ class Table extends Component {
       let navigation = this.state.nav;
       navigation -= 1;
       this.setState({nav: navigation});
+      this.resetComponents();
       speechSynthesis.cancel();
       this.read('Subchapter navigation', this.state.audioConfig);
       this.read(this.getCurrentSubchap().name, this.state.audioConfig);
@@ -186,6 +202,7 @@ class Table extends Component {
         this.read(this.getCurrentChap().name, this.state.audioConfig);
         this.read(this.getCurrentSubchap().name, this.state.audioConfig);
       } else {
+        this.cancel();
         this.read('You have reached the end of the textbook', this.state.audioConfig);
       }
     } else {
@@ -198,6 +215,7 @@ class Table extends Component {
         this.flipColour(this.state.chapterNumber);
         this.readChap();
       } else {
+        this.cancel();
         this.read('You have reached the end of the textbook', this.state.audioConfig);
       }
     }
@@ -223,19 +241,21 @@ class Table extends Component {
           this.read(this.getCurrentChap().name, this.state.audioConfig);
           this.read(this.getCurrentSubchap().name, this.state.audioConfig);
         } else {
+          this.cancel();
           this.read('You have reached the beginning of the textbook', this.state.audioConfig);
         }
       }
     } else {
       //handling navigation for chapters
       if (this.state.chapterNumber > 0) {
-        this.flipColour(this.state.subChapterNumber);
+        this.flipColour(this.state.chapterNumber);
         //increment chapter counter and set subchapter counter to 0
         const newChapterNumber = this.state.chapterNumber - 1;
         this.handleChapterNavigation(newChapterNumber);
-        this.flipColour(this.state.subChapterNumber);
+        this.flipColour(this.state.chapterNumber);
         this.readChap();
       } else {
+        this.cancel();
         this.read('You have reached the beginning of the textbook', this.state.audioConfig);
       }
     }
@@ -302,20 +322,11 @@ class Table extends Component {
       <h1>{chapter} </h1>
       <h2>{subChapter} </h2>
       <h2>Current navigation: {navigation} </h2>
-      <h2>{this.state.chapterNumber}</h2>
+      <h2>{this.state.natNumList[9]}</h2>
       <div style={{ display: 'flex '}}>
-        <TC num={1} colour={this.state.colours[0]}/>
-        <TC num={2} colour={this.state.colours[1]}/> 
-        <TC num={3} colour={this.state.colours[2]}/>
-      </div>
-      <div style={{ display: 'flex '}}>
-        <TC num={4} colour={this.state.colours[3]}/>
-        <TC num={5} colour={this.state.colours[4]}/> 
-        <TC num={6} colour={this.state.colours[5]}/>
-      </div><div style={{ display: 'flex '}}>
-        <TC num={7} colour={this.state.colours[6]}/>
-        <TC num={8} colour={this.state.colours[7]}/> 
-        <TC num={9} colour={this.state.colours[8]}/>
+        {this.state.componentValues.map(cell => (
+          <TC num={cell} colour={this.state.colours[cell - 1]} />
+        ))}
       </div>
       {this.state.showTutorial ? (
         <Tutorial closePopup={this.toggleTutorial.bind(this)} />
@@ -327,3 +338,16 @@ class Table extends Component {
 }
 
 export default Table;
+/*
+        <TC num={1} colour={this.state.colours[0]}/>
+        <TC num={2} colour={this.state.colours[1]}/> 
+        <TC num={3} colour={this.state.colours[2]}/>
+      </div>
+      <div style={{ display: 'flex '}}>
+        <TC num={4} colour={this.state.colours[3]}/>
+        <TC num={5} colour={this.state.colours[4]}/> 
+        <TC num={6} colour={this.state.colours[5]}/>
+      </div><div style={{ display: 'flex '}}>
+        <TC num={7} colour={this.state.colours[6]}/>
+        <TC num={8} colour={this.state.colours[7]}/> 
+        <TC num={'~'} colour={this.state.colours[8]}/>*/
