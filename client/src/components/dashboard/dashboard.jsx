@@ -21,7 +21,6 @@ import {
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadset } from "@fortawesome/free-solid-svg-icons";
-import oKey from "../../images/o_key.png";
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -190,7 +189,9 @@ class Dashboard extends Component {
           break;
         //o opens peech modal
         case 79:
-          this.showSpeechModal();
+          if (!this.state.showTutorial) {
+            this.showSpeechModal();
+          }
           break;
         default:
           break;
