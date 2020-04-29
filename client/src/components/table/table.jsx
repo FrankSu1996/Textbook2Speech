@@ -354,7 +354,6 @@ class Table extends Component {
       <h1>{chapter} </h1>
       <h2>{subChapter} </h2>
       <h2>Current navigation: {navigation} </h2>
-      <h2>{row1}</h2>
       <div style={{ display: 'flex '}}>
         {row1.map(cell => (
           <TC num={cell} colour={this.state.colours[cell - 1]} />
