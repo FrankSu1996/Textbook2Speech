@@ -1,18 +1,27 @@
-import React, {Component} from 'react';
-import Textbook from '../../textbook/textbook';
-import Tutorial from '../Tutorial';
-import styles from './dashboard.module.css';
-import leftArrow from '../../images/left_arrow.png';
-import upArrow from '../../images/up_arrow.png';
-import downArrow from '../../images/down_arrow.png';
-import rightArrow from '../../images/right_arrow.png';
-import tKey from '../../images/t_key.png';
-import ErrorModal from '../errorModal/errorModal';
-import {Container, Row, Col} from 'react-bootstrap';
-import {Redirect, BrowserRouter as Router} from 'react-router-dom';
-import {Nav, Navbar, NavbarBrand, NavItem, NavLink, Collapse} from 'reactstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHeadset} from '@fortawesome/free-solid-svg-icons';
+import React, { Component } from "react";
+import Textbook from "../../textbook/textbook";
+import Tutorial from "../Tutorial";
+import styles from "./dashboard.module.css";
+import leftArrow from "../../images/left_arrow.png";
+import upArrow from "../../images/up_arrow.png";
+import downArrow from "../../images/down_arrow.png";
+import rightArrow from "../../images/right_arrow.png";
+import tKey from "../../images/t_key.png";
+import ErrorModal from "../errorModal/errorModal";
+import SpeechModal from "../errorModal/errorModal";
+import { Container, Row, Col } from "react-bootstrap";
+import { Redirect, BrowserRouter as Router } from "react-router-dom";
+import {
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavItem,
+  NavLink,
+  Collapse,
+} from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeadset } from "@fortawesome/free-solid-svg-icons";
+import oKey from "../../images/o_key.png";
 
 const NAVIGATION = {
   PARAGRAPH: 0,
@@ -32,12 +41,12 @@ class Header extends Component {
         <Navbar color="light" light expand="md">
           <Container>
             <NavbarBrand>
-              <FontAwesomeIcon icon={faHeadset} /> Textbook2Speech{' '}
+              <FontAwesomeIcon icon={faHeadset} /> Textbook2Speech{" "}
             </NavbarBrand>
             <Nav>
               <NavItem>
-                Capstone 2019-2020 Group 3: Anna Jo, Frank Su, Anna Lindsay-Mosher, Peter
-                Weng
+                Capstone 2019-2020 Group 3: Anna Jo, Frank Su, Anna
+                Lindsay-Mosher, Peter Weng
               </NavItem>
             </Nav>
           </Container>
@@ -60,24 +69,25 @@ class Dashboard extends Component {
       paragraphNumber: 0,
       stopPlay: false,
       currentTextToRead:
-        'This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.',
+        "This unit introduces the idea of thinking scientifically about language by making empirical observations rather than judgments of correctness.",
       showTutorial: false,
-      upArrowBoxColor: 'black',
-      downArrowBoxColor: 'black',
-      leftArrowBoxColor: 'black',
-      rightArrowBoxColor: 'black',
+      upArrowBoxColor: "black",
+      downArrowBoxColor: "black",
+      leftArrowBoxColor: "black",
+      rightArrowBoxColor: "black",
       showErrorModal: false,
-      modalMessage: '',
+      showSpeechModal: false,
+      modalMessage: "",
       nav: false,
     };
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyPress);
+    document.addEventListener("keydown", this.handleKeyPress);
 
     //disables up and down arrow causing browser to scroll
     window.addEventListener(
-      'keydown',
+      "keydown",
       function (e) {
         // space and arrow keys
         if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
@@ -89,21 +99,34 @@ class Dashboard extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyPress);
+    document.removeEventListener("keydown", this.handleKeyPress);
   }
 
   //function to show modal
   showErrorModal = (e) => {
     this.cancel();
-    this.setState({showErrorModal: true});
+    this.setState({ showErrorModal: true });
   };
 
   //function to close error modal
   closeErrorModal = (e) => {
     this.cancel();
-    this.setState({showErrorModal: false});
+    this.setState({ showErrorModal: false });
   };
 
+  //function to open speech modal
+  showSpeechModal = (e) => {
+    this.cancel();
+    this.setState({ showSpeechModal: true });
+  };
+
+  //function to close speech modal
+  closeSpeechModal = (e) => {
+    this.cancel();
+    this.setState({ showSpeechModal: false });
+  };
+
+  //function to open/close tutorial
   toggleTutorial = () => {
     this.cancel();
     this.setState({
@@ -113,7 +136,15 @@ class Dashboard extends Component {
 
   //handler for keypress events
   handleKeyPress = (event) => {
-    if (!this.state.showErrorModal) {
+    if (this.state.showErrorModal) {
+      if (event.keyCode === 27) {
+        this.closeErrorModal();
+      }
+    } else if (this.state.showSpeechModal) {
+      if (event.keyCode === 27) {
+        this.closeSpeechModal();
+      }
+    } else {
       switch (event.keyCode) {
         //'s' key to start speech api
         case 83:
@@ -121,7 +152,7 @@ class Dashboard extends Component {
           break;
         //'c' key to navigate to contentes
         case 67:
-          this.setState({nav: true});
+          this.setState({ nav: true });
           this.cancel();
           speechSynthesis.cancel();
           break;
@@ -153,15 +184,16 @@ class Dashboard extends Component {
         case 82:
           speechSynthesis.resume();
           break;
+        //t toggles tutorial
         case 84:
           this.toggleTutorial();
           break;
+        //o opens peech modal
+        case 79:
+          this.showSpeechModal();
+          break;
         default:
           break;
-      }
-    } else if (this.state.showErrorModal) {
-      if (event.keyCode === 27) {
-        this.closeErrorModal();
       }
     }
   };
@@ -178,7 +210,7 @@ class Dashboard extends Component {
 
   //function to read all paragraphs in given subchapter
   readAllParagraphsInSubchapter = (subChapterNum, config) => {
-    this.setState({subChapterNumber: subChapterNum, stopPlay: false});
+    this.setState({ subChapterNumber: subChapterNum, stopPlay: false });
     if (this.state.stopPlay === true) {
       setTimeout(
         this.readAllParagraphsInSubchapter,
@@ -214,15 +246,15 @@ class Dashboard extends Component {
       return;
     } else {
       if (index < list.length) {
-        this.setState({currentTextToRead: list[index]});
+        this.setState({ currentTextToRead: list[index] });
         this.speech(list[index], config);
         //check if end of subchapter
         if (index === list.length - 1) {
-          this.speech('End of subchapter', config);
+          this.speech("End of subchapter", config);
           return;
         }
         let newIndex = index;
-        this.setState({paragraphNumber: newIndex});
+        this.setState({ paragraphNumber: newIndex });
         this.continuousRead(list, newIndex, config);
       }
     }
@@ -235,19 +267,19 @@ class Dashboard extends Component {
     if (this.state.navigation < NAVIGATION.MAX - 1) {
       let navigation = this.state.navigation;
       navigation += 1;
-      this.setState({navigation: navigation});
+      this.setState({ navigation: navigation });
       if (navigation === NAVIGATION.SUBCHAP) {
         speechSynthesis.cancel();
-        this.speech('Subchapter navigation', this.state.audioConfig);
+        this.speech("Subchapter navigation", this.state.audioConfig);
       } else if (navigation === NAVIGATION.CHAP) {
         speechSynthesis.cancel();
-        this.speech('Chapter navigation', this.state.audioConfig);
+        this.speech("Chapter navigation", this.state.audioConfig);
       }
     }
     //hacky way to flicker background color
-    this.setState({upArrowBoxColor: 'red'});
+    this.setState({ upArrowBoxColor: "red" });
     setTimeout(() => {
-      this.setState({upArrowBoxColor: 'black'});
+      this.setState({ upArrowBoxColor: "black" });
     }, 65);
   };
 
@@ -258,19 +290,19 @@ class Dashboard extends Component {
     if (this.state.navigation > 0) {
       let navigation = this.state.navigation;
       navigation -= 1;
-      this.setState({navigation: navigation});
+      this.setState({ navigation: navigation });
       if (navigation === NAVIGATION.SUBCHAP) {
         speechSynthesis.cancel();
-        this.speech('Subchapter navigation', this.state.audioConfig);
+        this.speech("Subchapter navigation", this.state.audioConfig);
       } else if (navigation === NAVIGATION.PARAGRAPH) {
         speechSynthesis.cancel();
-        this.speech('Paragraph navigation', this.state.audioConfig);
+        this.speech("Paragraph navigation", this.state.audioConfig);
       }
     }
     //hacky way to flicker background color
-    this.setState({downArrowBoxColor: 'red'});
+    this.setState({ downArrowBoxColor: "red" });
     setTimeout(() => {
-      this.setState({downArrowBoxColor: 'black'});
+      this.setState({ downArrowBoxColor: "black" });
     }, 65);
   };
 
@@ -278,9 +310,9 @@ class Dashboard extends Component {
   rightArrowHandler = () => {
     this.cancel();
     //hacky way to flicker background color
-    this.setState({rightArrowBoxColor: 'red'});
+    this.setState({ rightArrowBoxColor: "red" });
     setTimeout(() => {
-      this.setState({rightArrowBoxColor: 'black'});
+      this.setState({ rightArrowBoxColor: "black" });
     }, 65);
     //handling navigation for paragraphs
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
@@ -316,12 +348,12 @@ class Dashboard extends Component {
       } else {
         this.setState({
           modalMessage:
-            'Reached end of chapters! Please hit Escape to exit this window',
+            "Reached end of chapters! Please hit Escape to exit this window",
         });
         this.showErrorModal();
         this.cancel();
         this.speech(
-          'Error: Reached end of chapters! Please hit Escape to exit this window',
+          "Error: Reached end of chapters! Please hit Escape to exit this window",
           this.state.audioConfig
         );
       }
@@ -346,12 +378,12 @@ class Dashboard extends Component {
       } else {
         this.setState({
           modalMessage:
-            'Reached end of chapters! Please hit Escape to exit this window',
+            "Reached end of chapters! Please hit Escape to exit this window",
         });
         this.showErrorModal();
         this.cancel();
         this.speech(
-          'Error: Reached end of chapters! Please hit Escape to exit this window',
+          "Error: Reached end of chapters! Please hit Escape to exit this window",
           this.state.audioConfig
         );
       }
@@ -367,12 +399,12 @@ class Dashboard extends Component {
       } else {
         this.setState({
           modalMessage:
-            'Reached end of chapters! Please hit Escape to exit this window',
+            "Reached end of chapters! Please hit Escape to exit this window",
         });
         this.showErrorModal();
         this.cancel();
         this.speech(
-          'Error: Reached end of chapters! Please hit Escape to exit this window',
+          "Error: Reached end of chapters! Please hit Escape to exit this window",
           this.state.audioConfig
         );
       }
@@ -383,9 +415,9 @@ class Dashboard extends Component {
   leftArrowHandler = () => {
     this.cancel();
     //hacky way to flicker background color
-    this.setState({leftArrowBoxColor: 'red'});
+    this.setState({ leftArrowBoxColor: "red" });
     setTimeout(() => {
-      this.setState({leftArrowBoxColor: 'black'});
+      this.setState({ leftArrowBoxColor: "black" });
     }, 65);
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
       //check if incrementing paragraph counter will go out of bounds
@@ -404,7 +436,7 @@ class Dashboard extends Component {
           .length;
         this.handleParagraphNavigation(newParagraphNumber);
         this.speech(
-          'subchapter ' + this.getCurrentSubchapter().name,
+          "subchapter " + this.getCurrentSubchapter().name,
           this.state.audioConfig
         );
       } else if (
@@ -421,18 +453,18 @@ class Dashboard extends Component {
           .length;
         this.handleParagraphNavigation(newParagraphNumber);
         this.speech(
-          'subchapter ' + this.getCurrentSubchapter().name,
+          "subchapter " + this.getCurrentSubchapter().name,
           this.state.audioConfig
         );
       } else {
         this.setState({
           modalMessage:
-            'Reached the beginning of the first chapter! Please hit Escape to exit this window',
+            "Reached the beginning of the first chapter! Please hit Escape to exit this window",
         });
         this.showErrorModal();
         this.cancel();
         this.speech(
-          'Error: Reached the beginning of the first chapter! Please hit Escape to exit this window',
+          "Error: Reached the beginning of the first chapter! Please hit Escape to exit this window",
           this.state.audioConfig
         );
       }
@@ -454,12 +486,12 @@ class Dashboard extends Component {
       } else {
         this.setState({
           modalMessage:
-            'Reached the beginning of the first chapter! Please hit Escape to exit this window',
+            "Reached the beginning of the first chapter! Please hit Escape to exit this window",
         });
         this.showErrorModal();
         this.cancel();
         this.speech(
-          'Error: Reached the beginning of the first chapter! Please hit Escape to exit this window',
+          "Error: Reached the beginning of the first chapter! Please hit Escape to exit this window",
           this.state.audioConfig
         );
       }
@@ -472,12 +504,12 @@ class Dashboard extends Component {
       } else {
         this.setState({
           modalMessage:
-            'Reached the beginning of the first chapter! Please hit Escape to exit this window',
+            "Reached the beginning of the first chapter! Please hit Escape to exit this window",
         });
         this.showErrorModal();
         this.cancel();
         this.speech(
-          'Error: Reached the beginning of the first chapter! Please hit Escape to exit this window',
+          "Error: Reached the beginning of the first chapter! Please hit Escape to exit this window",
           this.state.audioConfig
         );
       }
@@ -486,7 +518,7 @@ class Dashboard extends Component {
 
   //function to start the speech api
   speech = (text, config) => {
-    console.log('Speech currently playing...');
+    console.log("Speech currently playing...");
     config.text = text;
     speechSynthesis.speak(config);
   };
@@ -494,14 +526,14 @@ class Dashboard extends Component {
   //function to set the text that is to be read. Will cancel the speech api to do so
   setTextToRead = (text) => {
     speechSynthesis.cancel();
-    this.setState({currentTextToRead: text});
+    this.setState({ currentTextToRead: text });
   };
 
   //function to set the rate of speech. Will cancel the current speech api to do so
   setAudioSpeed = (config) => {
     speechSynthesis.cancel();
     config.rate = this.state.audioSpeed;
-    this.speech('Audio speed set to:' + config.rate, config);
+    this.speech("Audio speed set to:" + config.rate, config);
   };
 
   //function to retrieve the current chapter from textbook
@@ -532,7 +564,7 @@ class Dashboard extends Component {
     //retrieve paragraph to read
     //retrieve next paragraph to read and change state
     let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
-    this.setState({currentTextToRead: newParagraph});
+    this.setState({ currentTextToRead: newParagraph });
   };
 
   //handles navigating to a certain subChapter, starts at the first paragraph
@@ -544,9 +576,9 @@ class Dashboard extends Component {
       paragraphNumber: 0,
     });
     let text = this.getParagraph(this.state.paragraphNumber).text;
-    this.setState({currentTextToRead: text});
+    this.setState({ currentTextToRead: text });
     this.speech(
-      'subchapter ' + this.getCurrentSubchapter().name,
+      "subchapter " + this.getCurrentSubchapter().name,
       this.state.audioConfig
     );
   };
@@ -555,9 +587,9 @@ class Dashboard extends Component {
   handleParagraphNavigation = (paragraphNumber) => {
     //cancel speech api
     speechSynthesis.cancel();
-    this.setState({paragraphNumber: paragraphNumber - 1});
+    this.setState({ paragraphNumber: paragraphNumber - 1 });
     let text = this.getParagraph(this.state.paragraphNumber).text;
-    this.setState({currentTextToRead: text});
+    this.setState({ currentTextToRead: text });
   };
 
   //handles navigating to a certain chapter
@@ -570,10 +602,10 @@ class Dashboard extends Component {
     });
     //retrieve next paragraph to read and change state
     let newParagraph = this.getParagraph(this.state.paragraphNumber).text;
-    this.setState({currentTextToRead: newParagraph});
+    this.setState({ currentTextToRead: newParagraph });
     this.speech(this.getCurrentChapter().name, this.state.audioConfig);
     this.speech(
-      'subchapter ' + this.getCurrentSubchapter().name,
+      "subchapter " + this.getCurrentSubchapter().name,
       this.state.audioConfig
     );
   };
@@ -582,7 +614,7 @@ class Dashboard extends Component {
   cancel = () => {
     var newPNumber = this.state.paragraphNumber;
     const textToRead = this.getParagraph(newPNumber).text;
-    console.log(textToRead, newPNumber);
+
     this.setState({
       stopPlay: true,
       paragraphNumber: newPNumber,
@@ -620,17 +652,17 @@ class Dashboard extends Component {
     };
 
     if (this.state.navigation === NAVIGATION.PARAGRAPH) {
-      navigation = 'Paragraph';
-      nextNavigation = 'Subchapter';
-      previousNavigation = 'Paragraph';
+      navigation = "Paragraph";
+      nextNavigation = "Subchapter";
+      previousNavigation = "Paragraph";
     } else if (this.state.navigation === NAVIGATION.CHAP) {
-      navigation = 'Chapter';
-      nextNavigation = 'Chapter';
-      previousNavigation = 'Subchapter';
+      navigation = "Chapter";
+      nextNavigation = "Chapter";
+      previousNavigation = "Subchapter";
     } else {
-      navigation = 'Subchapter';
-      nextNavigation = 'Chapter';
-      previousNavigation = 'Paragraph';
+      navigation = "Subchapter";
+      nextNavigation = "Chapter";
+      previousNavigation = "Paragraph";
     }
 
     const ColStyle = {
@@ -639,39 +671,24 @@ class Dashboard extends Component {
     };
 
     const leftRightArrowStyle = {
-      display: 'block',
-      margin: 'auto',
+      display: "block",
+      margin: "auto",
       marginTop: 180,
     };
 
     return (
       <React.Fragment>
         <Header></Header>
-        <Container>
-          <Row>
-            <Col xs={6}>
-              <div className={styles.AudioPanel}>
-                <h1>Set audio speed to: (Between 1 - 10)</h1>
-                <input
-                  value={this.state.audioSpeed}
-                  type="number"
-                  onChange={(e) => this.setState({audioSpeed: e.target.value})}
-                />
-                <button
-                  onClick={(e) => this.setAudioSpeed(this.state.audioConfig)}
-                >
-                  Set
-                </button>
-              </div>
-            </Col>
-            <Col xs={6} className={styles.AudioPanel}>
-              <h1>
-                Press <img src={tKey} alt="UpArrow" width="50" height="50" /> to
-                open the Tutorial
-              </h1>
-            </Col>
-          </Row>
-        </Container>
+        <h1
+          style={{
+            textAlign: "center",
+            marginBottom: "50px",
+            marginTop: "40px",
+          }}
+        >
+          Press <img src={tKey} alt="UpArrow" width="50" height="50" /> to open
+          the Tutorial
+        </h1>
 
         <div className={styles.Title}>
           <h1>{this.state.textbookSelected.name}</h1>
@@ -732,13 +749,25 @@ class Dashboard extends Component {
               <Tutorial closePopup={this.toggleTutorial.bind(this)} />
             ) : null}
           </Row>
-          <ErrorModal
-            show={this.state.showErrorModal}
-            closeErrorModal={this.closeErrorModal}
-          >
-            <h1 style={{textAlign: 'center'}}>Error!</h1>
+          <ErrorModal show={this.state.showErrorModal}>
+            <h1 style={{ textAlign: "center" }}>Error!</h1>
             <h2>{this.state.modalMessage}</h2>
           </ErrorModal>
+          <SpeechModal show={this.state.showSpeechModal}>
+            <div className={styles.AudioPanel}>
+              <h1>Set audio speed to: (Between 1 - 10)</h1>
+              <input
+                value={this.state.audioSpeed}
+                type="number"
+                onChange={(e) => this.setState({ audioSpeed: e.target.value })}
+              />
+              <button
+                onClick={(e) => this.setAudioSpeed(this.state.audioConfig)}
+              >
+                Set
+              </button>
+            </div>
+          </SpeechModal>
         </Container>
       </React.Fragment>
     );
