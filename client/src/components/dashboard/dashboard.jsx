@@ -116,6 +116,10 @@ class Dashboard extends Component {
   //function to open speech modal
   showSpeechModal = (e) => {
     this.cancel();
+    this.speech(
+      "Select your audio speed from 1 to 10 and hit escape to exit",
+      this.state.audioConfig
+    );
     this.setState({ showSpeechModal: true });
   };
 
@@ -756,7 +760,9 @@ class Dashboard extends Component {
           </ErrorModal>
           <SpeechModal show={this.state.showSpeechModal}>
             <div className={styles.AudioPanel}>
-              <h1>Set audio speed to: (Between 1 - 10)</h1>
+              <h1>
+                Set audio speed to: (Between 1 - 10) and hit Escape to exit!
+              </h1>
               <input
                 value={this.state.audioSpeed}
                 type="number"
